@@ -87,26 +87,24 @@ createCities(mapData * mapFile, map * mapSt)
 
 
 	if( getString(mapFile, &aux) != BLANKLINE )
-	{
 		return 1;
-	}
+
 	if( (mapSt->mapCities = malloc(mapSt->citiesCount * sizeof(city*))) == NULL )
-	{
 		return 1;
-	}
 	
 	for( i = 0; i < mapSt->citiesCount; i++ )
 	{
 		if( (mapSt->mapCities[i] = malloc(sizeof(city))) == NULL)
-		{
 			return 1;
-		}
+
 		if( getCity(mapFile, mapSt->mapCities[i]) )
-		{
 			return 1;
-		}
+
 		mapSt->mapCities[i]->ID = i;
 	}
+
+	if( initializeGraph(mapFile, mapSt) )
+		return 1;
 
 	return 0;
 }
@@ -114,7 +112,7 @@ createCities(mapData * mapFile, map * mapSt)
 static int
 getCity( mapData * mapFile, city * newCity)
 {
-	int packages = 0,arcs = 0, ret;
+	int packages = 0;
 	char * aux;
 	
 	if( getString(mapFile, &(newCity->name)) )
@@ -138,34 +136,39 @@ getCity( mapData * mapFile, city * newCity)
 			return 1;	
 		}
 	}
+
+	return 0;
+}
+
+int
+initializeGraph(mapData * mapFile, map * mapSt)
+{
+	int i, ID1, ID2, ret, dist;
+	char * aux;
+
+	if( (mapSt->graph = malloc(mapSt->citiesCount * sizeof(int))) == NULL)
+		return 1;
 	
-	getString(mapFile, &aux );
-	if( !strcmp(aux, newCity->name) )
-	{
-		do
+	for( i = 0; i<mapSt->citiesCount; i++ )
+		if( (mapSt->graph[i] = malloc(mapSt->citiesCount * sizeof(int))) == NULL)
+			return 1;
+
+	while( (ret = getString( mapFile, &aux )) != ENDEDFILE) /*revisar*/
+	{	
+		if(ret != BLANKLINE)
 		{
- 			if ( (newCity->adjacents = realloc(newCity->adjacents, sizeof(arc*) * ++arcs)) == NULL )
-			{
+			ID1 = getCityID(aux, mapSt);
+			if( getString( mapFile, &aux ) )
 				return 1;
-			}
-			if( (newCity->adjacents[arcs-1] = malloc(sizeof(arc))) == NULL )
-			{
+			ID2 = getCityID(aux, mapSt);
+			if( getInt( mapFile, &dist ) )
 				return 1;
-			}
-			if( getString(mapFile, &(newCity->adjacents[arcs-1]->destination)) )
-			{
+			if( ID1 == -1 || ID2 == -1 )
 				return 1;
-			}
-			if( getInt(mapFile, &(newCity->adjacents[arcs-1]->distance) ) )
-			{
-				return 1;	
-			}
-		}while( (ret = getString( mapFile, &aux )) != BLANKLINE && ret != ENDEDFILE); /*revisar*/
-	}
-	else
-	{
-		printf("andate a la puta que te pario\n");
-	}
+			mapSt->graph[ID1][ID2] = dist;
+			mapSt->graph[ID2][ID1] = dist;
+		}
+	}	
 
 	return 0;
 }
@@ -221,36 +224,6 @@ createPlane(mapData * mapFile, plane ** newPlane)
 		(*newPlane)->medicines[packages-1]->name = aux;
 		if( getInt(mapFile, &((*newPlane)->medicines[packages-1]->quantity) ) )
 			return 1;	
-	}
-	return 0;
-}
-
-
-int
-initializeGraph(map * mapSt)
-{
-	int i, k, ID;
-	if( (mapSt->graph = malloc(mapSt->citiesCount * sizeof(int))) == NULL)
-		return 1;
-	
-	for( i = 0; i<mapSt->citiesCount; i++ )
-		if( (mapSt->graph[i] = malloc(mapSt->citiesCount * sizeof(int))) == NULL)
-			return 1;
-
-	for( i = 0; i<mapSt->citiesCount; i++)
-	{
-		city * currCity = mapSt->mapCities[i];
-		for( k = 0; k< sizeof(currCity->adjacents)/sizeof(currCity->adjacents[0]); k++)
-		{
-			ID = getCityID(currCity->adjacents[k]->destination, mapSt);
-			if( ID != -1 )
-			{
-				mapSt->graph[currCity->ID][ID] = currCity->adjacents[k]->distance;
-				mapSt->graph[ID][currCity->ID] = currCity->adjacents[k]->distance;
-			}
-			else
-				return 1;
-		}
 	}
 	return 0;
 }

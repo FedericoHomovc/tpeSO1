@@ -50,9 +50,6 @@ main(int argc, char * argv[])
 		printf("Impossible to open file\n");
 		return 1;
 	}
-		
-	if( initializeGraph(mapSt) )
-		return 1;
 	for( i = 2; i < argc; i++)
 	{
 		if( !openFile(mapFile, argv[i]) )

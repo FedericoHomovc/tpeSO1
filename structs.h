@@ -14,14 +14,8 @@ typedef struct{
 }package;
 
 typedef struct{
-   char * destination;
-   int distance;
-}arc;
-
-typedef struct{
    char * name;
    package ** medicines;
-   arc ** adjacents;
    unsigned ID;
 }city;
 
