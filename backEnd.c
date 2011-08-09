@@ -121,7 +121,7 @@ getCity( mapData * mapFile, city * newCity)
 	}
 
 	while( getString( mapFile, &aux ) != BLANKLINE ) /*revisar*/
-	{
+	{ /*gets the medicine name*/
  		if ( (newCity->medicines = realloc(newCity->medicines, sizeof(medicine*) * ++packages)) == NULL )
 		{
 			return 1;
@@ -132,7 +132,7 @@ getCity( mapData * mapFile, city * newCity)
 		}
 		newCity->medicines[packages-1]->name = aux;
 		if( getInt(mapFile, &(newCity->medicines[packages-1]->quantity) ) )
-		{
+		{/*gets the medicine quantity*/
 			return 1;	
 		}
 	}
@@ -249,7 +249,6 @@ getInt(mapData * mapFile, int * out)
 	int cant, start=0, c;
 	char * aux=NULL;
 
-	/* reads a number */
 	while( !start && (c=fgetc(mapFile->file)) != EOF)
 	{
 		if(isdigit(c))

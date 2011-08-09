@@ -38,6 +38,7 @@ main(int argc, char * argv[])
 	if(!openFile(mapFile, argv[1]))
 	{
 		allocMapSt(&mapSt, argc);
+		/*creaction of cities*/
 		notValid = createCities(mapFile, mapSt);
 		if(notValid)
 		{
