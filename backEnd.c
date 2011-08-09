@@ -83,7 +83,7 @@ createCities(mapData * mapFile, map * mapSt)
 {
 	int i;
 	char * aux;
-	getInt( mapFile,  &(mapSt->citiesCount) );
+	getInt( mapFile,  &(mapSt->citiesCount) ); /* gets the quantity of cities */
 
 
 	if( getString(mapFile, &aux) != BLANKLINE )
@@ -92,7 +92,7 @@ createCities(mapData * mapFile, map * mapSt)
 	if( (mapSt->cities = malloc(mapSt->citiesCount * sizeof(city*))) == NULL )
 		return 1;
 	
-	for( i = 0; i < mapSt->citiesCount; i++ )
+	for( i = 0; i < mapSt->citiesCount; i++ ) /* initialices the cities */
 	{
 		if( (mapSt->cities[i] = malloc(sizeof(city))) == NULL)
 			return 1;
@@ -112,7 +112,7 @@ createCities(mapData * mapFile, map * mapSt)
 static int
 getCity( mapData * mapFile, city * newCity)
 {
-	int packages = 0;
+	int packages = 0; /*medicines*/
 	char * aux;
 	
 	if( getString(mapFile, &(newCity->name)) )
