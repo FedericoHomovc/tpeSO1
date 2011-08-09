@@ -50,6 +50,7 @@ main(int argc, char * argv[])
 		printf("Impossible to open file\n");
 		return 1;
 	}
+	/*creation of the companies*/
 	for( i = 2; i < argc; i++)
 	{
 		if( !openFile(mapFile, argv[i]) )

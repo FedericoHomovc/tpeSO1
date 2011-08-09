@@ -161,7 +161,7 @@ initializeGraph(mapData * mapFile, map * mapSt)
 			if( getString( mapFile, &aux ) )
 				return 1;
 			ID2 = getCityID(aux, mapSt);
-			if( getInt( mapFile, &dist ) )
+			if( getInt( mapFile, &dist ) ) /* gets the distance to a city */
 				return 1;
 			if( ID1 == -1 || ID2 == -1 )
 				return 1;
@@ -249,6 +249,7 @@ getInt(mapData * mapFile, int * out)
 	int cant, start=0, c;
 	char * aux=NULL;
 
+	/* reads a number */
 	while( !start && (c=fgetc(mapFile->file)) != EOF)
 	{
 		if(isdigit(c))
