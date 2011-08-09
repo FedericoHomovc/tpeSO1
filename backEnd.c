@@ -71,7 +71,7 @@ allocMapSt(map ** mapSt, int argc)
 	{
 		return 1;
 	}
-	if( ( ((*mapSt)->mapCompanies) = malloc((argc - 2) * sizeof(company*)) ) == NULL)
+	if( ( ((*mapSt)->companies) = malloc((argc - 2) * sizeof(company*)) ) == NULL)
 	{
 		return 1;
 	}
@@ -89,18 +89,18 @@ createCities(mapData * mapFile, map * mapSt)
 	if( getString(mapFile, &aux) != BLANKLINE )
 		return 1;
 
-	if( (mapSt->mapCities = malloc(mapSt->citiesCount * sizeof(city*))) == NULL )
+	if( (mapSt->cities = malloc(mapSt->citiesCount * sizeof(city*))) == NULL )
 		return 1;
 	
 	for( i = 0; i < mapSt->citiesCount; i++ )
 	{
-		if( (mapSt->mapCities[i] = malloc(sizeof(city))) == NULL)
+		if( (mapSt->cities[i] = malloc(sizeof(city))) == NULL)
 			return 1;
 
-		if( getCity(mapFile, mapSt->mapCities[i]) )
+		if( getCity(mapFile, mapSt->cities[i]) )
 			return 1;
 
-		mapSt->mapCities[i]->ID = i;
+		mapSt->cities[i]->ID = i;
 	}
 
 	if( initializeGraph(mapFile, mapSt) )
@@ -122,11 +122,11 @@ getCity( mapData * mapFile, city * newCity)
 
 	while( getString( mapFile, &aux ) != BLANKLINE ) /*revisar*/
 	{
- 		if ( (newCity->medicines = realloc(newCity->medicines, sizeof(package*) * ++packages)) == NULL )
+ 		if ( (newCity->medicines = realloc(newCity->medicines, sizeof(medicine*) * ++packages)) == NULL )
 		{
 			return 1;
 		}
-		if( (newCity->medicines[packages-1] = malloc(sizeof(package))) == NULL )
+		if( (newCity->medicines[packages-1] = malloc(sizeof(medicine))) == NULL )
 		{
 			return 1;
 		}
@@ -217,9 +217,9 @@ createPlane(mapData * mapFile, plane ** newPlane)
 
 	while( (ret = getString( mapFile, &aux )) != BLANKLINE && ret != ENDEDFILE) /*revisar*/
 	{
-		if ( ((*newPlane)->medicines = realloc((*newPlane)->medicines, sizeof(package*) * ++packages)) == NULL )
+		if ( ((*newPlane)->medicines = realloc((*newPlane)->medicines, sizeof(medicine*) * ++packages)) == NULL )
 			return 1;
-		if( ((*newPlane)->medicines[packages-1] = malloc(sizeof(package))) == NULL )
+		if( ((*newPlane)->medicines[packages-1] = malloc(sizeof(medicine))) == NULL )
 			return 1;
 		(*newPlane)->medicines[packages-1]->name = aux;
 		if( getInt(mapFile, &((*newPlane)->medicines[packages-1]->quantity) ) )
@@ -234,9 +234,9 @@ getCityID( char * cityName, map * mapSt)
 	int i;
 	for(i = 0; i<mapSt->citiesCount; i++)
 	{
-		if(! strcmp(mapSt->mapCities[i]->name, cityName))
+		if(! strcmp(mapSt->cities[i]->name, cityName))
 		{
-			return mapSt->mapCities[i]->ID;
+			return mapSt->cities[i]->ID;
 		}
 	}
 	return -1;

@@ -11,16 +11,16 @@
 typedef struct{
    char * name;
    int quantity;
-}package;
+}medicine;
 
 typedef struct{
    char * name;
-   package ** medicines;
+   medicine ** medicines;
    unsigned ID;
 }city;
 
 typedef struct{
-   package ** medicines;
+   medicine ** medicines;
    char * startCity;
    unsigned companyID;
 }plane;
@@ -32,8 +32,8 @@ typedef struct{
 }company;
 
 typedef struct{
-   company ** mapCompanies;
-   city ** mapCities;
+   company ** companies;
+   city ** cities;
    int ** graph;
    int citiesCount;
    int companiesCount;

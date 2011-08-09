@@ -54,12 +54,12 @@ main(int argc, char * argv[])
 	{
 		if( !openFile(mapFile, argv[i]) )
 		{
-			if(createCompany(mapFile, &mapSt->mapCompanies[i-2]))
+			if(createCompany(mapFile, &mapSt->companies[i-2]))
 			{
 				printf("File Error\n");
 				return 1;
 			}
-			mapSt->mapCompanies[i-2]->ID = i-2;
+			mapSt->companies[i-2]->ID = i-2;
 		}
 		else
 		{
