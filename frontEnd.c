@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <error.h>
 
 /***		Project Includes		***/
 #include "structs.h"
@@ -80,7 +81,6 @@ main(int argc, char * argv[])
 	}
 	mapSt->companiesCount = argc - 2;
 	
-	
 	switch( pid = fork() ){
 		case -1:
 			perror("creating map");
@@ -99,40 +99,32 @@ main(int argc, char * argv[])
 					execl("io", "io", (char *) 0);
 					_exit(0);
 				default:
-					/*wait(&rv);*/
-					printf("termina IO\n");
+					pids = malloc(sizeof(int) * mapSt->companiesCount);
+					while(k < mapSt->companiesCount)
+					{
+						switch( pids[k] = fork() ){
+							case -1:
+								perror("creating company");
+							case 0:
+								printf("empieza la company %d\n", k);
+								execl("company", "company", (char *) 0);
+								k++;
+							default:
+								;
+								
+						}
+						k++;
+					}
 			}
-			/*wait(&rv);
-			printf("termina el mapa\n");*/
+			printf("teta peluda\n");
+			waitpid(pid, &status, WNOHANG);
+			if( WIFEXITED(status) )
+			{
+				printf("termino el mapa\n");
+				kill(pid2, SIGTERM);
+				kill(pids[0], SIGTERM);
+			}
 	}
-
-	pids = malloc(sizeof(int) * mapSt->companiesCount);
-	
-	while(k < mapSt->companiesCount)
-	{
-		if( (pids[k] = fork()) < 0)
-			perror("teta");
-		if(pids[k] == 0)
-		{
-			printf("empieza la company %d\n", k);
-			execl("company", "company", (char *) 0);
-		}
-		else
-		{
-			/*wait(&rv);*/
-			printf("termina la company %d\n", k);
-		}
-		k++;
-	}
-	
-	/*waitpid(pid, &status, WNOHANG);
-	if( WIFEXITED(status) )
-	{
-		printf("termino el mapa\n");
-		kill(pid2, SIGTERM);
-		kill(pids[0], SIGTERM);
-	}*/
-
 
 	/*wait(&rv);
 	printf("termina el mapa\n");*/
