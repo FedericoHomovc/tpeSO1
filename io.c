@@ -22,6 +22,6 @@ int
 main()
 {
 	printf("soy IO\n");
-	sleep(2);
+	sleep(10000);
 	return 0;
 }

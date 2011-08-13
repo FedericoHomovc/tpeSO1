@@ -22,6 +22,6 @@ int
 main()
 {
 	printf("soy una company\n");
-	sleep(2);
+	sleep(10000);
 	exit(0);
 }
