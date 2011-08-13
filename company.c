@@ -21,7 +21,7 @@
 int
 main()
 {
-	printf("soy una company\n");
+	printf("soy la company %d\n",getpid());
 	sleep(10000);
 	exit(0);
 }
