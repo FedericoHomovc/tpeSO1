@@ -16,6 +16,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/***		Project Includes		***/
+#include "structs.h"
+#include "backEnd.h"
 
 
 int
