@@ -116,8 +116,11 @@ main(int argc, char * argv[])
 						k++;
 					}
 			}
-			printf("teta peluda\n");
-			waitpid(pid, &status, WNOHANG);
+			while (waitpid(pid, &status, WNOHANG) == 0)
+			{
+				printf("waiting for map to end...\n");
+				sleep(1);
+			}
 			if( WIFEXITED(status) )
 			{
 				printf("termino el mapa\n");
