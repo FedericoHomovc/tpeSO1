@@ -22,12 +22,16 @@ typedef struct{
 typedef struct{
    medicine ** medicines;
    char * startCity;
+   int originID;
+   int destinationID;
+   int distance;
    unsigned companyID;
+   unsigned planeID;
 }plane;
 
 typedef struct{
    plane ** companyPlanes;
-   int planesCount;
+   unsigned planesCount;
    unsigned ID;
 }company;
 

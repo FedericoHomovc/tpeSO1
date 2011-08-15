@@ -11,9 +11,13 @@
 
 TARGET=tpeSO
 OBJS= frontEnd.o backEnd.o
+FIFO= ./transport/fifos/fifo.o
+FIFO2= fifo.o
+VARRAY= ./transport/varray.o
+VARRAY2= varray.o
 CC= gcc
-COPTS= -Wall -ansi -pedantic -c -g
-LDOPTS= -o
+COPTS= -Wall -ansi -pedantic -c -g 
+LDOPTS= -lpthread -o 
 TARGET2=map
 OBJS2= map.o
 TARGET3=io
@@ -21,9 +25,9 @@ OBJS3=io.o
 TARGET4=company
 OBJS4=company.o
 
-$(TARGET):	 $(OBJS) $(OBJS2) $(OBJS3) $(OBJS4)
-	echo Linking $(OBJS) to obtain $(TARGET)
-	$(CC) $(LDOPTS) $(TARGET) $(OBJS)
+$(TARGET):	 $(OBJS) $(OBJS2) $(OBJS3) $(OBJS4) $(FIFO) $(VARRAY)
+	echo Linking $(OBJS) $(FIFO2) $(VARRAY2) to obtain $(TARGET)
+	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2)
 	$(CC) $(LDOPTS) $(TARGET2) $(OBJS2)
 	$(CC) $(LDOPTS) $(TARGET3) $(OBJS3)
 	$(CC) $(LDOPTS) $(TARGET4) $(OBJS4)
@@ -33,7 +37,9 @@ $(TARGET):	 $(OBJS) $(OBJS2) $(OBJS3) $(OBJS4)
 	$(CC) $(COPTS) $<
 
 backEnd.o: structs.h backEnd.h
-frontEnd.o: structs.h
+frontEnd.o: structs.h ./include/fifo.h ./include/api.h
+fifo.o: ../../include/fifo.h ../../include/varray.h
+varray.o: ../include/varray.h
 
 clear:
 	echo Clearing directory

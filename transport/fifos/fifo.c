@@ -26,12 +26,6 @@
 #include "../../include/varray.h"
 #include "../../include/fifo.h"
 
-
-void itoa(int n, char *string);
-void reverse(char *string);
-int rcvMsg(comuADT comm, message *msg, int flags);
-servADT startServer();
-
 /***		Module Defines		***/
 
 #define	CLIENTS_SIZE	10

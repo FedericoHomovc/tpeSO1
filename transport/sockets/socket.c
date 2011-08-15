@@ -16,8 +16,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <limits.h>
-#include "../include/api.h"
-#include "../include/varray.h"
+#include "../../include/api.h"
+#include "../../include/varray.h"
 
 
 /*

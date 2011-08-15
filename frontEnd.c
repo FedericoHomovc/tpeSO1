@@ -22,18 +22,19 @@
 /***		Project Includes		***/
 #include "structs.h"
 #include "backEnd.h"
+#include "./include/api.h"
+#include "./include/fifo.h"
 
 int
 main(int argc, char * argv[])
 {
 	mapData * mapFile;
-	int notValid, i;
+	int notValid, i, status, k = 0;
 	map * mapSt;
-	pid_t pid;
-	pid_t pid2;
-	int status, rv;
-	int k = 0;
+	pid_t pid, pid2;
 	int * pids;
+	servADT server = startServer();
+	char * msg;
 
 	if (argc<=2)
 	{
@@ -81,12 +82,18 @@ main(int argc, char * argv[])
 	}
 	mapSt->companiesCount = argc - 2;
 	
+
+
+
+
+
 	switch( pid = fork() ){
 		case -1:
 			perror("creating map");
 			exit(1);
 		case 0:
 			printf("empieza el mapa\n");
+			connectToServer(server);
 			execl("map", "map", (char *) 0);
 			_exit(0);
 		default:
@@ -96,6 +103,7 @@ main(int argc, char * argv[])
 					exit(1);
 				case 0:
 					printf("empieza IO\n");
+					connectToServer(server);
 					execl("io", "io", (char *) 0);
 					_exit(0);
 				default:
@@ -108,10 +116,7 @@ main(int argc, char * argv[])
 							case 0:
 								printf("empieza la company %d\n", k);
 								execl("company", "company", (char *) 0);
-								k++;
-							default:
-								;
-								
+								_exit(0);
 						}
 						k++;
 					}
@@ -126,6 +131,7 @@ main(int argc, char * argv[])
 				printf("termino el mapa\n");
 				kill(pid2, SIGTERM);
 				kill(pids[0], SIGTERM);
+				endServer(server);
 			}
 	}
 

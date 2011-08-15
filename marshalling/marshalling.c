@@ -4,11 +4,22 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "api.h"
+#include "../include/api.h"
 
 
-void main(void){
-	//printf("esto compilo ok\n");
+
+int 
+sendParseFile(char * fileName, comuADT client)
+{
+	messaje msj = {strlen(fileName), filename};
+	
+
+}
+
+
+
+
+/*void main(void){
 	
 	comuADT comuArray[2] = {0};
 	pid_t pid;
@@ -20,7 +31,7 @@ void main(void){
 	servADT server = startServer();
 
 
-	/*for( i = 1; i < 2 ; i++){
+	for( i = 1; i < 2 ; i++){
 		
 		pid = fork();
 		if ( pid > 0 ){
@@ -39,7 +50,7 @@ void main(void){
 	
 	for ( j = 0; j<2; j++){
 		printf("Update de los procesos que estan corriendo y su numero de PID:\nEl hijo %d tiene un pid:%d\n", j+1, pidArray[j]);
-	}*/
+	}
 	
 	//for( z = 0; z < 2; z++)
 	//{	
@@ -69,6 +80,6 @@ void main(void){
 
 	printf("termine\n");
 
-}
+}*/
 
 

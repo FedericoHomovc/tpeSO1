@@ -26,5 +26,10 @@ main()
 {
 	printf("soy el mapa\n");
 	sleep(2);
+	
+	
+
+
+
 	return 0;
 }
