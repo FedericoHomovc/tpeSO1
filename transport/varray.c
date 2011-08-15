@@ -53,13 +53,15 @@ static int reallocArray(vArray array)
 /* Initializes the array. */
 vArray vArray_init(int initialSize)
 {
+	vArray vArr;
+	int i;
 	void ** arr = malloc(sizeof(void *) * initialSize);
 	if(arr == NULL)
 	{
 		return NULL;
 	}
 
-	vArray vArr = malloc(sizeof(struct vArrStruct));
+	vArr = malloc(sizeof(struct vArrStruct));
 	if(vArr == NULL)
 	{
 		free(arr);
@@ -70,7 +72,6 @@ vArray vArray_init(int initialSize)
 	vArr->used = 0;
 	vArr->array = arr;
 
-	int i;
 	for(i = 0; i < initialSize; i++)
 	{
 		vArr->array[i] = NULL;
@@ -122,10 +123,10 @@ void vArray_removeAtEnd(vArray array)
 /* Removes an element at a specific position. */
 int vArray_removeAt(vArray array, int index)
 {
+	int i;
+
 	if(array == NULL || index > array->used - 1 || array->used == 0)
 		return ERR_VARRAY_INVALID;
-
-	int i;
 
 	for(i = index; i < array->used - 1; i++)
 		array->array[i] = array->array[i+1];
@@ -144,9 +145,9 @@ int vArray_getSize(vArray array)
 /* Searches a vArray. */
 void * vArray_search(vArray array, int (*compare)(void *, void*), void * searchedElem)
 {
+	int i;
 	if(array == NULL)
 		return NULL;
-	int i;
 	for (i = 0; i < array->used; i++)
 	{
 		if((*compare)(searchedElem, array->array[i]) == 0)
