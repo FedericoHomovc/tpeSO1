@@ -164,6 +164,7 @@ static void *listeningFunction(void *serverInfo)
 	int fileDes_r;
 	int fileDes_w;
 	char c;
+	message msg;
 
 	server->clients = vArray_init(CLIENTS_SIZE);
 
@@ -239,7 +240,8 @@ static void *listeningFunction(void *serverInfo)
 			 */
 
 			
-			message msg = {1, &c};
+			msg.size= 1;
+			msg.message = &c;
 			sendMsg(comm, &msg, 0);
 		}
 	}
@@ -309,6 +311,7 @@ comuADT connectToServer(servADT serv)
 	char c;
 	pid_t id;
 	connectionMsg mesg;
+	message msg;
 	comuADT ret = malloc(sizeof(struct IPCCDT));
 
 	if(serv == NULL)
@@ -369,7 +372,8 @@ comuADT connectToServer(servADT serv)
 	 * that it was added to the clients array.
 	 */
 
-	message msg = {1, &c};
+	msg.size = 1;
+	msg.message = &c;
 	rcvMsg(ret, &msg, 0);
 
 	return ret;
@@ -380,11 +384,11 @@ comuADT connectToServer(servADT serv)
 comuADT getClient(servADT serv, pid_t id)
 {
 	infoClient matchingClient;
-	infoClient client = {id, NULL};
+	infoClient client;
+	void *arrayMatching = vArray_search(serv->clients, (int (*)(void *, void *))infoClient_comparePid, &client);
 
-	void *arrayMatching = vArray_search(serv->clients,
-						  (int (*)(void *, void *))infoClient_comparePid,
-						  &client);
+	client.id = id;
+	client.comm = NULL;
 
 	if(arrayMatching == NULL)
 		return NULL;

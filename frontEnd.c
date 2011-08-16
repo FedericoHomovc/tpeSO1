@@ -25,6 +25,10 @@
 #include "./include/api.h"
 #include "./include/fifo.h"
 
+
+servADT server;
+comuADT * clients;
+
 int
 main(int argc, char * argv[])
 {
@@ -33,8 +37,12 @@ main(int argc, char * argv[])
 	map * mapSt;
 	pid_t pid, pid2;
 	int * pids;
-	servADT server = startServer();
-	char * msg;
+	message mapMsg;
+
+	if (server == NULL)
+		server = startServer();
+	clients = malloc(sizeof(comuADT)*(argc-1)); /*poner en el back*/
+	clients[0] = connectToServer(server);  /*main client*/
 
 	if (argc<=2)
 	{
@@ -93,7 +101,6 @@ main(int argc, char * argv[])
 			exit(1);
 		case 0:
 			printf("empieza el mapa\n");
-			connectToServer(server);
 			execl("map", "map", (char *) 0);
 			_exit(0);
 		default:
@@ -103,7 +110,6 @@ main(int argc, char * argv[])
 					exit(1);
 				case 0:
 					printf("empieza IO\n");
-					connectToServer(server);
 					execl("io", "io", (char *) 0);
 					_exit(0);
 				default:
@@ -121,6 +127,10 @@ main(int argc, char * argv[])
 						k++;
 					}
 			}
+			sleep(2);
+			mapMsg.message = argv[1];
+			mapMsg.size = strlen(argv[1]);
+			sendMsg(clients[1], &mapMsg, 0);
 			while (waitpid(pid, &status, WNOHANG) == 0)
 			{
 				printf("waiting for map to end...\n");

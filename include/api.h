@@ -54,7 +54,7 @@ comuADT getClient(servADT serv, pid_t id);
 
 int sendMsg(comuADT comm, message * msg, int flags);
 
-int recieveMsg(comuADT comm, message * msg, int flags);
+int rcvMsg(comuADT comm, message * msg, int flags);
 
 int disconnectFromServer(comuADT comm, servADT server);
 

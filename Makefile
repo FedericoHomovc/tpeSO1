@@ -28,7 +28,7 @@ OBJS4=company.o
 $(TARGET):	 $(OBJS) $(OBJS2) $(OBJS3) $(OBJS4) $(FIFO) $(VARRAY)
 	echo Linking $(OBJS) $(FIFO2) $(VARRAY2) to obtain $(TARGET)
 	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2)
-	$(CC) $(LDOPTS) $(TARGET2) $(OBJS2)
+	$(CC) $(LDOPTS) $(TARGET2) $(OBJS2) $(FIFO2) $(VARRAY2)
 	$(CC) $(LDOPTS) $(TARGET3) $(OBJS3)
 	$(CC) $(LDOPTS) $(TARGET4) $(OBJS4)
 

@@ -19,17 +19,22 @@
 /***		Project Includes		***/
 #include "structs.h"
 #include "backEnd.h"
+#include "./include/api.h"
+#include "./include/varray.h"
 
+servADT server;
+comuADT * clients;
 
 int
 main()
 {
+	message * msg = NULL;
 	printf("soy el mapa\n");
-	sleep(2);
-	
-	
+	clients[1] = connectToServer(server); /*map client*/
+	sleep(1);
+	rcvMsg(clients[0], msg, 0);
 
-
+	printf("%s\n", (char *)msg->message);
 
 	return 0;
 }
