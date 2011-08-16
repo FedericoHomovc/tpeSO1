@@ -25,23 +25,17 @@
 #include "./include/api.h"
 #include "./include/fifo.h"
 
-
-servADT server;
-comuADT * clients;
-
 int
 main(int argc, char * argv[])
 {
-	mapData * mapFile;
-	int notValid, i, status, k = 0;
-	map * mapSt;
+	int status, k = 0;
 	pid_t pid, pid2;
 	int * pids;
-	message mapMsg;
+	servADT server;
+	comuADT * clients;
 
-	if (server == NULL)
-		server = startServer();
-	clients = malloc(sizeof(comuADT)*(argc-1)); /*poner en el back*/
+	server = startServer();
+	clients = malloc(sizeof(struct IPCCDT)*(argc-1)); /*poner en el back*/
 	clients[0] = connectToServer(server);  /*main client*/
 
 	if (argc<=2)
@@ -50,58 +44,13 @@ main(int argc, char * argv[])
 		return 1;
 	}
 
-	if(allocMapData(&mapFile))
-	{
-		return 1;
-	}
-	if(!openFile(mapFile, argv[1]))
-	{
-		allocMapSt(&mapSt, argc);
-		/*creation of cities*/
-		notValid = createCities(mapFile, mapSt);
-		if(notValid)
-		{
-			printf("File Error\n");
-			return notValid;
-		}
-	}
-	else
-	{
-		printf("Impossible to open file\n");
-		return 1;
-	}
-	/*creation of companies*/
-	for( i = 2; i < argc; i++)
-	{
-		if( !openFile(mapFile, argv[i]) )
-		{
-			if(createCompany(mapFile, &mapSt->companies[i-2]))
-			{
-				printf("File Error\n");
-				return 1;
-			}
-			mapSt->companies[i-2]->ID = i-2;
-		}
-		else
-		{
-			printf("Impossible to open file\n");
-			return 1;
-		}
-	}
-	mapSt->companiesCount = argc - 2;
-	
-
-
-
-
-
 	switch( pid = fork() ){
 		case -1:
 			perror("creating map");
 			exit(1);
 		case 0:
 			printf("empieza el mapa\n");
-			execl("map", "map", (char *) 0);
+			execl("map", "map", argv[1], (char *) 0);
 			_exit(0);
 		default:
 			switch(pid2 = fork()){
@@ -110,27 +59,25 @@ main(int argc, char * argv[])
 					exit(1);
 				case 0:
 					printf("empieza IO\n");
+					clients[1] = connectToServer(server);
 					execl("io", "io", (char *) 0);
 					_exit(0);
 				default:
-					pids = malloc(sizeof(int) * mapSt->companiesCount);
-					while(k < mapSt->companiesCount)
+					pids = malloc(sizeof(int) * (argc-2));
+					while(k < argc-2)
 					{
 						switch( pids[k] = fork() ){
 							case -1:
 								perror("creating company");
 							case 0:
 								printf("empieza la company %d\n", k);
-								execl("company", "company", (char *) 0);
+								execl("company", "company", argv[k+2], (char *) 0);
 								_exit(0);
 						}
 						k++;
 					}
 			}
 			sleep(2);
-			mapMsg.message = argv[1];
-			mapMsg.size = strlen(argv[1]);
-			sendMsg(clients[1], &mapMsg, 0);
 			while (waitpid(pid, &status, WNOHANG) == 0)
 			{
 				printf("waiting for map to end...\n");

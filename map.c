@@ -19,22 +19,37 @@
 /***		Project Includes		***/
 #include "structs.h"
 #include "backEnd.h"
-#include "./include/api.h"
-#include "./include/varray.h"
-
-servADT server;
-comuADT * clients;
 
 int
-main()
+main(int argc, char * argv[])
 {
-	message * msg = NULL;
-	printf("soy el mapa\n");
-	clients[1] = connectToServer(server); /*map client*/
-	sleep(1);
-	rcvMsg(clients[0], msg, 0);
+	mapData * mapFile;
+	int notValid;
+	map * mapSt;
 
-	printf("%s\n", (char *)msg->message);
+	printf("soy el mapa\n");
+
+	if(allocMapData(&mapFile))
+	{
+		return 1;
+	}
+	if(!openFile(mapFile, argv[1]))
+	{
+		allocMapSt(&mapSt, argc);
+		notValid = createCities(mapFile, mapSt);
+		if(notValid)
+		{
+			printf("File Error\n");
+			return notValid;
+		}
+	}
+	else
+	{
+		printf("Impossible to open file\n");
+		return 1;
+	}
+	
+	sleep(2);
 
 	return 0;
 }

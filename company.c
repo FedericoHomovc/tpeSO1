@@ -16,12 +16,37 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
+/***		Project Includes		***/
+#include "structs.h"
+#include "backEnd.h"
 
 int
-main()
+main(int argc, char * argv[])
 {
-	printf("soy la company %d\n",getpid());
+	mapData * mapFile;
+	company * compa;
+
+	printf("soy una company\n");
+	
+	if(allocMapData(&mapFile))
+	{
+		return 1;
+	}
+	if( !openFile(mapFile, argv[1]) )
+	{
+		if(createCompany(mapFile, &compa))
+		{
+			printf("File Error\n");
+			return 1;
+		}
+	}
+	else
+	{
+		printf("Impossible to open file\n");
+		return 1;
+	}
+
+	printf("company planes: %d\n", compa->planesCount);
 
 	sleep(10000);
 	exit(0);
