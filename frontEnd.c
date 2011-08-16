@@ -20,10 +20,18 @@
 #include <error.h>
 
 /***		Project Includes		***/
-#include "structs.h"
-#include "backEnd.h"
+#include "./include/structs.h"
+#include "./include/backEnd.h"
+#include "./include/frontEnd.h"
 #include "./include/api.h"
 #include "./include/fifo.h"
+
+
+/*
+ * global variables
+ */
+comuADT * clients;
+servADT server;
 
 int
 main(int argc, char * argv[])
@@ -31,11 +39,9 @@ main(int argc, char * argv[])
 	int status, k = 0;
 	pid_t pid, pid2;
 	int * pids;
-	servADT server;
-	comuADT * clients;
 
 	server = startServer();
-	clients = malloc(sizeof(struct IPCCDT)*(argc-1)); /*poner en el back*/
+	clients = malloc(sizeof(struct IPCCDT)*(argc)); /*poner en el back*/
 	clients[0] = connectToServer(server);  /*main client*/
 
 	if (argc<=2)
@@ -59,7 +65,6 @@ main(int argc, char * argv[])
 					exit(1);
 				case 0:
 					printf("empieza IO\n");
-					clients[1] = connectToServer(server);
 					execl("io", "io", (char *) 0);
 					_exit(0);
 				default:

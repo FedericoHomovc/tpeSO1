@@ -17,8 +17,13 @@
 #include <unistd.h>
 
 /***		Project Includes		***/
-#include "structs.h"
-#include "backEnd.h"
+#include "./include/structs.h"
+#include "./include/backEnd.h"
+#include "./include/api.h"
+#include "./include/varray.h"
+#include "./include/fifo.h"
+#include "./include/map.h"
+
 
 int
 main(int argc, char * argv[])
@@ -26,6 +31,8 @@ main(int argc, char * argv[])
 	mapData * mapFile;
 	int notValid;
 	map * mapSt;
+
+
 
 	printf("soy el mapa\n");
 

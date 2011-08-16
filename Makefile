@@ -29,17 +29,20 @@ $(TARGET):	 $(OBJS) $(OBJS2) $(OBJS3) $(OBJS4) $(FIFO) $(VARRAY)
 	echo Linking $(OBJS) $(FIFO2) $(VARRAY2) to obtain $(TARGET)
 	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2)
 	$(CC) $(LDOPTS) $(TARGET2) $(OBJS2) $(FIFO2) $(VARRAY2) backEnd.o
-	$(CC) $(LDOPTS) $(TARGET3) $(OBJS3)
-	$(CC) $(LDOPTS) $(TARGET4) $(OBJS4) backEnd.o
+	$(CC) $(LDOPTS) $(TARGET3) $(OBJS3) backEnd.o
+	$(CC) $(LDOPTS) $(TARGET4) $(OBJS4) 
 
 .c.o:
 	echo Compiling $<
 	$(CC) $(COPTS) $<
 
-backEnd.o: structs.h backEnd.h
-frontEnd.o: structs.h ./include/fifo.h ./include/api.h
+backEnd.o: ./include/structs.h ./include/backEnd.h
+frontEnd.o: ./include/structs.h ./include/fifo.h ./include/api.h ./include/frontEnd.h
 fifo.o: ../../include/fifo.h ../../include/varray.h
 varray.o: ../include/varray.h
+io.o: ./include/structs.h ./include/backEnd.h ./include/io.h ./include/api.h ./include/varray.h ./include/fifo.h 
+map.o: ./include/structs.h ./include/backEnd.h ./include/io.h ./include/api.h ./include/varray.h ./include/fifo.h 
+
 
 clear:
 	echo Clearing directory
