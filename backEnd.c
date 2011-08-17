@@ -16,8 +16,8 @@
 #include <stdlib.h>
 
 /***		Project Includes		***/
-#include "structs.h"
-#include "backEnd.h"
+#include "./include/structs.h"
+#include "./include/backEnd.h"
 
 /***		Module Defines		***/
 #define BLOCK 32

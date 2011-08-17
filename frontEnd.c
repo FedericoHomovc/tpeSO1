@@ -20,9 +20,17 @@
 #include <error.h>
 
 /***		Project Includes		***/
-#include "structs.h"
-#include "backEnd.h"
+#include "./include/structs.h"
+#include "./include/backEnd.h"
+#include "./include/frontEnd.h"
 #include "./include/api.h"
+
+
+/*
+ * global variables
+ */
+comuADT * clients;
+servADT server;
 
 int
 main(int argc, char * argv[])
@@ -80,10 +88,10 @@ main(int argc, char * argv[])
 						k++;
 					}
 			}
-			sleep(2);
+			sleep(1);
 			msg.message = string;
 			msg.size = strlen(string);
-			sendMsg(clients[1], &msg, 0);
+			/*sendMsg(clients[1], &msg, 0);*/
 			while (waitpid(pid, &status, WNOHANG) == 0)
 			{
 				printf("waiting for map to end...\n");

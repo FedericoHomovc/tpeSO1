@@ -17,10 +17,19 @@
 #include <unistd.h>
 
 
+/***		Project Includes		***/
+#include "./include/structs.h"
+#include "./include/backEnd.h"
+#include "./include/api.h"
+#include "./include/varray.h"
+#include "./include/io.h"
+
+
 
 int
 main()
 {
+
 	printf("soy IO\n");
 	sleep(10000);
 	return 0;

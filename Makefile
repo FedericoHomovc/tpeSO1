@@ -29,7 +29,7 @@ $(TARGET):	 $(OBJS) $(OBJS2) $(OBJS3) $(OBJS4) $(FIFO) $(VARRAY)
 	echo Linking $(OBJS) $(FIFO2) $(VARRAY2) to obtain $(TARGET)
 	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2)
 	$(CC) $(LDOPTS) $(TARGET2) $(OBJS2) $(FIFO2) $(VARRAY2) backEnd.o
-	$(CC) $(LDOPTS) $(TARGET3) $(OBJS3)
+	$(CC) $(LDOPTS) $(TARGET3) $(OBJS3) backEnd.o
 	$(CC) $(LDOPTS) $(TARGET4) $(OBJS4) backEnd.o
 
 .c.o:
@@ -40,6 +40,9 @@ backEnd.o: structs.h backEnd.h
 frontEnd.o: structs.h ./include/api.h
 fifo.o: ../../include/varray.h
 varray.o: ../include/varray.h
+io.o: ./include/structs.h ./include/backEnd.h ./include/io.h ./include/api.h ./include/varray.h
+map.o: ./include/structs.h ./include/backEnd.h ./include/io.h ./include/api.h ./include/varray.h
+
 
 clear:
 	echo Clearing directory

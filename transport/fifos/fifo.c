@@ -7,8 +7,10 @@
 ***			 	     ITBA 2011
 ***
 ***/
+/*
+ * Includes
+ */
 
-/***		System includes		***/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,10 +22,16 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ipc.h>
-
-/***		Project Includes		***/
 #include "../../include/api.h"
 #include "../../include/varray.h"
+
+
+void itoa(int n, char *string);
+
+void reverse(char *string);
+/*
+ * Symbolic constants definitions.
+ */
 
 /***		Module Defines		***/
 
@@ -99,6 +107,7 @@ struct serverCDT
 	int clientsUsed;
 };
 
+
 /*
  * Name: struct connectionMsg
  * Description: Message sent by clients to server when establishing a
@@ -127,10 +136,9 @@ static int mkopFifo(const char *expecName, char *resultName, mode_t modeCr,
 			 mode_t modeOp)
 {
 	int count = 0;
+	strcpy(resultName, expecName);
 	int length = strlen(resultName);
 	int ret;
-
-	strcpy(resultName, expecName);
 
 	while(mkfifo(resultName, modeCr) == -1)
 	{
@@ -145,6 +153,7 @@ static int mkopFifo(const char *expecName, char *resultName, mode_t modeCr,
 		count++;
 	}
 
+
 	if((ret = open(resultName, modeOp)) == -1)
 	{
 		fprintf(stderr, "FIFO couldn't be opened.\n");
@@ -157,13 +166,11 @@ static int mkopFifo(const char *expecName, char *resultName, mode_t modeCr,
 
 static void *listeningFunction(void *serverInfo)
 {
-	servADT server = (servADT)serverInfo;
-	comuADT comm;
-	connectionMsg currentConnection;
 	int fileDes_r;
 	int fileDes_w;
 	char c;
-	message msg;
+	servADT server = (servADT)serverInfo;
+	connectionMsg currentConnection;
 
 	server->clients = vArray_init(CLIENTS_SIZE);
 
@@ -185,7 +192,7 @@ static void *listeningFunction(void *serverInfo)
 				return NULL;
 			}
 
-			comm = malloc(sizeof(struct IPCCDT));
+			comuADT comm = malloc(sizeof(struct IPCCDT));
 
 			if(comm == NULL)
 			{
@@ -198,6 +205,7 @@ static void *listeningFunction(void *serverInfo)
 			 * They are swapped in order to be treated indifferently by
 			 * sndMsg and rcvMsg functions.
 			 */
+
 
 			if((fileDes_r = open(currentConnection.clientName_w, O_RDWR)) == -1)
 			{
@@ -212,7 +220,6 @@ static void *listeningFunction(void *serverInfo)
 			comm->clientFifo_r = fileDes_r;
 
 			
-
 			if((fileDes_w = open(currentConnection.clientName_r, O_RDWR)) == -1)
 			{
 				fprintf(stderr, "Errno = %d, strerror = %s\n", errno,
@@ -238,9 +245,7 @@ static void *listeningFunction(void *serverInfo)
 			 * to ensure that the client was put into the array.
 			 */
 
-			
-			msg.size= 1;
-			msg.message = &c;
+			message msg = {1, &c};
 			sendMsg(comm, &msg, 0);
 		}
 	}
@@ -258,9 +263,9 @@ static void *listeningFunction(void *serverInfo)
 
 servADT startServer(void)
 {
-	pthread_t listeningThread;
-	int retValue;
 	int fileDes;
+	int retValue;
+	pthread_t listeningThread;
 	servADT ret = malloc(sizeof(struct serverCDT));
 
 	/* The return value is initialized. */
@@ -287,6 +292,7 @@ servADT startServer(void)
 	/* Server listening thread is initialized. */
 
 
+
 	if((retValue = pthread_create(&listeningThread, NULL, listeningFunction,
 			ret)) == -1)
 	{
@@ -308,16 +314,14 @@ comuADT connectToServer(servADT serv)
 	int fileDes_w;
 	int serverFileDes;
 	char c;
-	pid_t id;
-	connectionMsg mesg;
-	message msg;
-	comuADT ret = malloc(sizeof(struct IPCCDT));
 
 	if(serv == NULL)
 	{
 		fprintf(stderr, "Server must not be NULL");
 		return NULL;
 	}
+
+	comuADT ret = malloc(sizeof(struct IPCCDT));
 
 	if(ret == NULL)
 		return NULL;
@@ -332,6 +336,7 @@ comuADT connectToServer(servADT serv)
 	}
 	ret->clientFifo_r = fileDes_r;
 
+	
 	if((fileDes_w = mkopFifo(CLI_FIFO_W_S, ret->clientName_w, 0666, O_RDWR))
 			== ERR_FIFO)
 	{
@@ -341,7 +346,6 @@ comuADT connectToServer(servADT serv)
 	ret->clientFifo_w = fileDes_w;
 
 	/* Server's main FIFO is opened. */
-
 
 	if((serverFileDes = open(serv->serverName, O_WRONLY)) == -1)
 	{
@@ -353,7 +357,9 @@ comuADT connectToServer(servADT serv)
 	/* We have FIFOs for reading and writing. Now we have to send this
 	 * info to the parent via the main FIFO. */
 
-	id = getpid();
+	pid_t id = getpid();
+
+	connectionMsg mesg;
 	mesg.id = id;
 	mesg.clientFifo_r = ret->clientFifo_r;
 	mesg.clientFifo_w = ret->clientFifo_w;
@@ -371,8 +377,7 @@ comuADT connectToServer(servADT serv)
 	 * that it was added to the clients array.
 	 */
 
-	msg.size = 1;
-	msg.message = &c;
+	message msg = {1, &c};
 	rcvMsg(ret, &msg, 0);
 
 	return ret;
@@ -381,17 +386,16 @@ comuADT connectToServer(servADT serv)
 
 comuADT getClient(servADT serv, pid_t id)
 {
-	infoClient matchingClient;
-	infoClient client;
-	void *arrayMatching = vArray_search(serv->clients, (int (*)(void *, void *))infoClient_comparePid, &client);
+	infoClient client = {id, NULL};
 
-	client.id = id;
-	client.comm = NULL;
+	void *arrayMatching = vArray_search(serv->clients,
+						  (int (*)(void *, void *))infoClient_comparePid,
+						  &client);
 
 	if(arrayMatching == NULL)
 		return NULL;
 
-	matchingClient = *(infoClient *)arrayMatching;
+	infoClient matchingClient = *(infoClient *)arrayMatching;
 
 	return matchingClient.comm;
 }
@@ -507,6 +511,7 @@ int endServer(servADT server)
 		return -1;
 	}
 
+	
 	for(i = 0; i < server->clientsUsed; i++)
 	{
 		infoClient * icp = (infoClient *)vArray_getAt(server->clients, i);

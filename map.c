@@ -17,9 +17,11 @@
 #include <unistd.h>
 
 /***		Project Includes		***/
-#include "structs.h"
-#include "backEnd.h"
-#include "include/api.h"
+#include "./include/structs.h"
+#include "./include/backEnd.h"
+#include "./include/api.h"
+#include "./include/varray.h"
+#include "./include/map.h"
 
 int
 main(int argc, char * argv[])
@@ -31,6 +33,8 @@ main(int argc, char * argv[])
 	message msg;
 
 	/*front = getClient(server, getppid());*/
+
+
 
 	printf("soy el mapa\n");
 

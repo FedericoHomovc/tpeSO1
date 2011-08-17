@@ -17,8 +17,8 @@
 #include <unistd.h>
 
 /***		Project Includes		***/
-#include "structs.h"
-#include "backEnd.h"
+#include "./include/structs.h"
+#include "./include/backEnd.h"
 
 int
 main(int argc, char * argv[])
