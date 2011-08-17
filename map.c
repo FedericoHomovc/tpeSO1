@@ -34,8 +34,6 @@ main(int argc, char * argv[])
 
 	/*front = getClient(server, getppid());*/
 
-
-
 	printf("soy el mapa\n");
 
 	if(allocMapData(&mapFile))

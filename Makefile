@@ -36,8 +36,8 @@ $(TARGET):	 $(OBJS) $(OBJS2) $(OBJS3) $(OBJS4) $(FIFO) $(VARRAY)
 	echo Compiling $<
 	$(CC) $(COPTS) $<
 
-backEnd.o: structs.h backEnd.h
-frontEnd.o: structs.h ./include/api.h
+backEnd.o: ./include/structs.h ./include/backEnd.h
+frontEnd.o: ./include/structs.h ./include/api.h
 fifo.o: ../../include/varray.h
 varray.o: ../include/varray.h
 io.o: ./include/structs.h ./include/backEnd.h ./include/io.h ./include/api.h ./include/varray.h
