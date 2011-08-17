@@ -7,18 +7,6 @@
 #include "../include/api.h"
 
 
-
-int 
-sendParseFile(char * fileName, comuADT client)
-{
-	messaje msj = {strlen(fileName), filename};
-	
-
-}
-
-
-
-
 /*void main(void){
 	
 	comuADT comuArray[2] = {0};

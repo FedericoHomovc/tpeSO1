@@ -19,6 +19,7 @@
 /***		Project Includes		***/
 #include "structs.h"
 #include "backEnd.h"
+#include "include/api.h"
 
 int
 main(int argc, char * argv[])
@@ -26,6 +27,10 @@ main(int argc, char * argv[])
 	mapData * mapFile;
 	int notValid;
 	map * mapSt;
+	comuADT front;
+	message msg;
+
+	/*front = getClient(server, getppid());*/
 
 	printf("soy el mapa\n");
 
@@ -48,6 +53,8 @@ main(int argc, char * argv[])
 		printf("Impossible to open file\n");
 		return 1;
 	}
+
+	/*rcvMsg(front, &msg, 0);*/
 	
 	sleep(2);
 

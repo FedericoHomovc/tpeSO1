@@ -46,8 +46,6 @@ main(int argc, char * argv[])
 		return 1;
 	}
 
-	printf("company planes: %d\n", compa->planesCount);
-
 	sleep(10000);
 	exit(0);
 }

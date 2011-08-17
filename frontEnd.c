@@ -23,7 +23,6 @@
 #include "structs.h"
 #include "backEnd.h"
 #include "./include/api.h"
-#include "./include/fifo.h"
 
 int
 main(int argc, char * argv[])
@@ -33,9 +32,11 @@ main(int argc, char * argv[])
 	int * pids;
 	servADT server;
 	comuADT * clients;
+	message msg;
+	char * string = "hola mundo";
 
 	server = startServer();
-	clients = malloc(sizeof(struct IPCCDT)*(argc-1)); /*poner en el back*/
+	clients = malloc( sizeof(comuADT *)*(argc+1) ); /*poner en el back*/
 	clients[0] = connectToServer(server);  /*main client*/
 
 	if (argc<=2)
@@ -50,6 +51,7 @@ main(int argc, char * argv[])
 			exit(1);
 		case 0:
 			printf("empieza el mapa\n");
+			clients[1] = connectToServer(server);
 			execl("map", "map", argv[1], (char *) 0);
 			_exit(0);
 		default:
@@ -59,7 +61,7 @@ main(int argc, char * argv[])
 					exit(1);
 				case 0:
 					printf("empieza IO\n");
-					clients[1] = connectToServer(server);
+					clients[2] = connectToServer(server);
 					execl("io", "io", (char *) 0);
 					_exit(0);
 				default:
@@ -71,6 +73,7 @@ main(int argc, char * argv[])
 								perror("creating company");
 							case 0:
 								printf("empieza la company %d\n", k);
+								clients[k+3] = connectToServer(server);
 								execl("company", "company", argv[k+2], (char *) 0);
 								_exit(0);
 						}
@@ -78,6 +81,9 @@ main(int argc, char * argv[])
 					}
 			}
 			sleep(2);
+			msg.message = string;
+			msg.size = strlen(string);
+			sendMsg(clients[1], &msg, 0);
 			while (waitpid(pid, &status, WNOHANG) == 0)
 			{
 				printf("waiting for map to end...\n");
