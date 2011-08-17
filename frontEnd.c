@@ -25,13 +25,6 @@
 #include "./include/frontEnd.h"
 #include "./include/api.h"
 
-
-/*
- * global variables
- */
-comuADT * clients;
-servADT server;
-
 int
 main(int argc, char * argv[])
 {
