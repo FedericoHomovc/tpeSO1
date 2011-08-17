@@ -21,7 +21,6 @@
 #include "./include/backEnd.h"
 #include "./include/api.h"
 #include "./include/varray.h"
-#include "./include/map.h"
 
 int
 main(int argc, char * argv[])

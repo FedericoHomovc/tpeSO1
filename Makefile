@@ -40,8 +40,8 @@ backEnd.o: ./include/structs.h ./include/backEnd.h
 frontEnd.o: ./include/structs.h ./include/api.h
 fifo.o: ../../include/varray.h
 varray.o: ../include/varray.h
-io.o: ./include/structs.h ./include/backEnd.h ./include/io.h ./include/api.h ./include/varray.h
-map.o: ./include/structs.h ./include/backEnd.h ./include/io.h ./include/api.h ./include/varray.h
+io.o: ./include/structs.h ./include/backEnd.h ./include/api.h ./include/varray.h
+map.o: ./include/structs.h ./include/backEnd.h ./include/api.h ./include/varray.h
 
 
 clear:

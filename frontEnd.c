@@ -22,7 +22,6 @@
 /***		Project Includes		***/
 #include "./include/structs.h"
 #include "./include/backEnd.h"
-#include "./include/frontEnd.h"
 #include "./include/api.h"
 
 int
