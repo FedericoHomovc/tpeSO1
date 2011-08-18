@@ -20,24 +20,31 @@
 #include <error.h>
 
 /***		Project Includes		***/
+#include "./include/api.h"
 #include "./include/structs.h"
 #include "./include/backEnd.h"
-#include "./include/api.h"
+
+int mapFunc(processData * pdata, char * fileName , int argc);
+int companyFunc(processData * pdata, char * fileName , int companyID);
+
 
 int
 main(int argc, char * argv[])
 {
-	int status, k = 0;
-	pid_t pid, pid2;
-	int * pids;
+	processData * pdata;
+	int status, k, rec;;
+	pid_t * pids;
 	servADT server;
 	comuADT * clients;
-	message msg;
-	char * string = "hola mundo";
 
+	pdata = malloc( sizeof(  processData ) );
 	server = startServer();
+	pdata->server = server;
+	pdata->pid = getpid();
+	pdata->name = malloc( sizeof(char *) * 20); /* tamaño del string */
+	
+	pids = malloc(sizeof(pid_t) * (argc));
 	clients = malloc( sizeof(comuADT *)*(argc+1) ); /*poner en el back*/
-	clients[0] = connectToServer(server);  /*main client*/
 
 	if (argc<=2)
 	{
@@ -45,46 +52,62 @@ main(int argc, char * argv[])
 		return 1;
 	}
 
-	switch( pid = fork() ){
+	switch( pids[0] = fork() ){
 		case -1:
 			perror("creating map");
 			exit(1);
 		case 0:
 			printf("empieza el mapa\n");
-			clients[1] = connectToServer(server);
-			execl("map", "map", argv[1], (char *) 0);
+			mapFunc(pdata, argv[1], argc);
+			/*execl("map", "map", argv[1], (char *) 0);*/
 			_exit(0);
 		default:
-			switch(pid2 = fork()){
+			switch(pids[1] = fork()){
 				case -1:
 					perror("creating IO");
 					exit(1);
 				case 0:
 					printf("empieza IO\n");
-					clients[2] = connectToServer(server);
-					execl("io", "io", (char *) 0);
+					ioFunc(pdata);
+					/*execl("io", "io", (char *) 0);*/
 					_exit(0);
 				default:
-					pids = malloc(sizeof(int) * (argc-2));
-					while(k < argc-2)
+					k = 2;
+					while(k < argc)
 					{
 						switch( pids[k] = fork() ){
 							case -1:
 								perror("creating company");
 							case 0:
-								printf("empieza la company %d\n", k);
-								clients[k+3] = connectToServer(server);
-								execl("company", "company", argv[k+2], (char *) 0);
+								printf("empieza la company %d\n", k-2);
+								companyFunc(pdata, argv[k] , k-2);
+								/*execl("company", "company", argv[k+2], (char *) 0);*/
 								_exit(0);
 						}
 						k++;
 					}
 			}
 			sleep(1);
-			msg.message = string;
-			msg.size = strlen(string);
-			/*sendMsg(clients[1], &msg, 0);*/
-			while (waitpid(pid, &status, WNOHANG) == 0)
+
+			clients[0] = connectToServer(server);  /*main client*/
+			clients[1] = getClient(server, pids[0]);/*mapClient*/
+			clients[2] = getClient(server, pids[1]);/*ioClient*/
+			for( k=3; k<argc+1; k++)
+			{
+				clients[k] = getClient(server, pids[k-1]);
+			}
+
+			/*---------TESTING----------*/
+			int city;
+			int companyID;
+			int planeID;
+			medicine * med;
+
+			printf("%d\n", rcvPackage(&city, &med, clients[3], &companyID, &planeID));
+			/*printf("%s",med[0].name , med[0].quantity,city, companyID);*/
+			/*---------TESTING----------*/
+
+			while (waitpid(pids[0], &status, WNOHANG) == 0)
 			{
 				printf("waiting for map to end...\n");
 				sleep(1);
@@ -92,8 +115,6 @@ main(int argc, char * argv[])
 			if( WIFEXITED(status) )
 			{
 				printf("termino el mapa\n");
-				kill(pid2, SIGTERM);
-				kill(pids[0], SIGTERM);
 				endServer(server);
 			}
 	}

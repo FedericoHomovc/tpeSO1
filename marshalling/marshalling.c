@@ -4,8 +4,97 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "../include/api.h"
 
+
+#include "../include/api.h"
+#include "../include/structs.h"
+
+
+int wrappMedicine(medicine ** med, char ** array, int medCount);
+int unwrappMedicine(medicine ** med, char * array);
+void itoa(int n, char *string);
+
+
+int
+sendPackage(int city, medicine ** med, comuADT client, int companyID, int planeID, int medCount)
+{
+	package pack;
+	message msg;
+
+	pack.city = city;
+	pack.companyID = companyID;
+	pack.planeID = planeID;
+
+	if( wrappMedicine(med, &pack.med, medCount) == -1)
+		return -1;
+
+	/*---------TESTING----------*/
+	printf("pack med: %s\n", pack.med);
+	/*---------TESTING----------*/
+	
+	msg.message = (package*)&pack;
+	msg.size = sizeof(package);
+
+	return sendMsg(client, &msg, 0);
+}
+
+
+int
+rcvPackage(int * city, medicine ** med, comuADT client, int * companyID, int * planeID )
+{
+	message msg;
+	int ret;
+
+	msg.message = malloc( sizeof(package) );
+	msg.size = sizeof(package);
+	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
+	{
+		return 1;
+	}
+
+	/*unwrappMedicine(med, ((package *)msg.message)->med);*/
+	*city = ((package *)msg.message)->city;
+	*companyID = ((package *)msg.message)->companyID;
+	*planeID = ((package *)msg.message)->planeID;
+
+	return ret;
+
+}
+
+
+int
+wrappMedicine(medicine ** med, char ** array, int medCount)  /*formato: med1,cant;med2,cant;med3,cant...0 */
+{
+	int i;
+	char * number = NULL;
+	char * aux = NULL;
+
+	aux = malloc(1);
+	number = malloc(10);
+
+	for( i = 0; i < medCount; i++)
+	{
+		if( ( aux = realloc(aux, strlen(aux) + strlen(med[i]->name) + sizeof(int) + 2)) == NULL )
+			return -1;
+		strcat(aux, med[i]->name);
+		strcat(aux, ",");
+		itoa(med[i]->quantity, number);
+		if( aux == NULL )
+			return -1;
+		strcat(aux, number);
+		strcat(aux, ";");
+	}
+	*array = aux;
+	free(number);
+	
+	return i;	
+}
+
+int
+unwrappMedicine(medicine ** med, char * array)
+{
+	return -1;
+}
 
 /*void main(void){
 	

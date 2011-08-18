@@ -136,9 +136,10 @@ static int mkopFifo(const char *expecName, char *resultName, mode_t modeCr,
 			 mode_t modeOp)
 {
 	int count = 0;
-	strcpy(resultName, expecName);
-	int length = strlen(resultName);
+	int length;
 	int ret;
+	length = strlen(resultName);
+	strcpy(resultName, expecName);
 
 	while(mkfifo(resultName, modeCr) == -1)
 	{
@@ -171,6 +172,7 @@ static void *listeningFunction(void *serverInfo)
 	char c;
 	servADT server = (servADT)serverInfo;
 	connectionMsg currentConnection;
+	comuADT comm;
 
 	server->clients = vArray_init(CLIENTS_SIZE);
 
@@ -192,7 +194,7 @@ static void *listeningFunction(void *serverInfo)
 				return NULL;
 			}
 
-			comuADT comm = malloc(sizeof(struct IPCCDT));
+			comm = malloc(sizeof(struct IPCCDT));
 
 			if(comm == NULL)
 			{
@@ -314,6 +316,7 @@ comuADT connectToServer(servADT serv)
 	int fileDes_w;
 	int serverFileDes;
 	char c;
+	comuADT ret;
 
 	if(serv == NULL)
 	{
@@ -321,7 +324,7 @@ comuADT connectToServer(servADT serv)
 		return NULL;
 	}
 
-	comuADT ret = malloc(sizeof(struct IPCCDT));
+	ret = malloc(sizeof(struct IPCCDT));
 
 	if(ret == NULL)
 		return NULL;
@@ -386,6 +389,7 @@ comuADT connectToServer(servADT serv)
 
 comuADT getClient(servADT serv, pid_t id)
 {
+	infoClient matchingClient;
 	infoClient client = {id, NULL};
 
 	void *arrayMatching = vArray_search(serv->clients,
@@ -395,7 +399,7 @@ comuADT getClient(servADT serv, pid_t id)
 	if(arrayMatching == NULL)
 		return NULL;
 
-	infoClient matchingClient = *(infoClient *)arrayMatching;
+	matchingClient = *(infoClient *)arrayMatching;
 
 	return matchingClient.comm;
 }

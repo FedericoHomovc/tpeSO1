@@ -15,22 +15,18 @@ FIFO= ./transport/fifos/fifo.o
 FIFO2= fifo.o
 VARRAY= ./transport/varray.o
 VARRAY2= varray.o
+MARSHALL = ./marshalling/marshalling.o
+MARSHALL2 = marshalling.o
 CC= gcc
 COPTS= -Wall -ansi -pedantic -c -g 
 LDOPTS= -lpthread -o 
-TARGET2=map
 OBJS2= map.o
-TARGET3=io
 OBJS3=io.o
-TARGET4=company
 OBJS4=company.o
 
-$(TARGET):	 $(OBJS) $(OBJS2) $(OBJS3) $(OBJS4) $(FIFO) $(VARRAY)
+$(TARGET):	 $(OBJS) $(OBJS2) $(OBJS3) $(OBJS4) $(FIFO) $(VARRAY) $(MARSHALL)
 	echo Linking $(OBJS) $(FIFO2) $(VARRAY2) to obtain $(TARGET)
-	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2)
-	$(CC) $(LDOPTS) $(TARGET2) $(OBJS2) $(FIFO2) $(VARRAY2) backEnd.o
-	$(CC) $(LDOPTS) $(TARGET3) $(OBJS3) backEnd.o
-	$(CC) $(LDOPTS) $(TARGET4) $(OBJS4) backEnd.o
+	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2) map.o io.o marshalling.o company.o
 
 .c.o:
 	echo Compiling $<
@@ -43,17 +39,10 @@ varray.o: ../include/varray.h
 io.o: ./include/structs.h ./include/backEnd.h ./include/api.h ./include/varray.h
 map.o: ./include/structs.h ./include/backEnd.h ./include/api.h ./include/varray.h
 
-
 clear:
 	echo Clearing directory
 	echo --- Removing *.o
 	- rm *.o
 	echo --- Removing $(TARGET)
 	- rm $(TARGET)
-	echo --- Removing $(TARGET2)
-	- rm $(TARGET2)
-	echo --- Removing $(TARGET3)
-	- rm $(TARGET3)
-	echo --- Removing $(TARGET4)
-	- rm $(TARGET4)
 

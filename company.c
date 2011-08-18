@@ -19,20 +19,23 @@
 /***		Project Includes		***/
 #include "./include/structs.h"
 #include "./include/backEnd.h"
+#include "./include/api.h"
 
 int
-main(int argc, char * argv[])
+companyFunc(processData * pdata, char * fileName , int companyID)
 {
 	mapData * mapFile;
 	company * compa;
+	comuADT client;
 
-	printf("soy una company\n");
+	printf("soy la company %d\n", companyID);
+	client = connectToServer(pdata->server);
 	
 	if(allocMapData(&mapFile))
 	{
 		return 1;
 	}
-	if( !openFile(mapFile, argv[1]) )
+	if( !openFile(mapFile, fileName) )
 	{
 		if(createCompany(mapFile, &compa))
 		{
@@ -45,6 +48,11 @@ main(int argc, char * argv[])
 		printf("Impossible to open file\n");
 		return 1;
 	}
+	compa->ID = companyID;
+
+	/*---------TESTING----------*/
+	printf("%d\n", sendPackage(compa->companyPlanes[0]->destinationID, compa->companyPlanes[0]->medicines, client, compa->ID, compa->companyPlanes[0]->planeID, compa->companyPlanes[0]->medCount));
+	/*---------TESTING----------*/
 
 	sleep(10000);
 	exit(0);

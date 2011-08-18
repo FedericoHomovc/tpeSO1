@@ -26,7 +26,7 @@
 
 
 int
-main()
+ioFunc(processData * pdata)
 {
 
 	printf("soy IO\n");

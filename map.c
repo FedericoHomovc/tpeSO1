@@ -15,31 +15,32 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 /***		Project Includes		***/
-#include "./include/structs.h"
-#include "./include/backEnd.h"
 #include "./include/api.h"
 #include "./include/varray.h"
+#include "./include/structs.h"
+#include "./include/backEnd.h"
 
 int
-main(int argc, char * argv[])
+mapFunc(processData * pdata, char * fileName , int argc)
 {
 	mapData * mapFile;
 	int notValid;
 	map * mapSt;
-	comuADT front;
-	message msg;
-
-	/*front = getClient(server, getppid());*/
+	comuADT client;
+	/*message msg;*/
 
 	printf("soy el mapa\n");
+	strcpy( pdata->name, "map" );
+	client = connectToServer(pdata->server);
 
 	if(allocMapData(&mapFile))
 	{
 		return 1;
 	}
-	if(!openFile(mapFile, argv[1]))
+	if(!openFile(mapFile, fileName))
 	{
 		allocMapSt(&mapSt, argc);
 		notValid = createCities(mapFile, mapSt);
@@ -55,9 +56,7 @@ main(int argc, char * argv[])
 		return 1;
 	}
 
-	/*rcvMsg(front, &msg, 0);*/
-	
 	sleep(2);
-
+	
 	return 0;
 }

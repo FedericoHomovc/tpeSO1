@@ -40,6 +40,11 @@ typedef struct
 	comuADT comm;
 } infoClient;
 
+typedef struct{
+	pid_t pid;
+	servADT server;
+	char * name;
+}processData;
 
 
 /*
@@ -54,7 +59,7 @@ comuADT getClient(servADT serv, pid_t id);
 
 int sendMsg(comuADT comm, message * msg, int flags);
 
-int recieveMsg(comuADT comm, message * msg, int flags);
+int rcvMsg(comuADT comm, message * msg, int flags);
 
 int disconnectFromServer(comuADT comm, servADT server);
 

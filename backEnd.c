@@ -225,6 +225,7 @@ createPlane(mapData * mapFile, plane ** newPlane)
 		if( getInt(mapFile, &((*newPlane)->medicines[packages-1]->quantity) ) )
 			return 1;	
 	}
+	(*newPlane)->medCount = packages;
 	return 0;
 }
 

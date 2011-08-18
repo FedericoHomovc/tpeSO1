@@ -8,6 +8,7 @@
 ***
 ***/
 
+
 typedef struct{
    char * name;
    int quantity;
@@ -25,6 +26,7 @@ typedef struct{
    int originID;
    int destinationID;
    int distance;
+   int medCount;
    unsigned companyID;
    unsigned planeID;
 }plane;
@@ -48,3 +50,10 @@ typedef struct{
 	int line;
 	int valid;
 }mapData;
+
+typedef struct{
+	int city;
+	char * med;
+	int companyID;
+	int planeID;
+}package;
