@@ -10,30 +10,25 @@
 #include "../include/structs.h"
 
 
-int wrappMedicine(medicine ** med, char ** array, int medCount);
-int unwrappMedicine(medicine ** med, char * array);
+char * wrappMedicine(int city, medicine ** med, int companyID, int planeID, int medCount);
+int unwrappMedicine(int city, medicine ** med, int companyID, int planeID, char * array);
 void itoa(int n, char *string);
 
 
 int
 sendPackage(int city, medicine ** med, comuADT client, int companyID, int planeID, int medCount)
 {
-	package pack;
 	message msg;
-
-	pack.city = city;
-	pack.companyID = companyID;
-	pack.planeID = planeID;
-
-	if( wrappMedicine(med, &pack.med, medCount) == -1)
+	
+	if( (msg.message = (char *)wrappMedicine(city, med, companyID, planeID, medCount)) == NULL )
 		return -1;
 
+	msg.size = sizeof(strlen(msg.message));
+
 	/*---------TESTING----------*/
-	printf("pack med: %s\n", pack.med);
+	printf("pack med: %s\n", (char*)msg.message );
 	/*---------TESTING----------*/
-	
-	msg.message = (package*)&pack;
-	msg.size = sizeof(package);
+
 
 	return sendMsg(client, &msg, 0);
 }
@@ -45,55 +40,69 @@ rcvPackage(int * city, medicine ** med, comuADT client, int * companyID, int * p
 	message msg;
 	int ret;
 
-	msg.message = malloc( sizeof(package) );
-	msg.size = sizeof(package);
+	msg.message = malloc( 10000 );
+	msg.size = sizeof(10000);
 	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
 	{
 		return 1;
 	}
+	
+	/*---------TESTING----------*/
+	printf("pack med: %s\n", (char *)msg.message);
+	/*---------TESTING----------*/
 
-	/*unwrappMedicine(med, ((package *)msg.message)->med);*/
-	*city = ((package *)msg.message)->city;
-	*companyID = ((package *)msg.message)->companyID;
-	*planeID = ((package *)msg.message)->planeID;
+	/*unwrappMedicine(city, companyID, planeID, med, (char *)msg.message));*/
 
 	return ret;
 
 }
 
 
-int
-wrappMedicine(medicine ** med, char ** array, int medCount)  /*formato: med1,cant;med2,cant;med3,cant...0 */
+char *
+wrappMedicine(int city, medicine ** med, int companyID, int planeID, int medCount) 
+/*formato: city;companyID;planeID;med1,cant;med2,cant;...0*/
 {
 	int i;
 	char * number = NULL;
 	char * aux = NULL;
 
-	aux = malloc(1);
+	aux = malloc(30);
 	number = malloc(10);
+
+	itoa(city, number);
+	strcat(aux, number);
+	strcat(aux, ";");
+	itoa(companyID, number);
+	strcat(aux, number);
+	strcat(aux, ";");
+	itoa(planeID, number);
+	strcat(aux, number);
+	strcat(aux, ";");
 
 	for( i = 0; i < medCount; i++)
 	{
 		if( ( aux = realloc(aux, strlen(aux) + strlen(med[i]->name) + sizeof(int) + 2)) == NULL )
-			return -1;
+			return NULL;
 		strcat(aux, med[i]->name);
 		strcat(aux, ",");
 		itoa(med[i]->quantity, number);
-		if( aux == NULL )
-			return -1;
+		if( number == NULL )
+			return NULL;
 		strcat(aux, number);
 		strcat(aux, ";");
 	}
-	*array = aux;
 	free(number);
 	
-	return i;	
+	return aux;;	
 }
 
 int
-unwrappMedicine(medicine ** med, char * array)
+unwrappMedicine(int city, medicine ** med, int companyID, int planeID, char * array)
 {
-	return -1;
+	*med = malloc(sizeof(medicine));
+	med[0]->name = array;
+	med[0]->quantity = 123;
+	return 0;
 }
 
 /*void main(void){

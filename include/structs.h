@@ -51,9 +51,9 @@ typedef struct{
 	int valid;
 }mapData;
 
-typedef struct{
+/*typedef struct{
 	int city;
-	char * med;
+	medicine med;
 	int companyID;
 	int planeID;
-}package;
+}package;*/

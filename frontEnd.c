@@ -26,6 +26,7 @@
 
 int mapFunc(processData * pdata, char * fileName , int argc);
 int companyFunc(processData * pdata, char * fileName , int companyID);
+int rcvPackage(int * city, medicine ** med, comuADT client, int * companyID, int * planeID );
 
 
 int
@@ -43,7 +44,7 @@ main(int argc, char * argv[])
 	pdata->pid = getpid();
 	pdata->name = malloc( sizeof(char *) * 20); /* tamaño del string */
 	
-	pids = malloc(sizeof(pid_t) * (argc));
+	pids = malloc(sizeof(pid_t) * (argc)); /*poner en el back*/
 	clients = malloc( sizeof(comuADT *)*(argc+1) ); /*poner en el back*/
 
 	if (argc<=2)
@@ -104,7 +105,7 @@ main(int argc, char * argv[])
 			medicine * med;
 
 			printf("%d\n", rcvPackage(&city, &med, clients[3], &companyID, &planeID));
-			/*printf("%s",med[0].name , med[0].quantity,city, companyID);*/
+			/*printf("%s -- %d -- %d -- %d\n", med[0].name, med[0].quantity, city, companyID);*/
 			/*---------TESTING----------*/
 
 			while (waitpid(pids[0], &status, WNOHANG) == 0)

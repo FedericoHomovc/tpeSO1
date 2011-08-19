@@ -21,6 +21,9 @@
 #include "./include/backEnd.h"
 #include "./include/api.h"
 
+char * wrappMedicine(medicine ** med, int medCount);
+int sendPackage(int city, medicine ** med, comuADT client, int companyID, int planeID, int medCount);
+
 int
 companyFunc(processData * pdata, char * fileName , int companyID)
 {
@@ -51,7 +54,7 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 	compa->ID = companyID;
 
 	/*---------TESTING----------*/
-	printf("%d\n", sendPackage(compa->companyPlanes[0]->destinationID, compa->companyPlanes[0]->medicines, client, compa->ID, compa->companyPlanes[0]->planeID, compa->companyPlanes[0]->medCount));
+	printf("%d\n", sendPackage(compa->companyPlanes[0]->destinationID, compa->companyPlanes[0]->medicines, client, /*compa->ID*/3, compa->companyPlanes[0]->planeID, compa->companyPlanes[0]->medCount));
 	/*---------TESTING----------*/
 
 	sleep(10000);

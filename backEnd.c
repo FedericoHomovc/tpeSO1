@@ -226,6 +226,7 @@ createPlane(mapData * mapFile, plane ** newPlane)
 			return 1;	
 	}
 	(*newPlane)->medCount = packages;
+
 	return 0;
 }
 
