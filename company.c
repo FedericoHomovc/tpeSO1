@@ -57,6 +57,7 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 	printf("%d\n", sendPackage(compa->companyPlanes[0]->destinationID, compa->companyPlanes[0]->medicines, client, /*compa->ID*/3, compa->companyPlanes[0]->planeID, compa->companyPlanes[0]->medCount));
 	/*---------TESTING----------*/
 
+	/*disconnectFromServer(client, pdata->server);*/
 	sleep(10000);
 	exit(0);
 }

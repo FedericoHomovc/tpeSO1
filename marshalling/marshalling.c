@@ -19,14 +19,15 @@ int
 sendPackage(int city, medicine ** med, comuADT client, int companyID, int planeID, int medCount)
 {
 	message msg;
-	
+
 	if( (msg.message = (char *)wrappMedicine(city, med, companyID, planeID, medCount)) == NULL )
 		return -1;
 
-	msg.size = sizeof(strlen(msg.message));
+	msg.size = strlen(msg.message);
 
 	/*---------TESTING----------*/
-	printf("pack med: %s\n", (char*)msg.message );
+	printf("pack med sent: %s\n", (char*)msg.message );
+	printf("send size: %ld\n",msg.size);
 	/*---------TESTING----------*/
 
 
@@ -40,19 +41,20 @@ rcvPackage(int * city, medicine ** med, comuADT client, int * companyID, int * p
 	message msg;
 	int ret;
 
-	msg.message = malloc( 10000 );
-	msg.size = sizeof(10000);
+	msg.message = malloc( sizeof(char *) );
 	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
 	{
-		return 1;
+		return -1;
 	}
 	
 	/*---------TESTING----------*/
-	printf("pack med: %s\n", (char *)msg.message);
+	printf("pack med rcv: %s\n", (char *)msg.message);
+	printf("rcv size: %ld\n",msg.size);
 	/*---------TESTING----------*/
 
 	/*unwrappMedicine(city, companyID, planeID, med, (char *)msg.message));*/
 
+	/*return ret;*/
 	return ret;
 
 }
@@ -92,6 +94,7 @@ wrappMedicine(int city, medicine ** med, int companyID, int planeID, int medCoun
 		strcat(aux, ";");
 	}
 	free(number);
+	aux = realloc( aux, strlen(aux));
 	
 	return aux;;	
 }

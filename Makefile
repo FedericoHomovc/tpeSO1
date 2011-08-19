@@ -10,7 +10,7 @@
 .SILENT:
 
 TARGET=tpeSO
-OBJS= frontEnd.o backEnd.o
+OBJS= map.o backEnd.o company.o io.o
 FIFO= ./transport/fifos/fifo.o
 FIFO2= fifo.o
 VARRAY= ./transport/varray.o
@@ -20,13 +20,10 @@ MARSHALL2 = marshalling.o
 CC= gcc
 COPTS= -Wall -ansi -pedantic -c -g 
 LDOPTS= -lpthread -o 
-OBJS2= map.o
-OBJS3=io.o
-OBJS4=company.o
 
-$(TARGET):	 $(OBJS) $(OBJS2) $(OBJS3) $(OBJS4) $(FIFO) $(VARRAY) $(MARSHALL)
+$(TARGET):	 $(OBJS) $(FIFO) $(VARRAY) $(MARSHALL)
 	echo Linking $(OBJS) $(FIFO2) $(VARRAY2) to obtain $(TARGET)
-	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2) map.o io.o marshalling.o company.o
+	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2) marshalling.o
 
 .c.o:
 	echo Compiling $<
