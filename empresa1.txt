@@ -1,9 +1,0 @@
-2
-
-Ciudad2
-Med1 20
-Med4 20
-
-Ciudad3
-Med3 20
-Med4 20
