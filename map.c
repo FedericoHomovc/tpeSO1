@@ -114,9 +114,14 @@ main(int argc, char * argv[]) {
 		{
 			printf("Sent: %d\n", sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[k]));
 			kill(pids[k], SIGCONT);
-			sleep(1);
 		}
 		sleep(1);
+
+		/*for(k = 2; k < argc; k++)
+		{
+			printf("Sent: %d\n", sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[k]));   rcvPlane
+			kill(pids[k], SIGCONT);
+		}*/
 
 		notOver = 0;
 

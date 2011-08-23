@@ -75,8 +75,8 @@ wrappMedicine(medicine ** med, int companyID, int medCount)
 	char * number = NULL;
 	char * aux = NULL;
 
-	aux = malloc(30);	/*set to serialize companyID and medCount. initial size may be increased*/
-	number = malloc(10);
+	aux = calloc(30, sizeof(char));	/*set to serialize companyID and medCount. initial size may be increased*/
+	number = calloc(10, sizeof(char));
 	
 	itoa(companyID, number);
 	strcat(aux, number);
@@ -98,8 +98,7 @@ wrappMedicine(medicine ** med, int companyID, int medCount)
 		strcat(aux, ";");
 	}
 	free(number);
-	aux = realloc( aux, strlen(aux));
-
+	
 	return aux;
 }
 
@@ -127,8 +126,8 @@ sendMap(int size, int ** map, city ** cities, comuADT client)
 	msg.size = strlen((char *) msg.message);
 	
 	/*---------TESTING----------*/
-	printf("map sent: %s\n", (char*)msg.message );
-	/*printf("send size: %ld\n",msg.size);*/
+	/*printf("map sent: %s\n", (char*)msg.message );
+	printf("send size: %ld\n",msg.size);*/
 	/*---------TESTING----------*/
 
 	return sendMsg(client, &msg, 0);
@@ -216,11 +215,11 @@ char *
 wrappMap(int size, int ** map)
 /*format: size;11;12;...;1N;21;22;...;2N;...;N1;N2;...;NN;*/
 {
-	int i = 0, j;
+	int i, j;
 	char * aux = NULL;
 	char * number = NULL;
 	
-	if( (aux = malloc( size * size * 3 )) == NULL ) /*if avg distances >= 100 parameter '3' must be increased*/
+	if( (aux = calloc( size * size * 3, sizeof(char) )) == NULL ) /*if avg distances >= 100 parameter '3' must be increased*/
 		return NULL;
 	if ( (number = malloc(10)) == NULL)
 		return NULL;
@@ -230,14 +229,18 @@ wrappMap(int size, int ** map)
 	strcat(aux, ";");
 	
 	for(i = 0; i < size; i++)
-		for(j = 0; j < size; j ++)
+		for(j = 0; j < size; j++)
 		{
 			itoa(map[i][j], number);
 			strcat(aux, number);
 			strcat(aux, ";");
 		}
-
 	free(number);
+
+	i = strlen(aux);
+	aux = realloc(aux, i + 1);
+	aux[i] = 0;
+	
 	return aux;
 }
 

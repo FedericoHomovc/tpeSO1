@@ -25,9 +25,9 @@ CC= gcc
 COPTS= -Wall -ansi -pedantic -c -g -D_XOPEN_SOURCE=600
 LDOPTS= -lpthread -o 
 
-$(TARGET):	 $(OBJS) $(FIFO) $(VARRAY) $(MARSHALL)
-	echo Linking $(OBJS) $(FIFO2) $(VARRAY2) to obtain $(TARGET)
-	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2) $(MARSHALL2)
+$(TARGET):	 $(OBJS) $(MSGQUEUE) $(VARRAY) $(MARSHALL)
+	echo Linking $(OBJS) $(MSGQUEUE2) $(VARRAY2) to obtain $(TARGET)
+	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(MSGQUEUE2) $(VARRAY2) $(MARSHALL2)
 
 .c.o:
 	echo Compiling $<

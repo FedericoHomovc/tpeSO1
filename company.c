@@ -35,7 +35,7 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 	medicine *** med;
 	int ** map;
 	int size, i;
-	plane * planes;
+	/*plane * planes;*/
 
 	printf("soy la company %d\n", companyID);
 	client = connectToServer(pdata->server);
@@ -71,12 +71,10 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 		raise(SIGSTOP);
 		printf("Company %d awake\n", compa->ID);
 
-		printf("Recieved: %d\n", rcvMap(&map, &med, client, &size));
-		printf("planes count:%d\n", compa->planesCount);
+		rcvMap(&map, &med, client, &size);
 
 		for(i = 0; i < compa->planesCount; i++)
 		{
-			printf("teta\n");
 			if( canUnload(&(compa->companyPlanes[i]), map, med) )
 				printf("plane:%d company:%d startCity:%d. Unloading.\n", i, companyID, compa->companyPlanes[i]->destinationID);
 		}
@@ -103,11 +101,9 @@ canUnload(plane ** p, int ** map, medicine *** med)
 	{
 		if( med[(*p)->destinationID][i]->quantity != 0 )
 			for(j = 0; j < (*p)->medCount; j++)
-			{
-				printf("Plane med: %s City med: %s\n", (*p)->medicines[j]->name, med[(*p)->destinationID][i]->name);
+				/*printf("Plane med: %s City med: %s\n", (*p)->medicines[j]->name, med[(*p)->destinationID][i]->name);*/
 				if(! strcmp( (*p)->medicines[j]->name, med[(*p)->destinationID][i]->name ) )
 					return 1;
-			}
 	}
 	return 0;
 }
