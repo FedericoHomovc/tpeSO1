@@ -173,6 +173,7 @@ static void *listeningFunction(void *serverInfo)
 	servADT server = (servADT)serverInfo;
 	connectionMsg currentConnection;
 	comuADT comm;
+	message msg;
 
 	server->clients = vArray_init(CLIENTS_SIZE);
 
@@ -247,7 +248,8 @@ static void *listeningFunction(void *serverInfo)
 			 * to ensure that the client was put into the array.
 			 */
 
-			message msg = {1, &c};
+			msg.size = 1;
+			msg.message = &c;
 			sendMsg(comm, &msg, 0);
 		}
 	}
@@ -317,6 +319,9 @@ comuADT connectToServer(servADT serv)
 	int serverFileDes;
 	char c;
 	comuADT ret;
+	pid_t id;
+	message msg;
+	connectionMsg mesg;
 
 	if(serv == NULL)
 	{
@@ -360,9 +365,8 @@ comuADT connectToServer(servADT serv)
 	/* We have FIFOs for reading and writing. Now we have to send this
 	 * info to the parent via the main FIFO. */
 
-	pid_t id = getpid();
+	id = getpid();
 
-	connectionMsg mesg;
 	mesg.id = id;
 	mesg.clientFifo_r = ret->clientFifo_r;
 	mesg.clientFifo_w = ret->clientFifo_w;
@@ -380,7 +384,8 @@ comuADT connectToServer(servADT serv)
 	 * that it was added to the clients array.
 	 */
 
-	message msg = {1, &c};
+	msg.size = 1;
+	msg.message = &c;
 	rcvMsg(ret, &msg, 0);
 
 	return ret;
@@ -390,11 +395,12 @@ comuADT connectToServer(servADT serv)
 comuADT getClient(servADT serv, pid_t id)
 {
 	infoClient matchingClient;
-	infoClient client = {id, NULL};
+	infoClient client;
+	void * arrayMatching;
+	client.id = id;
+	client.comm = NULL;
 
-	void *arrayMatching = vArray_search(serv->clients,
-						  (int (*)(void *, void *))infoClient_comparePid,
-						  &client);
+	arrayMatching = vArray_search(serv->clients, (int (*)(void *, void *))infoClient_comparePid, &client);
 
 	if(arrayMatching == NULL)
 		return NULL;
