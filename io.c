@@ -8,7 +8,6 @@
 ***
 ***/
 
-
 /***		System includes		***/
 #include <stdio.h>
 #include <string.h>
@@ -19,7 +18,6 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <error.h>
-#include <sys/ipc.h>
 #include <sys/msg.h>
 
 
@@ -43,7 +41,7 @@ ioFunc(processData * pdata)
 	{
 		raise(SIGSTOP);
 		printf("\nMap cities distances:\n");
-		/*printf("IO rcv return: %d\n", */rcvMap(&map, &med, client, &size);
+		rcvMap(&map, &med, client, &size);
 		for(i = 0; i < size; i++)
 		{
 			for(j = 0; j < size; j++)
@@ -61,9 +59,11 @@ ioFunc(processData * pdata)
 			}
 		}
 		printf("\n");
+		free(map);
+		free(med);
 
-		kill(getppid(), SIGCONT);
+		/*kill(getppid(), SIGCONT);*/
 	}
 
-	return 0;
+	return 1;
 }

@@ -27,18 +27,17 @@
 
 int companyFunc(processData * pdata, char * fileName, int companyID);
 int ioFunc(processData * pdata);
-int rcvPackage(int * city, medicine ** med, comuADT client, int * companyID, int * planeID);
+map * mapSt;
 
 int 
 main(int argc, char * argv[]) {
 
 	processData * pdata;
-	int k, notValid, status;
+	int k, notValid, notOver = 1;
 	pid_t * pids;
 	servADT server;
 	comuADT * clients;
 	mapData * mapFile;
-	map * mapSt;
 
 	server = startServer();
 	pdata = malloc(sizeof(processData));
@@ -104,15 +103,29 @@ main(int argc, char * argv[]) {
 		clients[k] = getClient(server, pids[k]);
 	}
 
-	/*printf("map.c sent: %d\n",*/ sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[1]);
-	kill(pids[1], SIGCONT);
-	/*raise(SIGSTOP);*/
-	sleep(1);
+	while(notOver)
+	{
 
-	printf("termino el mapa\n");
+		sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[1]);
+		kill(pids[1], SIGCONT);
+		sleep(1);
+		
+		for(k = 2; k < argc; k++)
+		{
+			printf("Sent: %d\n", sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[k]));
+			kill(pids[k], SIGCONT);
+			sleep(1);
+		}
+		sleep(1);
+
+		notOver = 0;
+
+	}
+
+	printf("Simulation ended\n");
 	disconnectFromServer(clients[0], server);
-	kill(pids[1], SIGTERM);
-	kill(pids[2], SIGTERM);
+	for(k = 1; k < argc; k++)
+		kill(pids[k], SIGTERM);
 	endServer(server);
 
 	/*wait(&rv);*/

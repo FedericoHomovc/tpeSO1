@@ -181,18 +181,30 @@ createCompany(mapData * mapFile, company ** newCompany)
 	char * aux;
 
 	if( (*newCompany = malloc(sizeof(company))) == NULL )
+	{
+		printf("Could not allocate company memory\n");
 		return 1;
+	}
 
 	if(getInt( mapFile, &qtty ))
+	{
+		printf("Could not get planes quantity\n");
 		return 1;
+	}
 
 	(*newCompany)->planesCount = qtty;
 
 	if( ((*newCompany)->companyPlanes = malloc(sizeof(plane*) * qtty)) == NULL )
+	{
+		printf("Could not allocate company planes memory\n");
 		return 1;
+	}
 	
 	if( getString(mapFile, &aux) != BLANKLINE )
+	{
+		printf("File error. Not a blank line before first company plane\n");
 		return 1;
+	}
 
 	for( i = 0; i<qtty; i++)
 	{

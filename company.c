@@ -15,16 +15,16 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <pthread.h>
+#include <signal.h>
 
 /***		Project Includes		***/
 #include "./include/structs.h"
 #include "./include/backEnd.h"
 #include "./include/api.h"
+#include "./include/marshalling.h"
 
-comuADT mapClient;
-
-void * planeFunc(void * plane);
+int canUnload(plane ** p, int ** map, medicine *** med);
+map * mapSt;
 
 int
 companyFunc(processData * pdata, char * fileName , int companyID)
@@ -32,10 +32,10 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 	mapData * mapFile;
 	company * compa;
 	comuADT client;
-	int i;
-	pthread_t * threads;
-	pthread_attr_t attr;
-	void * status;
+	medicine *** med;
+	int ** map;
+	int size, i;
+	plane * planes;
 
 	printf("soy la company %d\n", companyID);
 	client = connectToServer(pdata->server);
@@ -58,55 +58,62 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 		return 1;
 	}
 	compa->ID = companyID;
-	
-	threads = malloc(compa->planesCount * sizeof(pthread_t));
-	pthread_attr_init(&attr);
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);	
-	
 	for(i = 0; i < compa->planesCount; i++)
-	{
-		if (pthread_create(&threads[i], &attr, planeFunc, (void *) compa->companyPlanes[i]))
+		if ( (compa->companyPlanes[i]->destinationID = getCityID(compa->companyPlanes[i]->startCity, mapSt)) == -1)
 		{
-			fprintf(stderr, "Can't create thread\n"); 
-			exit(1);
+			printf("Invalid start city for plane %d in company %d.\n", i, compa->ID);
+			return 1;
 		}
-	}
-	
-	pthread_attr_destroy(&attr);
 
-	for(i = 0; i < compa->planesCount; i++)
+	while(1)
 	{
-		if( pthread_join(threads[i], &status) )
+		printf("Company %d sleeping\n", compa->ID);
+		raise(SIGSTOP);
+		printf("Company %d awake\n", compa->ID);
+
+		printf("Recieved: %d\n", rcvMap(&map, &med, client, &size));
+		printf("planes count:%d\n", compa->planesCount);
+
+		for(i = 0; i < compa->planesCount; i++)
 		{
-			printf("error joining threads\n");
-			exit(1);
+			printf("teta\n");
+			if( canUnload(&(compa->companyPlanes[i]), map, med) )
+				printf("plane:%d company:%d startCity:%d. Unloading.\n", i, companyID, compa->companyPlanes[i]->destinationID);
 		}
+		
 	}
 
-	/*---------TESTING----------*/
-	/*printf("%d\n", sendPackage(compa->companyPlanes[0]->destinationID, compa->companyPlanes[0]->medicines, client, compa->ID, compa->companyPlanes[0]->planeID, compa->companyPlanes[0]->medCount));*/
-	/*---------TESTING----------*/
-
-	/*disconnectFromServer(client, pdata->server);*/
-	/*sleep(10000);*/
-	pthread_exit(NULL);
+	return 1;
 }
 
-void *
-planeFunc(void * argPlane)
+
+
+int
+canUnload(plane ** p, int ** map, medicine *** med)
 {
-	plane * p;
-	p = (plane *) argPlane;
-
-	if( p->distance > 0)
+	int i, j;
+	
+	if((*p)->distance > 0)
 	{
-		p->distance--;
-		/*pthread_exit(NULL);*/
-	}	
+		(*p)->distance--;
+		return 0;
+	}
 
-	/*printf("%s\n", p->startCity);*/
-	pthread_exit(NULL);
+	for(i = 0; med[(*p)->destinationID][i] != NULL; i++)
+	{
+		if( med[(*p)->destinationID][i]->quantity != 0 )
+			for(j = 0; j < (*p)->medCount; j++)
+			{
+				printf("Plane med: %s City med: %s\n", (*p)->medicines[j]->name, med[(*p)->destinationID][i]->name);
+				if(! strcmp( (*p)->medicines[j]->name, med[(*p)->destinationID][i]->name ) )
+					return 1;
+			}
+	}
+	return 0;
 }
+
+
+
 
 
 

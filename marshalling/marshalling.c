@@ -8,13 +8,14 @@
  ***
  ***/
 
+/***		System includes		***/
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-
+/***		Project Includes		***/
 #include "../include/api.h"
 #include "../include/structs.h"
 
@@ -24,7 +25,6 @@ int unwrappMedicine(medicine *** meds, char * array);
 char * wrappMap(int size, int ** map);
 int unwrappMap(char * array, int * size, int *** mapRcv);
 void itoa(int n, char *string);
-
 
 int
 sendPackage(int city, medicine ** med, comuADT client, int companyID, int planeID, int medCount)
@@ -127,8 +127,8 @@ sendMap(int size, int ** map, city ** cities, comuADT client)
 	msg.size = strlen((char *) msg.message);
 	
 	/*---------TESTING----------*/
-	/*printf("map sent: %s\n", (char*)msg.message );
-	printf("send size: %ld\n",msg.size);*/
+	printf("map sent: %s\n", (char*)msg.message );
+	/*printf("send size: %ld\n",msg.size);*/
 	/*---------TESTING----------*/
 
 	return sendMsg(client, &msg, 0);
