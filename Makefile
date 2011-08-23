@@ -13,24 +13,27 @@ TARGET=tpeSO
 OBJS= map.o backEnd.o company.o io.o
 FIFO= ./transport/fifos/fifo.o
 FIFO2= fifo.o
+MSGQUEUE= ./transport/msgqueue/msgQueue.o
+MSGQUEUE2= msgQueue.o
+SOCKETS= ./transport/sockets/socket.o
+SOCKETS2= socket.o
 VARRAY= ./transport/varray.o
 VARRAY2= varray.o
 MARSHALL = ./marshalling/marshalling.o
 MARSHALL2 = marshalling.o
 CC= gcc
-COPTS= -Wall -ansi -pedantic -c -g 
+COPTS= -Wall -ansi -pedantic -c -g -D_XOPEN_SOURCE=600
 LDOPTS= -lpthread -o 
 
 $(TARGET):	 $(OBJS) $(FIFO) $(VARRAY) $(MARSHALL)
 	echo Linking $(OBJS) $(FIFO2) $(VARRAY2) to obtain $(TARGET)
-	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2) marshalling.o
+	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2) $(MARSHALL2)
 
 .c.o:
 	echo Compiling $<
 	$(CC) $(COPTS) $<
 
 backEnd.o: ./include/structs.h ./include/backEnd.h
-frontEnd.o: ./include/structs.h ./include/api.h
 fifo.o: ../../include/varray.h
 varray.o: ../include/varray.h
 io.o: ./include/structs.h ./include/backEnd.h ./include/api.h ./include/varray.h

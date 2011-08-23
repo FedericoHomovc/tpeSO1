@@ -136,6 +136,7 @@ getCity( mapData * mapFile, city * newCity)
 			return 1;	
 		}
 	}
+	newCity->medCount = packages;
 
 	return 0;
 }
@@ -146,11 +147,11 @@ initializeGraph(mapData * mapFile, map * mapSt)
 	int i, ID1, ID2, ret, dist;
 	char * aux;
 
-	if( (mapSt->graph = malloc(mapSt->citiesCount * sizeof(int))) == NULL)
+	if( (mapSt->graph = calloc(mapSt->citiesCount, sizeof(int *))) == NULL)
 		return 1;
 	
 	for( i = 0; i<mapSt->citiesCount; i++ )
-		if( (mapSt->graph[i] = malloc(mapSt->citiesCount * sizeof(int))) == NULL)
+		if( (mapSt->graph[i] = calloc(mapSt->citiesCount, sizeof(int))) == NULL)
 			return 1;
 
 	while( (ret = getString( mapFile, &aux )) != ENDEDFILE) /*revisar*/
@@ -295,7 +296,7 @@ getString(mapData * mapFile, char ** out)
 				return BLANKLINE;
 			if(c == '\n')
 			{
-			newLine = 1;
+				newLine = 1;
 			}
 		}
 		if(isalnum(c))

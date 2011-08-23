@@ -23,15 +23,17 @@
 #include "./include/api.h"
 #include "./include/structs.h"
 #include "./include/backEnd.h"
+#include "./include/marshalling.h"
 
 int companyFunc(processData * pdata, char * fileName, int companyID);
-int rcvPackage(int * city, medicine ** med, comuADT client, int * companyID,
-		int * planeID);
+int ioFunc(processData * pdata);
+int rcvPackage(int * city, medicine ** med, comuADT client, int * companyID, int * planeID);
 
-int main(int argc, char * argv[]) {
+int 
+main(int argc, char * argv[]) {
 
 	processData * pdata;
-	int k, notValid;
+	int k, notValid, status;
 	pid_t * pids;
 	servADT server;
 	comuADT * clients;
@@ -45,8 +47,9 @@ int main(int argc, char * argv[]) {
 	pdata->name = malloc(sizeof(char *) * 20); /* tamaño del string */
 
 	pids = malloc(sizeof(pid_t) * (argc)); /*poner en el back*/
-	pids[0] = getpid();
 	clients = malloc(sizeof(comuADT *) * (argc)); /*poner en el back*/
+	pids[0] = getpid();
+	clients[0] = connectToServer(server); /*map client*/
 
 	if (argc <= 2) {
 		printf("Invalid arguments\n");
@@ -78,7 +81,6 @@ int main(int argc, char * argv[]) {
 	case 0:
 		printf("empieza IO\n");
 		ioFunc(pdata);
-		/*execl("io", "io", (char *) 0);*/
 		_exit(0);
 	default:
 		k = 2;
@@ -90,53 +92,30 @@ int main(int argc, char * argv[]) {
 				printf("empieza la company %d\n", k - 2);
 				if (companyFunc(pdata, argv[k], k - 2))
 					printf("error opening company %d file\n", k);
-				/*execl("company", "company", argv[k+2], (char *) 0);*/
 				_exit(0);
 			}
 			k++;
 		}
 	}
-	sleep(2);
-
-	clients[0] = connectToServer(server); /*map client*/
+	
+	sleep(1);
 	clients[1] = getClient(server, pids[1]);/*ioClient*/
 	for (k = 2; k < argc; k++) {
 		clients[k] = getClient(server, pids[k]);
 	}
 
-	/*---------TESTING----------*/
-	int city;
-	int companyID;
-	int planeID;
-	medicine * med;
+	/*printf("map.c sent: %d\n",*/ sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[1]);
+	kill(pids[1], SIGCONT);
+	/*raise(SIGSTOP);*/
+	sleep(1);
 
-	sleep(2);
-	printf("%d\n", rcvPackage(&city, &med, clients[2], &companyID, &planeID));
-
-	/*printf("%s -- %d -- %d -- %d\n", med[0].name, med[0].quantity, city, companyID);*/
-	/*---------TESTING----------*/
-
-	/*	while (waitpid(pids[0], &status, WNOHANG) == 0) {
-	 printf("waiting for map to end...\n");
-	 sleep(1);
-	 }
-	 if (WIFEXITED(status)) {
-	 printf("termino el mapa\n");
-	 disconnectFromServer(clients[0], server);
-	 kill(pids[0], SIGTERM);
-	 kill(pids[1], SIGTERM);
-	 endServer(server);
-
-	 } */
 	printf("termino el mapa\n");
-	/*disconnectFromServer(clients[0], server);*/
+	disconnectFromServer(clients[0], server);
 	kill(pids[1], SIGTERM);
 	kill(pids[2], SIGTERM);
 	endServer(server);
 
-	/*wait(&rv);
-	 printf("termina el mapa\n");*/
-
+	/*wait(&rv);*/
 	/*	startSimulation();*/
 	/*	freeResources();*/
 

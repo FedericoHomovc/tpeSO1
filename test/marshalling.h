@@ -12,6 +12,6 @@ int sendPackage(int city, medicine ** med, comuADT client, int companyID, int pl
 
 int rcvPackage(int * city, medicine ** med, comuADT client, int * companyID, int * planeID );
 
-int sendMap(int size, int ** map, city ** cities, comuADT client);
+int sendMap(int size, int ** map, comuADT client);
 
-int rcvMap(int *** map, medicine **** meds, comuADT client, int * size);
+int rcvMap(int *** map, comuADT client, int * size);

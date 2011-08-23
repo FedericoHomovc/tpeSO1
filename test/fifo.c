@@ -22,8 +22,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ipc.h>
-#include "../../include/api.h"
-#include "../../include/varray.h"
+#include "api.h"
+#include "varray.h"
 
 
 void itoa(int n, char *string);

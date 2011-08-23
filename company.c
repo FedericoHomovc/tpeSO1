@@ -15,14 +15,16 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <pthread.h>
 
 /***		Project Includes		***/
 #include "./include/structs.h"
 #include "./include/backEnd.h"
 #include "./include/api.h"
 
-char * wrappMedicine(medicine ** med, int medCount);
-int sendPackage(int city, medicine ** med, comuADT client, int companyID, int planeID, int medCount);
+comuADT mapClient;
+
+void * planeFunc(void * plane);
 
 int
 companyFunc(processData * pdata, char * fileName , int companyID)
@@ -30,6 +32,10 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 	mapData * mapFile;
 	company * compa;
 	comuADT client;
+	int i;
+	pthread_t * threads;
+	pthread_attr_t attr;
+	void * status;
 
 	printf("soy la company %d\n", companyID);
 	client = connectToServer(pdata->server);
@@ -52,12 +58,56 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 		return 1;
 	}
 	compa->ID = companyID;
+	
+	threads = malloc(compa->planesCount * sizeof(pthread_t));
+	pthread_attr_init(&attr);
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);	
+	
+	for(i = 0; i < compa->planesCount; i++)
+	{
+		if (pthread_create(&threads[i], &attr, planeFunc, (void *) compa->companyPlanes[i]))
+		{
+			fprintf(stderr, "Can't create thread\n"); 
+			exit(1);
+		}
+	}
+	
+	pthread_attr_destroy(&attr);
+
+	for(i = 0; i < compa->planesCount; i++)
+	{
+		if( pthread_join(threads[i], &status) )
+		{
+			printf("error joining threads\n");
+			exit(1);
+		}
+	}
 
 	/*---------TESTING----------*/
-	printf("%d\n", sendPackage(compa->companyPlanes[0]->destinationID, compa->companyPlanes[0]->medicines, client, /*compa->ID*/3, compa->companyPlanes[0]->planeID, compa->companyPlanes[0]->medCount));
+	/*printf("%d\n", sendPackage(compa->companyPlanes[0]->destinationID, compa->companyPlanes[0]->medicines, client, compa->ID, compa->companyPlanes[0]->planeID, compa->companyPlanes[0]->medCount));*/
 	/*---------TESTING----------*/
 
 	/*disconnectFromServer(client, pdata->server);*/
-	sleep(10000);
-	exit(0);
+	/*sleep(10000);*/
+	pthread_exit(NULL);
 }
+
+void *
+planeFunc(void * argPlane)
+{
+	plane * p;
+	p = (plane *) argPlane;
+
+	if( p->distance > 0)
+	{
+		p->distance--;
+		/*pthread_exit(NULL);*/
+	}	
+
+	/*printf("%s\n", p->startCity);*/
+	pthread_exit(NULL);
+}
+
+
+
+

@@ -18,7 +18,6 @@ typedef struct{
    char * name;
    medicine ** medicines;
    unsigned ID;
-   unsigned medCount;
 }city;
 
 typedef struct{
@@ -51,3 +50,4 @@ typedef struct{
 	int line;
 	int valid;
 }mapData;
+
