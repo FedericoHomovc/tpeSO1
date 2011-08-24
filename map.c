@@ -33,11 +33,12 @@ int
 main(int argc, char * argv[]) {
 
 	processData * pdata;
-	int k, notValid, notOver = 1;
+	int k, notValid, notOver = 1, rcv;
 	pid_t * pids;
 	servADT server;
 	comuADT * clients;
 	mapData * mapFile;
+	plane * p;
 
 	server = startServer();
 	pdata = malloc(sizeof(processData));
@@ -114,14 +115,18 @@ main(int argc, char * argv[]) {
 		{
 			printf("Sent: %d\n", sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[k]));
 			kill(pids[k], SIGCONT);
+			sleep(1);
 		}
-		sleep(1);
 
-		/*for(k = 2; k < argc; k++)
+		for(k = 2; k < argc; k++)
 		{
-			printf("Sent: %d\n", sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[k]));   rcvPlane
-			kill(pids[k], SIGCONT);
-		}*/
+			rcv = 1;
+			while(rcv != -1)
+			{	
+				rcv = rcvPlane(&p, clients[k]);
+				printf("Map.c rcv Plane: %d\n", rcv);
+			}
+		}
 
 		notOver = 0;
 

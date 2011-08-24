@@ -16,6 +16,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <error.h>
 
 /***		Project Includes		***/
 #include "./include/structs.h"
@@ -76,7 +79,8 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 		for(i = 0; i < compa->planesCount; i++)
 		{
 			if( canUnload(&(compa->companyPlanes[i]), map, med) )
-				printf("plane:%d company:%d startCity:%d. Unloading.\n", i, companyID, compa->companyPlanes[i]->destinationID);
+		/*printf("plane:%d company:%d startCity:%d. Unloading.\n", i, companyID, compa->companyPlanes[i]->destinationID);*/
+				printf("sent plane: %d\n", sendPlane(compa->companyPlanes[i], client) );
 		}
 		
 	}

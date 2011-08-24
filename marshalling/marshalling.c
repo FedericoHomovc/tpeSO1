@@ -14,6 +14,11 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/wait.h>
+#include <error.h>
 
 /***		Project Includes		***/
 #include "../include/api.h"
@@ -27,18 +32,19 @@ int unwrappMap(char * array, int * size, int *** mapRcv);
 void itoa(int n, char *string);
 
 int
-sendPackage(int city, medicine ** med, comuADT client, int companyID, int planeID, int medCount)
+sendPlane(plane * p, comuADT client)
 {
 	message msg;
+	/*char * aux;*/
 
-	/*if( (msg.message = wrappMedicine(city, med, companyID, planeID, medCount)) == NULL )
-		return -1;*/
+	if( (msg.message = wrappMedicine(p->medicines, p->companyID, p->medCount)) == NULL )
+		return -1;
 
 	msg.size = strlen(msg.message);
 
 	/*---------TESTING----------*/
-	printf("pack med sent: %s\n", (char*)msg.message );
-	printf("send size: %ld\n",msg.size);
+	printf("plane sent: %s\n", (char*)msg.message );
+	printf("plane sent size: %ld\n",msg.size);
 	/*---------TESTING----------*/
 
 
@@ -47,12 +53,12 @@ sendPackage(int city, medicine ** med, comuADT client, int companyID, int planeI
 
 
 int
-rcvPackage(int * city, medicine ** med, comuADT client, int * companyID, int * planeID )
+rcvPlane(plane ** p, comuADT client)
 {
 	message msg;
 	int ret;
 
-	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
+	if( (ret = rcvMsg(client, &msg, IPC_NOWAIT)) == -1 )
 		return -1;
 
 	/*---------TESTING----------*/
@@ -202,7 +208,7 @@ rcvMap(int *** map, medicine **** meds, comuADT client, int * size)
 	m = malloc(sizeof(medicine *) * (* size));
 
 	for(k = 0; k<*size; k++)
-		i += unwrappMedicine(&m[k], msg.message + i);
+		i += unwrappMedicine(&m[k], (char *)msg.message + i);
 
 	*meds = m;
 	free(msg.message);
