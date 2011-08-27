@@ -27,18 +27,23 @@
 
 int companyFunc(processData * pdata, char * fileName, int companyID);
 int ioFunc(processData * pdata);
+int unloadPlane(plane ** p, map ** mapSt);
+int freeResources(void);
+int needMedicines(map * mapSt);
+
 map * mapSt;
+comuADT mapClient;
 
 int 
 main(int argc, char * argv[]) {
 
 	processData * pdata;
-	int k, notValid, notOver = 1, rcv;
+	int k, notValid, companyID, count, i,  turn = 0;
 	pid_t * pids;
 	servADT server;
 	comuADT * clients;
 	mapData * mapFile;
-	plane * p;
+	plane ** p;
 
 	server = startServer();
 	pdata = malloc(sizeof(processData));
@@ -49,14 +54,13 @@ main(int argc, char * argv[]) {
 	pids = malloc(sizeof(pid_t) * (argc)); /*poner en el back*/
 	clients = malloc(sizeof(comuADT *) * (argc)); /*poner en el back*/
 	pids[0] = getpid();
-	clients[0] = connectToServer(server); /*map client*/
+	mapClient = clients[0] = connectToServer(server); /*map client*/
 
 	if (argc <= 2) {
 		printf("Invalid arguments\n");
 		return 1;
 	}
 
-	printf("soy el mapa\n");
 	strcpy(pdata->name, "map");
 
 	if (allocMapData(&mapFile)) {
@@ -76,10 +80,9 @@ main(int argc, char * argv[]) {
 
 	switch (pids[1] = fork()) {
 	case -1:
-		perror("creating IO");
+		perror("Error creating IO");
 		exit(1);
 	case 0:
-		printf("empieza IO\n");
 		ioFunc(pdata);
 		_exit(0);
 	default:
@@ -87,11 +90,10 @@ main(int argc, char * argv[]) {
 		while (k < argc) {
 			switch (pids[k] = fork()) {
 			case -1:
-				perror("creating company");
+				perror("Error creating company");
 			case 0:
-				printf("empieza la company %d\n", k - 2);
 				if (companyFunc(pdata, argv[k], k - 2))
-					printf("error opening company %d file\n", k);
+					printf("Error opening company %d file\n", k);
 				_exit(0);
 			}
 			k++;
@@ -104,43 +106,97 @@ main(int argc, char * argv[]) {
 		clients[k] = getClient(server, pids[k]);
 	}
 
-	while(notOver)
+	while(needMedicines(mapSt))
 	{
-
+		printf("turn: %d\n", turn++);
 		sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[1]);
-		kill(pids[1], SIGCONT);
-		sleep(1);
-		
+		rcvChecksign(clients[0]);
+		sleep(1); /*para que se pueda ver el mapa*/
+			
 		for(k = 2; k < argc; k++)
 		{
-			printf("Sent: %d\n", sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[k]));
-			kill(pids[k], SIGCONT);
-			sleep(1);
+			sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[k]);
 		}
 
 		for(k = 2; k < argc; k++)
 		{
-			rcv = 1;
-			while(rcv != -1)
-			{	
-				rcv = rcvPlane(&p, clients[k]);
-				printf("Map.c rcv Plane: %d\n", rcv);
+			rcvPlanes(&companyID, &count, &p, clients[0]);
+			if(count > 0)
+			{
+				for(i = 0; i < count; i++)
+					unloadPlane(&p[i], &mapSt);
+
+				sendPlanes(companyID, count, p, clients[companyID+2]);
+				rcvChecksign(clients[0]);
+				sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[companyID+2]);
 			}
 		}
-
-		notOver = 0;
-
 	}
 
-	printf("Simulation ended\n");
+	sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[1]);
+	rcvChecksign(clients[0]);
+
+
 	disconnectFromServer(clients[0], server);
 	for(k = 1; k < argc; k++)
 		kill(pids[k], SIGTERM);
 	endServer(server);
 
-	/*wait(&rv);*/
-	/*	startSimulation();*/
-	/*	freeResources();*/
+	freeResources();
+	printf("Simulation ended\n");
+	return 0;
+}
+
+
+int
+unloadPlane(plane ** p, map ** mapSt)
+{
+	int i, j, ret = 1;
+
+	for(i = 0; i < (*mapSt)->cities[(*p)->destinationID]->medCount; i++)
+	{
+		for(j = 0; (*p)->medicines[j] != NULL; j++)
+			if((*mapSt)->cities[(*p)->destinationID]->medicines[i]->quantity > 0 && !strcmp((*p)->medicines[j]->name, (*mapSt)->cities[(*p)->destinationID]->medicines[i]->name))
+			{
+				if( (*p)->medicines[j]->quantity >= (*mapSt)->cities[(*p)->destinationID]->medicines[i]->quantity)
+				{
+					(*p)->medicines[j]->quantity -= (*mapSt)->cities[(*p)->destinationID]->medicines[i]->quantity;
+					(*mapSt)->cities[(*p)->destinationID]->medicines[i]->quantity = 0;
+				}
+				else{
+					(*mapSt)->cities[(*p)->destinationID]->medicines[i]->quantity -= (*p)->medicines[j]->quantity;
+					(*p)->medicines[j]->quantity = 0;
+				}
+				ret = 0;
+			}
+	}		
+	
+	return ret;
+}
+
+int
+freeResources(void)
+{
+	int i;
+	for(i = 0; i < mapSt->citiesCount; i++)
+		free(mapSt->graph[i]);	
+	free(mapSt->graph);
 
 	return 0;
 }
+
+int
+needMedicines(map * mapSt)
+{
+	int i, j;
+	for(i = 0; i< mapSt->citiesCount; i++)
+		for(j = 0; j<mapSt->cities[i]->medCount; j++)
+			if(mapSt->cities[i]->medicines[j]->quantity > 0)
+				return 1;
+
+	return 0;
+}
+
+
+
+

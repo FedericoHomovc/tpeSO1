@@ -1,3 +1,14 @@
+/***
+ ***
+ ***		msgQueue.c
+ ***				Jose Ignacio Galindo
+ ***				Federico Homovc
+ ***				Nicolas Loreti
+ ***			 	     ITBA 2011
+ ***
+ ***/
+
+/***		System includes		***/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,7 +17,9 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include <unistd.h>
 
+/***		Project Includes		***/
 #include "../../include/api.h"
 #include "../../include/structs.h"
 
@@ -32,10 +45,12 @@ void reverse(char *string);
 void itoa(int n, char *string);
 
 servADT startServer() {
+	servADT serv;
+
 	if ((queueid = msgget(queueKey, 0666 | IPC_CREAT)) == -1)
 		/*fatal("Error msgget message queue");*/
 		printf("Error msgget");
-	servADT serv = malloc(sizeof(servADT));
+	serv = malloc(sizeof(servADT));
 	serv->queueID = queueid;
 	return serv;
 }
@@ -67,7 +82,7 @@ int rcvMsg(comuADT comm, message * msg, int flags) {
 	int ret;
 	msgQueue aux;
 	ret = msgrcv(comm->queueID, &aux, sizeof aux.mtext, comm->pid, flags);
-	msg->message = malloc( ret + 1 );
+	msg->message = calloc(500, sizeof(char));
 	strcpy(msg->message, aux.mtext);
 	((char *)msg->message)[ret] = 0;
 	msg->size = strlen(msg->message);

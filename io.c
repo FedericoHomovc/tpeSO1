@@ -20,13 +20,14 @@
 #include <error.h>
 #include <sys/msg.h>
 
-
 /***		Project Includes		***/
 #include "./include/structs.h"
 #include "./include/backEnd.h"
 #include "./include/api.h"
 #include "./include/varray.h"
 #include "./include/marshalling.h"
+
+comuADT mapClient;
 
 int
 ioFunc(processData * pdata)
@@ -39,15 +40,14 @@ ioFunc(processData * pdata)
 	client = connectToServer(pdata->server);
 	while(1)
 	{
-		raise(SIGSTOP);
-		printf("\nMap cities distances:\n");
 		rcvMap(&map, &med, client, &size);
+		/*printf("\nMap cities distances:\n");
 		for(i = 0; i < size; i++)
 		{
 			for(j = 0; j < size; j++)
 				printf("%d\t", map[i][j]);
 			printf("\n");
-		}
+		}*/
 		for(i = 0; i < size; i++)
 		{
 			printf("\nCity %d requests:\n", i);
@@ -59,10 +59,20 @@ ioFunc(processData * pdata)
 			}
 		}
 		printf("\n");
+		sendChecksign(mapClient);
+		/*for(i = 0; i < size; i++)
+			free(map[i]);
 		free(map);
-		free(med);
-
-		/*kill(getppid(), SIGCONT);*/
+		for(i = 0; i < size; i++)
+		{
+			for(j = 0; med[i][j] != NULL; j++)
+			{
+				free(med[i][j]->name);
+				free(med[i][j]);
+			}
+			free(med[i]);
+		}
+		free(med);*/
 	}
 
 	return 1;

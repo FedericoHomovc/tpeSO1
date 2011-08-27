@@ -27,7 +27,10 @@
 #include "./include/marshalling.h"
 
 int canUnload(plane ** p, int ** map, medicine *** med);
+int checkPlaneCargo(company ** company, plane ** p, int count);
+int setPlaneDestination(company ** compa, int ** map, int size);
 map * mapSt;
+comuADT mapClient;
 
 int
 companyFunc(processData * pdata, char * fileName , int companyID)
@@ -37,10 +40,9 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 	comuADT client;
 	medicine *** med;
 	int ** map;
-	int size, i;
-	/*plane * planes;*/
+	int size, i, unloading;
+	plane ** planes, ** p;
 
-	printf("soy la company %d\n", companyID);
 	client = connectToServer(pdata->server);
 	
 	if(allocMapData(&mapFile))
@@ -68,21 +70,34 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 			return 1;
 		}
 
+	planes = malloc(sizeof(plane *) * compa->planesCount);
+
 	while(1)
 	{
-		printf("Company %d sleeping\n", compa->ID);
-		raise(SIGSTOP);
-		printf("Company %d awake\n", compa->ID);
-
 		rcvMap(&map, &med, client, &size);
-
+		unloading = 0;
 		for(i = 0; i < compa->planesCount; i++)
-		{
 			if( canUnload(&(compa->companyPlanes[i]), map, med) )
-		/*printf("plane:%d company:%d startCity:%d. Unloading.\n", i, companyID, compa->companyPlanes[i]->destinationID);*/
-				printf("sent plane: %d\n", sendPlane(compa->companyPlanes[i], client) );
-		}
+				planes[unloading++] = compa->companyPlanes[i];
+
+		if(unloading == 0)
+			sendPlanes(compa->ID, unloading, NULL, mapClient);
+
+		else
+		{
+			sendPlanes(compa->ID, unloading, planes, mapClient);
+
+			rcvPlanes(NULL, &unloading, &p, client);
+			checkPlaneCargo(&compa, p, unloading);
+			sendChecksign(mapClient);
+	
+			/*for(i = 0; i < size; i++)
+				free(map[i]);
+			free(map);*/
+			rcvMap(&map, &med, client, &size);
 		
+			setPlaneDestination(&compa, map, size);
+		}
 	}
 
 	return 1;
@@ -95,9 +110,9 @@ canUnload(plane ** p, int ** map, medicine *** med)
 {
 	int i, j;
 	
-	if((*p)->distance > 0)
+	(*p)->distance--;
+	if((*p)->distance >= 0)
 	{
-		(*p)->distance--;
 		return 0;
 	}
 
@@ -105,15 +120,35 @@ canUnload(plane ** p, int ** map, medicine *** med)
 	{
 		if( med[(*p)->destinationID][i]->quantity != 0 )
 			for(j = 0; j < (*p)->medCount; j++)
-				/*printf("Plane med: %s City med: %s\n", (*p)->medicines[j]->name, med[(*p)->destinationID][i]->name);*/
 				if(! strcmp( (*p)->medicines[j]->name, med[(*p)->destinationID][i]->name ) )
 					return 1;
 	}
 	return 0;
 }
 
+int
+checkPlaneCargo(company ** cmp, plane ** p, int count)
+{
+	int i, j;
+	for(i = 0; i < count; i++)
+		for(j=0; j< (*cmp)->companyPlanes[p[i]->planeID]->medCount; j++)
+			(*cmp)->companyPlanes[p[i]->planeID]->medicines[j]->quantity = p[i]->medicines[j]->quantity;
 
+	return 0;
+}
 
+int
+setPlaneDestination(company ** compa, int ** map, int size)
+{
+	int i;
+	for(i = 0; i < (*compa)->planesCount; i++)
+		if( (*compa)->companyPlanes[i]->distance == -1)
+		{
+			(*compa)->companyPlanes[i]->distance = map[(*compa)->companyPlanes[i]->destinationID][((*compa)->companyPlanes[i]->destinationID + 1) % size];
+			(*compa)->companyPlanes[i]->destinationID = ((*compa)->companyPlanes[i]->destinationID + 1) % size;
+		}
+	return 0;
+}
 
 
 

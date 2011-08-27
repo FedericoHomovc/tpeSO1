@@ -25,66 +25,153 @@
 #include "../include/structs.h"
 
 
-char * wrappMedicine(medicine ** med, int companyID, int medCount);
-int unwrappMedicine(medicine *** meds, char * array);
+char * wrappMedicine(medicine ** med, int ID, int medCount);
+int unwrappMedicine(medicine *** meds, char * array, int * ID);
 char * wrappMap(int size, int ** map);
 int unwrappMap(char * array, int * size, int *** mapRcv);
 void itoa(int n, char *string);
 
+
 int
-sendPlane(plane * p, comuADT client)
+sendChecksign(comuADT client)
 {
 	message msg;
-	/*char * aux;*/
+	msg.message = "OK";
+	msg.size = 500;
 
-	if( (msg.message = wrappMedicine(p->medicines, p->companyID, p->medCount)) == NULL )
-		return -1;
+	return sendMsg(client, &msg, 0);
+}
 
-	msg.size = strlen(msg.message);
+int
+rcvChecksign(comuADT client)
+{
+	message msg;
+
+	return rcvMsg(client, &msg, 0);
+}
+
+
+int
+sendPlanes(int companyID, int count, plane ** p, comuADT client)
+/*Format: companyID;count;plane1ID;destination1ID;medCount1;med1,c1;med2,c2;...;plane2ID;destination2ID;medCount2;med1,c1;...;*/
+{
+	message msg;
+	char * aux = NULL;
+	char * num = NULL;
+	int i;
+
+	
+	num = calloc(10, sizeof(char));
+	msg.message = calloc(15, sizeof(char));
+
+	itoa(companyID, msg.message);
+	strcat(msg.message, ";");
+	itoa(count, num);
+	strcat(msg.message, num);
+	strcat(msg.message, ";");
+
+	if(count == 0)
+		return sendMsg(client, &msg, 0); 
+
+	for(i = 0; i< count; i++)
+	{
+		if( (aux = wrappMedicine(p[i]->medicines, p[i]->destinationID, p[i]->medCount)) == NULL )
+			return -1;
+		msg.message = realloc(msg.message, strlen(msg.message) + strlen(aux) + 5);
+		itoa(p[i]->planeID, num);
+		strcat(msg.message, num);
+		strcat(msg.message, ";");
+		strcat(msg.message, aux);
+		free(aux);
+	}
+
+	/*msg.size = strlen(msg.message);*/
+	msg.size = 500;
 
 	/*---------TESTING----------*/
-	printf("plane sent: %s\n", (char*)msg.message );
-	printf("plane sent size: %ld\n",msg.size);
+	/*printf("plane sent: %s\n", (char*)msg.message );
+	printf("plane sent size: %ld\n",msg.size);*/
 	/*---------TESTING----------*/
-
+	free(num);
+	
 
 	return sendMsg(client, &msg, 0);
 }
 
 
 int
-rcvPlane(plane ** p, comuADT client)
+rcvPlanes(int * companyID, int * count, plane *** p, comuADT client)
+/*Format: companyID;count;destination1ID;medCount1;med1,c1;med2,c2;...;destination2ID;medCount2;med1,c1;...;*/
 {
 	message msg;
-	int ret;
+	int ret, i = 0, pos, j, medCount;
+	char * aux = NULL;
+	plane ** retPlane;
 
-	if( (ret = rcvMsg(client, &msg, IPC_NOWAIT)) == -1 )
+	
+	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
 		return -1;
 
 	/*---------TESTING----------*/
-	printf("pack med rcv: %s\n", (char *)msg.message);
-	printf("rcv size: %ld\n",msg.size);
+	/*printf("planes rcv: %s\n", (char *)msg.message);
+	printf("rcv size: %ld\n",msg.size);*/
 	/*---------TESTING----------*/
 
-	/*unwrappMedicine(city, companyID, planeID, med, (char *)msg.message));*/
+	aux = calloc(10, sizeof(char));
+	pos = 0;
+
+	while( ((char *)msg.message)[i] != ';')
+		aux[pos++] = ((char *)msg.message)[i++];
+
+	i++;
+	if(companyID != NULL)
+		*companyID = atoi(aux);
+	
+	pos = 0;
+	while( ((char *)msg.message)[i] != ';')
+		aux[pos++] = ((char*)msg.message)[i++];
+	i++;
+	aux[pos] = 0;
+	*count = atoi(aux);
+
+	if(*count != 0)
+	{
+		retPlane = malloc(sizeof(plane*) * *count);
+		for(j = 0; j < *count; j++)
+		{
+			if ( (retPlane[j] = malloc(sizeof(plane))) == NULL)
+				return -1;
+			pos = medCount = 0;
+			while( ((char *)msg.message)[i] != ';')
+				aux[pos++] = ((char*)msg.message)[i++];
+			i++; aux[pos] = 0;
+			retPlane[j]->planeID = atoi(aux);
+			i += unwrappMedicine(&retPlane[j]->medicines, (char *)msg.message + i, &retPlane[j]->destinationID);
+			while(retPlane[j]->medicines[medCount] != NULL)
+				medCount++;
+			retPlane[j]->medCount = medCount;
+		}
+	}
+	*p = retPlane;
+	free(aux);
+	/*free(msg.message);*/
 
 	return ret;
-
 }
 
 
 char *
-wrappMedicine(medicine ** med, int companyID, int medCount)
-/*format: companyID;medCount;med1,cant;med2,cant;...0*/
+wrappMedicine(medicine ** med, int ID, int medCount)
+/*format: ID;medCount;med1,cant;med2,cant;...0*/
 {
 	int i;
 	char * number = NULL;
 	char * aux = NULL;
 
-	aux = calloc(30, sizeof(char));	/*set to serialize companyID and medCount. initial size may be increased*/
+	aux = calloc(10, sizeof(char));	/*set to serialize ID and medCount. initial size may be increased*/
 	number = calloc(10, sizeof(char));
 	
-	itoa(companyID, number);
+	itoa(ID, number);
 	strcat(aux, number);
 	strcat(aux, ";");
 	itoa(medCount, number);
@@ -93,7 +180,7 @@ wrappMedicine(medicine ** med, int companyID, int medCount)
 	
 	for( i = 0; i < medCount; i++)
 	{
-		if( ( aux = realloc(aux, strlen(aux) + strlen(med[i]->name) + sizeof(int) + 2)) == NULL )
+		if( ( aux = realloc(aux, strlen(aux) + strlen(med[i]->name) + 10)) == NULL )
 			return NULL;
 		strcat(aux, med[i]->name);
 		strcat(aux, ",");
@@ -129,27 +216,29 @@ sendMap(int size, int ** map, city ** cities, comuADT client)
 		free(aux);
 	}
 
-	msg.size = strlen((char *) msg.message);
+	/*msg.size = strlen((char *) msg.message);*/
+	msg.size = 500;
 	
 	/*---------TESTING----------*/
-	/*printf("map sent: %s\n", (char*)msg.message );
+	/*printf("map sent @ marshalling.c: %s\n", (char*)msg.message );
 	printf("send size: %ld\n",msg.size);*/
 	/*---------TESTING----------*/
 
-	return sendMsg(client, &msg, 0);
-	
+	return sendMsg(client, &msg, 0);	
 }
 
 int
-unwrappMedicine(medicine *** meds, char * array)
+unwrappMedicine(medicine *** meds, char * array, int * ID)
 {
 	int i = 0, k, pos = 0, size;
 	char aux[20];				/*max medicine name length = 20. may be increased if necessary*/
 	medicine ** m;
 	
 	while(array[i] != ';')
-		i++;
-	i++;
+		aux[pos++] = array[i++];
+	if(ID != NULL)
+		*ID = atoi(aux);
+	i++; pos = 0;
 	while(array[i] != ';')
 		aux[pos++] = array[i++];
 	aux[pos] = 0;
@@ -193,7 +282,7 @@ rcvMap(int *** map, medicine **** meds, comuADT client, int * size)
 	msg.size = 500;		/*size 500 to be set as global variable*/
 	/* TESTING */
 
-	if( (msg.message = malloc(500 * sizeof(int))) == NULL )  /*size 500 to be set as global variable*/
+	if( (msg.message = malloc(500)) == NULL )  /*size 500 to be set as global variable*/
 		return -1;
 	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
 		return -1;
@@ -208,7 +297,7 @@ rcvMap(int *** map, medicine **** meds, comuADT client, int * size)
 	m = malloc(sizeof(medicine *) * (* size));
 
 	for(k = 0; k<*size; k++)
-		i += unwrappMedicine(&m[k], (char *)msg.message + i);
+		i += unwrappMedicine(&m[k], (char *)msg.message + i, NULL);
 
 	*meds = m;
 	free(msg.message);
