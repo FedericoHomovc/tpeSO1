@@ -38,7 +38,7 @@ int
 main(int argc, char * argv[]) {
 
 	processData * pdata;
-	int k, notValid, companyID, count, i,  turn = 0;
+	int k, notValid, companyID, count, i, j, turn = 0;
 	pid_t * pids;
 	servADT server;
 	comuADT * clients;
@@ -70,7 +70,7 @@ main(int argc, char * argv[]) {
 		allocMapSt(&mapSt, argc);
 		notValid = createCities(mapFile, mapSt);
 		if (notValid) {
-			printf("File Error\n");
+			printf("Map File Error\n");
 			return notValid;
 		}
 	} else {
@@ -100,25 +100,40 @@ main(int argc, char * argv[]) {
 		}
 	}
 	
-	sleep(1);
-	clients[1] = getClient(server, pids[1]);/*ioClient*/
-	for (k = 2; k < argc; k++) {
-		clients[k] = getClient(server, pids[k]);
+
+	k = 0;
+	while(k < argc - 1) /*wait for all processes to connect to server*/
+	{
+		if( rcvChecksign(clients[0]) )
+		{
+			printf("Error conecting processes.\n");
+			return 1;
+		}
+		k++;
 	}
+		
+	clients[1] = getClient(server, pids[1]);/*ioClient*/
+	for (k = 2; k < argc; k++)
+		clients[k] = getClient(server, pids[k]);
 
 	while(needMedicines(mapSt))
 	{
 		printf("turn: %d\n", turn++);
 		sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[1]);
-		rcvChecksign(clients[0]);
+		if( rcvChecksign(clients[0]) )
+		{
+			printf("Error during IPC @ map.c\n");
+			return 1;
+		}
 		sleep(1); /*para que se pueda ver el mapa*/
-			
+
 		for(k = 2; k < argc; k++)
 		{
 			sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[k]);
 		}
-
-		for(k = 2; k < argc; k++)
+		
+		k = 0;
+		while(k < argc - 2)
 		{
 			rcvPlanes(&companyID, &count, &p, clients[0]);
 			if(count > 0)
@@ -127,15 +142,26 @@ main(int argc, char * argv[]) {
 					unloadPlane(&p[i], &mapSt);
 
 				sendPlanes(companyID, count, p, clients[companyID+2]);
-				rcvChecksign(clients[0]);
-				sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[companyID+2]);
 			}
+			for(i = 0; i < count; i++)
+			{
+				for(j = 0; j < p[i]->medCount; j++)
+				{
+					free(p[i]->medicines[j]->name);
+					free(p[i]->medicines[j]);
+				}
+				free(p[i]);
+			}
+		k++;
 		}
+
+		for(k = 2; k < argc; k++)
+			sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[k]);
+		
 	}
 
 	sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[1]);
 	rcvChecksign(clients[0]);
-
 
 	disconnectFromServer(clients[0], server);
 	for(k = 1; k < argc; k++)
@@ -177,10 +203,20 @@ unloadPlane(plane ** p, map ** mapSt)
 int
 freeResources(void)
 {
-	int i;
+	int i, j;
 	for(i = 0; i < mapSt->citiesCount; i++)
 		free(mapSt->graph[i]);	
 	free(mapSt->graph);
+	for(i = 0; i < mapSt->citiesCount; i++)
+	{
+		for(j = 0; j < mapSt->cities[i]->medCount; j++)
+		{
+			free( mapSt->cities[i]->medicines[j]->name);
+			free(mapSt->cities[i]->medicines[j]);
+		}
+		free(mapSt->cities[i]);
+	}
+	free(mapSt);
 
 	return 0;
 }

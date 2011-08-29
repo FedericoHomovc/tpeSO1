@@ -46,8 +46,14 @@ int
 rcvChecksign(comuADT client)
 {
 	message msg;
+	int ret;
 
-	return rcvMsg(client, &msg, 0);
+	if( (ret = rcvMsg(client, &msg, 0)) != -1 )
+		if( strcmp((char*)msg.message, "OK") )
+			return -1;
+
+	free(msg.message);
+	return (ret != 500);
 }
 
 
@@ -58,7 +64,7 @@ sendPlanes(int companyID, int count, plane ** p, comuADT client)
 	message msg;
 	char * aux = NULL;
 	char * num = NULL;
-	int i;
+	int i, ret;
 
 	
 	num = calloc(10, sizeof(char));
@@ -92,10 +98,12 @@ sendPlanes(int companyID, int count, plane ** p, comuADT client)
 	/*printf("plane sent: %s\n", (char*)msg.message );
 	printf("plane sent size: %ld\n",msg.size);*/
 	/*---------TESTING----------*/
-	free(num);
 	
+	ret = sendMsg(client, &msg, 0);
+	free(num);
+	free(msg.message);
 
-	return sendMsg(client, &msg, 0);
+	return ret; 
 }
 
 
@@ -107,7 +115,6 @@ rcvPlanes(int * companyID, int * count, plane *** p, comuADT client)
 	int ret, i = 0, pos, j, medCount;
 	char * aux = NULL;
 	plane ** retPlane;
-
 	
 	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
 		return -1;
@@ -154,7 +161,7 @@ rcvPlanes(int * companyID, int * count, plane *** p, comuADT client)
 	}
 	*p = retPlane;
 	free(aux);
-	/*free(msg.message);*/
+	free(msg.message);
 
 	return ret;
 }
@@ -201,7 +208,7 @@ sendMap(int size, int ** map, city ** cities, comuADT client)
 {
 	message msg;
 	char * aux;
-	int i;
+	int i, ret;
 
 	if( (msg.message = wrappMap(size, map)) == NULL )
 		return -1;
@@ -224,7 +231,10 @@ sendMap(int size, int ** map, city ** cities, comuADT client)
 	printf("send size: %ld\n",msg.size);*/
 	/*---------TESTING----------*/
 
-	return sendMsg(client, &msg, 0);	
+	ret = sendMsg(client, &msg, 0);
+	free(msg.message);
+
+	return ret;
 }
 
 int
@@ -278,12 +288,9 @@ rcvMap(int *** map, medicine **** meds, comuADT client, int * size)
 	int ret, i, k = 0;
 	medicine *** m = NULL;
 
-	/* TESTING */
-	msg.size = 500;		/*size 500 to be set as global variable*/
-	/* TESTING */
+	/*if( (msg.message = malloc(500)) == NULL )
+		return -1;*/
 
-	if( (msg.message = malloc(500)) == NULL )  /*size 500 to be set as global variable*/
-		return -1;
 	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
 		return -1;
 	/*---------TESTING----------*/
@@ -346,7 +353,6 @@ unwrappMap(char * array, int * retSize, int *** mapRcv)
 	int ** map = NULL;
 	int i = 0, k, size, number, pos = 0;
 	
-	/*printf("unwrapping %s\n", array);*/
 	while(array[i] != ';' )
 	{
 		aux[i] = array[i];

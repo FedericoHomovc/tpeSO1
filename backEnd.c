@@ -71,10 +71,10 @@ allocMapSt(map ** mapSt, int argc)
 	{
 		return 1;
 	}
-	if( ( ((*mapSt)->companies) = malloc((argc - 2) * sizeof(company*)) ) == NULL)
+	/*if( ( ((*mapSt)->companies) = malloc((argc - 2) * sizeof(company*)) ) == NULL)
 	{
 		return 1;
-	}
+	}*/
 	return 0;
 }
 
@@ -200,16 +200,18 @@ createCompany(mapData * mapFile, company ** newCompany)
 		return 1;
 	}
 	
-	if( getString(mapFile, &aux) != BLANKLINE )
+	getString(mapFile, &aux);
+	/*if( getString(mapFile, &aux) != BLANKLINE )
 	{
 		printf("File error. Not a blank line before first company plane\n");
 		return 1;
-	}
+	}*/
 
 	for( i = 0; i<qtty; i++)
 	{
 		if(createPlane(mapFile, &((*newCompany)->companyPlanes[i]) ))
 			return 1;
+		(*newCompany)->companyPlanes[i]->planeID = i;
 	}
 
 	return 0;
@@ -239,6 +241,7 @@ createPlane(mapData * mapFile, plane ** newPlane)
 			return 1;	
 	}
 	(*newPlane)->medCount = packages;
+	(*newPlane)->originID = -1;
 
 	return 0;
 }
@@ -315,7 +318,7 @@ getString(mapData * mapFile, char ** out)
 		{
 			start=1;
 			cant=0;
-			if(	(aux=malloc(sizeof(char) * cap)) == NULL)
+			if(	(aux = malloc(sizeof(char) * cap)) == NULL)
 			{
 				return 1;
 			}

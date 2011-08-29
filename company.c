@@ -40,10 +40,11 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 	comuADT client;
 	medicine *** med;
 	int ** map;
-	int size, i, unloading;
+	int size, i, j, unloading;
 	plane ** planes, ** p;
 
 	client = connectToServer(pdata->server);
+	sendChecksign(mapClient);
 	
 	if(allocMapData(&mapFile))
 	{
@@ -73,12 +74,26 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 	planes = malloc(sizeof(plane *) * compa->planesCount);
 
 	while(1)
-	{
+	{	
 		rcvMap(&map, &med, client, &size);
 		unloading = 0;
 		for(i = 0; i < compa->planesCount; i++)
 			if( canUnload(&(compa->companyPlanes[i]), map, med) )
 				planes[unloading++] = compa->companyPlanes[i];
+
+		for(i = 0; i < size; i++)
+			free(map[i]);
+		free(map);
+		for(i = 0; i < size; i++)
+		{
+			for(j = 0; med[i][j] != NULL; j++)
+			{
+				free(med[i][j]->name);
+				free(med[i][j]);
+			}
+			free(med[i]);
+		}
+		free(med);
 
 		if(unloading == 0)
 			sendPlanes(compa->ID, unloading, NULL, mapClient);
@@ -86,18 +101,34 @@ companyFunc(processData * pdata, char * fileName , int companyID)
 		else
 		{
 			sendPlanes(compa->ID, unloading, planes, mapClient);
-
+			
 			rcvPlanes(NULL, &unloading, &p, client);
 			checkPlaneCargo(&compa, p, unloading);
-			sendChecksign(mapClient);
-	
-			/*for(i = 0; i < size; i++)
-				free(map[i]);
-			free(map);*/
-			rcvMap(&map, &med, client, &size);
-		
-			setPlaneDestination(&compa, map, size);
+			for(i = 0; i < unloading; i++)
+			{
+				for(j = 0; j < p[i]->medCount; j++)
+				{
+					free(p[i]->medicines[j]->name);
+					free(p[i]->medicines[j]);
+				}
+				free(p[i]);
+			}
 		}
+		rcvMap(&map, &med, client, &size);
+		setPlaneDestination(&compa, map, size);
+		for(i = 0; i < size; i++)
+			free(map[i]);
+		free(map);
+		for(i = 0; i < size; i++)
+		{
+			for(j = 0; med[i][j] != NULL; j++)
+			{
+				free(med[i][j]->name);
+				free(med[i][j]);
+			}
+			free(med[i]);
+		}
+		free(med);
 	}
 
 	return 1;
@@ -140,12 +171,16 @@ checkPlaneCargo(company ** cmp, plane ** p, int count)
 int
 setPlaneDestination(company ** compa, int ** map, int size)
 {
-	int i;
+	int i, next = 1, cityID;
 	for(i = 0; i < (*compa)->planesCount; i++)
 		if( (*compa)->companyPlanes[i]->distance == -1)
 		{
-			(*compa)->companyPlanes[i]->distance = map[(*compa)->companyPlanes[i]->destinationID][((*compa)->companyPlanes[i]->destinationID + 1) % size];
-			(*compa)->companyPlanes[i]->destinationID = ((*compa)->companyPlanes[i]->destinationID + 1) % size;
+			cityID = (*compa)->companyPlanes[i]->destinationID;
+			while( map[cityID][ (cityID + next) % size] == 0)
+				next++;
+			(*compa)->companyPlanes[i]->originID = (*compa)->companyPlanes[i]->destinationID;
+			(*compa)->companyPlanes[i]->distance = map[cityID][ (cityID + next) % size];
+			(*compa)->companyPlanes[i]->destinationID = (cityID + next) % size;
 		}
 	return 0;
 }

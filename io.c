@@ -38,6 +38,7 @@ ioFunc(processData * pdata)
 	int size, i, j;
 	
 	client = connectToServer(pdata->server);
+	sendChecksign(mapClient);
 	while(1)
 	{
 		rcvMap(&map, &med, client, &size);
@@ -60,7 +61,7 @@ ioFunc(processData * pdata)
 		}
 		printf("\n");
 		sendChecksign(mapClient);
-		/*for(i = 0; i < size; i++)
+		for(i = 0; i < size; i++)
 			free(map[i]);
 		free(map);
 		for(i = 0; i < size; i++)
@@ -72,7 +73,7 @@ ioFunc(processData * pdata)
 			}
 			free(med[i]);
 		}
-		free(med);*/
+		free(med);
 	}
 
 	return 1;

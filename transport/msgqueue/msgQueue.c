@@ -84,7 +84,7 @@ int rcvMsg(comuADT comm, message * msg, int flags) {
 	ret = msgrcv(comm->queueID, &aux, sizeof aux.mtext, comm->pid, flags);
 	msg->message = calloc(500, sizeof(char));
 	strcpy(msg->message, aux.mtext);
-	((char *)msg->message)[ret] = 0;
+	((char *)msg->message)[ret - 1] = 0;
 	msg->size = strlen(msg->message);
 	return ret;
 }

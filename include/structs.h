@@ -39,7 +39,6 @@ typedef struct{
 }company;
 
 typedef struct{
-   company ** companies;
    city ** cities;
    int ** graph;
    int citiesCount;
