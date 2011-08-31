@@ -26,7 +26,7 @@
 
 /***		Functions		***/
 int companyFunc(processData * pdata, char * fileName, int companyID);
-int ioFunc(processData * pdata);
+int ioFunc(processData * pdata, int companyCount);
 int unloadPlane(plane ** p, map ** mapSt);
 int freeResources(void);
 int needMedicines(map * mapSt);
@@ -82,7 +82,7 @@ main(int argc, char * argv[]) {
 		perror("Error creating IO");
 		exit(1);
 	case 0:
-		ioFunc(pdata);
+		ioFunc(pdata, argc - 2);
 		_exit(0);
 	default:
 		k = 2;
@@ -141,6 +141,8 @@ main(int argc, char * argv[]) {
 
 				sendPlanes(companyID, count, p, clients[companyID+2]);
 			}
+
+			sendPlanes(companyID, count, p, clients[1]);	/*para mandar los planes a IO*/
 			for(i = 0; i < count; i++)
 			{
 				for(j = 0; j < p[i]->medCount; j++)
@@ -155,6 +157,12 @@ main(int argc, char * argv[]) {
 
 		for(k = 2; k < argc; k++)
 			sendMap(mapSt->citiesCount, mapSt->cities, clients[k]);
+		
+		if( rcvChecksign(clients[0]) )
+		{
+			printf("Error during IPC @ map.c\n");
+			return 1;
+		}
 	}
 
 	sendMap(mapSt->citiesCount, mapSt->cities, clients[1]);

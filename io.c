@@ -33,11 +33,12 @@ comuADT mapClient;
 map * mapSt;
 
 int
-ioFunc(processData * pdata)
+ioFunc(processData * pdata, int companyCount)
 {
 	comuADT client;
 	medicine *** med;
-	int size, i, j;
+	int size, i, j, k, companyID, count, planeArrived;
+	plane ** p;
 
 	struct sigaction signalAction;
 	signalAction.sa_flags = 0;
@@ -50,6 +51,7 @@ ioFunc(processData * pdata)
 	sendChecksign(mapClient);
 	while(TRUE)
 	{
+		planeArrived = FALSE;
 		rcvMap(&med, client, &size);
 		/*printf("\nMap cities distances:\n");
 		for(i = 0; i < size; i++)
@@ -60,7 +62,7 @@ ioFunc(processData * pdata)
 		}*/
 		for(i = 0; i < size; i++)
 		{
-			printf("\nCity %d requests:\n", i);
+			printf("\n%s requests:\n", mapSt->cities[i]->name);
 			printf("Medicine\t\t\tQuantity\n");
 			for(j = 0; med[i][j] != NULL; j++)
 			{
@@ -80,6 +82,29 @@ ioFunc(processData * pdata)
 			free(med[i]);
 		}
 		free(med);
+
+		for(i = 0; i < companyCount; i++)
+		{
+			rcvPlanes(&companyID, &count, &p, client);
+			if(count != 0)
+			{
+				planeArrived = TRUE;
+				for(j = 0; j < count; j++)
+		printf("Company %d, plane %d arrived in %s\n", companyID, p[j]->planeID, mapSt->cities[p[j]->destinationID]->name);
+			}
+			for(k = 0; k < count; k++)
+			{
+				for(j = 0; j < p[k]->medCount; j++)
+				{
+					free(p[k]->medicines[j]->name);
+					free(p[k]->medicines[j]);
+				}
+				free(p[k]);
+			}
+		}
+		if(!planeArrived)
+			printf("No plane arrived\n");
+		sendChecksign(mapClient);
 	}
 
 	return 1;
