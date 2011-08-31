@@ -1,15 +1,15 @@
-/*
- * shm.c
- * Implements api.h via shared memory IPC.
- * Authors:
- * José Ignacio Santiago Galindo
- * Federico Homovc
- * Nicolas Loreti
- */
+/***
+***
+***		sharedMemory.c
+***				Jose Ignacio Galindo
+***				Federico Homovc
+***				Nicolas Loreti
+***			 	     ITBA 2011
+***
+***/
 
-#include "../../include/api.h"
-#include "../../include/semaphore.h"
-#include "../../include/shm.h"
+
+/***		System includes		***/
 #include <sys/sem.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -21,11 +21,14 @@
 #include <pthread.h>
 #include <unistd.h>
 
+/***		Project Includes		***/
+#include "../../include/api.h"
+#include "../../include/semaphore.h"
+#include "../../include/shm.h"
+
+/***		Functions		***/
 void reverse(char *string);
 void itoa(int n, char *string);
-/*
- * Static functions
- */
 
 
 /*

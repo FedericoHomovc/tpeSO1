@@ -8,7 +8,6 @@
 ***
 ***/
 
-
 typedef struct{
    char * name;
    int quantity;
@@ -24,7 +23,6 @@ typedef struct{
 typedef struct{
    medicine ** medicines;
    char * startCity;
-   int originID;
    int destinationID;
    int distance;
    int medCount;
@@ -45,8 +43,3 @@ typedef struct{
    int companiesCount;
 }map;
 
-typedef struct{
-	FILE * file;
-	int line;
-	int valid;
-}mapData;

@@ -8,6 +8,7 @@
 ***
 ***/
 
+/***		Functions		***/
 int sendPlanes(int companyID, int count, plane ** p, comuADT client);
 
 int rcvPlanes(int * companyID, int * count, plane *** p, comuADT client);

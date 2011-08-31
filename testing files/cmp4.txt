@@ -1,0 +1,9 @@
+2
+
+city1
+clembuterol 200
+coca 50
+
+city6
+carlucci 150
+cafeina 450

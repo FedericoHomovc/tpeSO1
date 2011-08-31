@@ -24,10 +24,11 @@
 #include "../include/api.h"
 #include "../include/structs.h"
 
-
+/***		Functions		***/
 char * wrappMedicine(medicine ** med, int ID, int medCount);
 int unwrappMedicine(medicine *** meds, char * array, int * ID);
 void itoa(int n, char *string);
+
 
 
 int
@@ -35,7 +36,7 @@ sendChecksign(comuADT client)
 {
 	message msg;
 	msg.message = "OK";
-	msg.size = 500;
+	msg.size = MSG_SIZE;
 
 	return sendMsg(client, &msg, 0);
 }
@@ -47,12 +48,14 @@ rcvChecksign(comuADT client)
 	message msg;
 	int ret;
 
+	msg.message = calloc(MSG_SIZE, sizeof(char));
+
 	if( (ret = rcvMsg(client, &msg, 0)) != -1 )
 		if( strcmp((char*)msg.message, "OK") )
 			return -1;
 
 	free(msg.message);
-	return (ret != 500);
+	return (ret != MSG_SIZE);
 }
 
 
@@ -90,8 +93,7 @@ sendPlanes(int companyID, int count, plane ** p, comuADT client)
 		free(aux);
 	}
 
-	/*msg.size = strlen(msg.message);*/
-	msg.size = 500;
+	msg.size = MSG_SIZE;
 
 	/*---------TESTING----------*/
 	/*printf("plane sent: %s\n", (char*)msg.message );
@@ -114,6 +116,8 @@ rcvPlanes(int * companyID, int * count, plane *** p, comuADT client)
 	int ret, i = 0, pos, j, medCount;
 	char * aux = NULL;
 	plane ** retPlane;
+
+	msg.message = calloc(MSG_SIZE, sizeof(char));
 	
 	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
 		return -1;
@@ -187,8 +191,7 @@ sendMap(int size, city ** cities, comuADT client)
 		free(aux);
 	}
 
-	/*msg.size = strlen((char *) msg.message);*/
-	msg.size = 500;
+	msg.size = MSG_SIZE;
 	
 	/*---------TESTING----------*/
 	/*printf("map sent @ marshalling.c: %s\n", (char*)msg.message );
@@ -210,8 +213,8 @@ rcvMap(medicine **** meds, comuADT client, int * size)
 	medicine *** m = NULL;
 	char * aux;
 
-	/*if( (msg.message = malloc(500)) == NULL )
-		return -1;*/
+	if( (msg.message = calloc(MSG_SIZE, sizeof(char))) == NULL )
+		return -1;
 
 	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
 		return -1;

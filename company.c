@@ -14,7 +14,6 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <error.h>
@@ -26,50 +25,44 @@
 #include "./include/api.h"
 #include "./include/marshalling.h"
 
-int canUnload(plane ** p, int ** map, medicine *** med);
-int checkPlaneCargo(company ** company, plane ** p, int count);
-int setPlaneDestination(company ** compa, int ** map, int size);
+/***		Functions		***/
 static void sigintServHandler(int signo);
 void * threadFunc(void * threadId);
+void freeCompanyResources(void);
 
-pthread_mutex_t mutexVar;
-pthread_cond_t condVar;
-pthread_mutex_t planeMutex;
-pthread_cond_t planeCond;
 
+
+int planesChecked, unloading, size;
+pthread_mutex_t mutexVar, planeMutex;
+pthread_cond_t condVar, planeCond;
 map * mapSt;
 comuADT mapClient;
-int planesChecked, unloading;
 plane ** planes, ** receivedPlanes;
 medicine *** med;
 company * compa;
+pthread_t * threads;
 
 int companyFunc(processData * pdata, char * fileName, int companyID) {
-	mapData * mapFile;
+	FILE * file = NULL;
 	comuADT client;	
-	int size, i, j;
-	pthread_t * threads;
+	int i, j;
 
-	/* NEW */
 	struct sigaction signalAction;
 	signalAction.sa_flags = 0;
 	signalAction.sa_handler = sigintServHandler;
 	sigfillset(&(signalAction.sa_mask));
 
 	sigaction(SIGINT, &signalAction, NULL);
-	/* NEW */
 
 	client = connectToServer(pdata->server);
 	sendChecksign(mapClient);
 
-	if (allocMapData(&mapFile)) {
-		return 1;
-	}
-	if (!openFile(mapFile, fileName)) {
-		if (createCompany(mapFile, &compa)) {
+	if (!openFile(&file, fileName)){
+		if (createCompany(file, &compa)) {
 			printf("File Error\n");
 			return 1;
 		}
+		/*fclose(file);*/
 	} else {
 		printf("Impossible to open file\n");
 		return 1;
@@ -83,8 +76,10 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 			return 1;
 		}
 
-	planes = malloc(sizeof(plane *) * compa->planesCount);
-	threads = malloc(sizeof(pthread_t *) * compa->planesCount);
+	if( (planes = malloc(sizeof(plane *) * compa->planesCount)) == NULL)
+		return 1;
+	if( (threads = malloc(sizeof(pthread_t *) * compa->planesCount)) == NULL)
+		return 1;
 
 	pthread_mutex_init(&mutexVar, NULL);
 	pthread_cond_init(&condVar, NULL);
@@ -94,7 +89,7 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 	for(i = 0; i < compa->planesCount; i++)		/*falta esperar a que se creen todos*/
 		pthread_create(&threads[i], NULL, threadFunc, (void*)i);
 
-	while (1) {
+	while (TRUE) {
 		planesChecked = 0;
 		unloading = 0;
 		rcvMap(&med, client, &size);
@@ -140,7 +135,16 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 			}
 
 		rcvMap(&med, client, &size);
-		setPlaneDestination(&compa, mapSt->graph, size);
+
+		planesChecked = 0;
+
+		pthread_mutex_lock(&planeMutex);
+		pthread_cond_broadcast(&planeCond);
+		pthread_mutex_unlock(&planeMutex);
+		while(planesChecked < compa->planesCount)
+			pthread_cond_wait(&condVar, &mutexVar);
+		pthread_mutex_unlock(&mutexVar);
+
 		for (i = 0; i < size; i++) {
 			for (j = 0; med[i][j] != NULL; j++) {
 				free(med[i][j]->name);
@@ -156,18 +160,18 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 
 void * threadFunc(void * threadId){
 
-	int ID, i, j, notUnloaded, rcvPlane;
+	int ID, i, j, notUnloaded, rcvPlane, next;
 	plane ** p;
 
 	ID = (int)threadId;
 	p = &(compa->companyPlanes[ID]);
 	
-	while(1)
+	while(TRUE)
 	{
 		pthread_mutex_lock(&planeMutex);
 		pthread_cond_wait(&planeCond,&planeMutex);
 		
-		notUnloaded = 1;
+		notUnloaded = next = 1;
 		rcvPlane = -1;
 		planesChecked++;
 		(*p)->distance--;
@@ -186,7 +190,6 @@ void * threadFunc(void * threadId){
 		pthread_mutex_lock(&mutexVar);
 		pthread_cond_signal(&condVar);		/*le digo a company que siga*/
 		pthread_mutex_unlock(&mutexVar);
-
 		
 		pthread_cond_wait(&planeCond,&planeMutex);	/*me quedo esperando*/
 		planesChecked++;
@@ -206,32 +209,67 @@ void * threadFunc(void * threadId){
 		pthread_cond_signal(&condVar);		/*le digo a company que siga*/
 		pthread_mutex_unlock(&mutexVar);
 
-		pthread_mutex_unlock(&planeMutex);
+		pthread_cond_wait(&planeCond,&planeMutex);	/*me quedo esperando*/
+		planesChecked++;
 
+		if((*p)->distance == -1)
+		{
+			while ( mapSt->graph[ (*p)->destinationID ][ ((*p)->destinationID + next) % size ] == 0)
+				next++;
+			(*p)->distance = mapSt->graph[(*p)->destinationID][((*p)->destinationID + next) % size];
+			(*p)->destinationID = ((*p)->destinationID + next) % size;
+		}
+
+		pthread_mutex_lock(&mutexVar);
+		pthread_cond_signal(&condVar);		/*le digo a company que siga*/
+		pthread_mutex_unlock(&mutexVar);
+
+		pthread_mutex_unlock(&planeMutex);
 	}
 
 	pthread_exit(NULL);
 	return NULL;
 }
 
-int setPlaneDestination(company ** compa, int ** map, int size) {
-	int i, next = 1, cityID;
-	for (i = 0; i < (*compa)->planesCount; i++)
-		if ((*compa)->companyPlanes[i]->distance == -1) {
-			cityID = (*compa)->companyPlanes[i]->destinationID;
-			while (map[cityID][(cityID + next) % size] == 0)
-				next++;
-			(*compa)->companyPlanes[i]->originID = (*compa)->companyPlanes[i]->destinationID;
-			(*compa)->companyPlanes[i]->distance = map[cityID][(cityID + next) % size];
-			(*compa)->companyPlanes[i]->destinationID = (cityID + next) % size;
-		}
-	return 0;
-}
-
-/* NEW */
 static void sigintServHandler(int signo) {
-	printf("Crlt Pressed - COMPANY\n");
+	int i;
+	for(i = 0; i < compa->planesCount; i++)
+		pthread_cancel(threads[i]);		/*hay que cancelar los threads pero creo que no anda esto*/
+	freeCompanyResources();
+	
 	exit(0);
 }
-/* NEW */
 
+void
+freeCompanyResources(void)
+{
+	int i, j;
+	for(i = 0; i < compa->planesCount; i++)
+	{
+		for (j = 0; j < compa->companyPlanes[i]->medCount; j++) {
+			free(compa->companyPlanes[i]->medicines[j]->name);
+			free(compa->companyPlanes[i]->medicines[j]);
+		}
+		free(compa->companyPlanes[i]);
+	}
+	free(compa);
+
+	for(i = 0; i < mapSt->citiesCount; i++)	/*si es la misma direccion de memoria que map.c para mapSt no hace falta liberar*/
+		free(mapSt->graph[i]);	
+	free(mapSt->graph);
+	for(i = 0; i < mapSt->citiesCount; i++)
+	{
+		for(j = 0; j < mapSt->cities[i]->medCount; j++)
+		{
+			free( mapSt->cities[i]->medicines[j]->name);
+			free(mapSt->cities[i]->medicines[j]);
+		}
+		free(mapSt->cities[i]);
+	}
+	free(mapSt);
+
+	free(planes);
+	free(receivedPlanes);
+
+	return;
+}

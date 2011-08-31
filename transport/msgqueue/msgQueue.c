@@ -23,9 +23,10 @@
 #include "../../include/api.h"
 #include "../../include/structs.h"
 
+/***		Structs 		***/
 typedef struct {
 	long mtype;
-	char mtext[500];
+	char mtext[MSG_SIZE];
 } msgQueue;
 
 
@@ -38,18 +39,20 @@ struct IPCCDT {
 	int pid;
 };
 
-static key_t queueKey = 0xBEEF0;
-int queueid;
-
+/***		Functions		***/
 void reverse(char *string);
 void itoa(int n, char *string);
+
+
+
+static key_t queueKey = 0xBEEF0;
+int queueid;
 
 servADT startServer() {
 	servADT serv;
 
 	if ((queueid = msgget(queueKey, 0666 | IPC_CREAT)) == -1)
-		/*fatal("Error msgget message queue");*/
-		printf("Error msgget");
+		printf("Error msgget\n");
 	serv = malloc(sizeof(servADT));
 	serv->queueID = queueid;
 	return serv;
@@ -82,7 +85,6 @@ int rcvMsg(comuADT comm, message * msg, int flags) {
 	int ret;
 	msgQueue aux;
 	ret = msgrcv(comm->queueID, &aux, sizeof aux.mtext, comm->pid, flags);
-	msg->message = calloc(500, sizeof(char));
 	strcpy(msg->message, aux.mtext);
 	((char *)msg->message)[ret - 1] = 0;
 	msg->size = strlen(msg->message);

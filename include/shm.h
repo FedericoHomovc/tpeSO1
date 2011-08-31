@@ -1,12 +1,12 @@
-/*
- * shm.c
- * Implements api.h via shared memory IPC.
- * Authors:
- * Mat�as Colotto
- * Santiago Samra
- * Ezequiel Scaruli
- * Date: 14/03/2010
- */
+/***
+***
+***		shm.h
+***				Jose Ignacio Galindo
+***				Federico Homovc
+***				Nicolas Loreti
+***			 	     ITBA 2011
+***
+***/
 
 /*
  * Symbolic constants

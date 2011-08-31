@@ -1,29 +1,26 @@
+/***
+***
+***		api.h
+***				Jose Ignacio Galindo
+***				Federico Homovc
+***				Nicolas Loreti
+***			 	     ITBA 2011
+***
+***/
+
 #ifndef API_H_
 #define API_H_
 
-/*
- *
- * Includes
- * 
- */
-
+/***		System includes		***/
 #include <sys/types.h>
 
-/*
- *
- * Symbolic constants
- *
- */
 
+/***		Module Defines		***/
 #define TRUE 1
 #define FALSE 0
+#define MSG_SIZE 1000
 
-/* 
- *
- * Structs
- *
- */
-
+/***		Structs 		***/
 typedef struct serverCDT * servADT;
 typedef struct IPCCDT * comuADT;
 
@@ -43,14 +40,9 @@ typedef struct
 typedef struct{
 	pid_t pid;
 	servADT server;
-	char * name;
 }processData;
 
-
-/*
- * Functions
- */
-
+/***		Functions		***/
 servADT startServer();
 
 comuADT connectToServer(servADT serv);
@@ -67,4 +59,4 @@ int endServer(servADT server);
 
 int infoClient_comparePid(infoClient * ic1, infoClient * ic2);
 
-#endif /* API_H_ */
+#endif

@@ -1,20 +1,17 @@
-/*
- * semaphore.h
- * Function prototypes for the implementation of a System V semaphore.
- * Authors:
- * Matías Colotto
- * Santiago Samra
- * Ezequiel Scaruli
- * Date: 14/03/2010
- */
+/***
+***
+***		semaphore.h
+***				Jose Ignacio Galindo
+***				Federico Homovc
+***				Nicolas Loreti
+***			 	     ITBA 2011
+***
+***/
 
 #ifndef SEMAPHORE_H_
 #define SEMAPHORE_H_
 
-/*
- * Includes
- */
-
+/***		System includes		***/
 #include <sys/sem.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -22,10 +19,7 @@
 #include <sys/ipc.h>
 #include <stdlib.h>
 
-/*
- * Symbolic constants
- */
-
+/***		Module Defines		***/
 #define SEM_KEY (key_t)0x3FD
 #define SEM_NUM 2
 #define PERMFLAGS (0666 | IPC_CREAT | IPC_EXCL)
@@ -88,4 +82,4 @@ int v(int semid, int semnum);
  */
 int destroySem(int semid);
 
-#endif /* SEMAPHORE_H_*/
+#endif

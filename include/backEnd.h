@@ -9,20 +9,17 @@
 ***/
 
 
-int allocMapData(mapData ** mapFile);
+/***		Functions		***/
+int openFile(FILE ** file, char * fName);
 
-int openFile(mapData * game, char * fName);
-
-/*allocs memory for the map and the cities*/
 int allocMapSt(map ** mapSt, int argc);
 
-int createCities(mapData * mapFile, map * mapSt);
+int createCities(FILE * mapFile, map * mapSt);
 
-int createCompany(mapData * mapFile, company ** newCompany);
+int createCompany(FILE * mapFile, company ** newCompany);
 
-int initializeGraph(mapData * mapFile, map * mapSt);
+int initializeGraph(FILE * mapFile, map * mapSt);
 
 int getCityID( char * cityName, map * mapSt);
 
-int createPlane(mapData * mapFile, plane ** newPlane);
-
+int createPlane(FILE * mapFile, plane ** newPlane);

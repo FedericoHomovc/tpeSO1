@@ -16,7 +16,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <signal.h>
 #include <error.h>
 
 /***		Project Includes		***/
@@ -25,11 +24,14 @@
 #include "./include/backEnd.h"
 #include "./include/marshalling.h"
 
+/***		Functions		***/
 int companyFunc(processData * pdata, char * fileName, int companyID);
 int ioFunc(processData * pdata);
 int unloadPlane(plane ** p, map ** mapSt);
 int freeResources(void);
 int needMedicines(map * mapSt);
+
+
 
 map * mapSt;
 comuADT mapClient;
@@ -38,45 +40,42 @@ int
 main(int argc, char * argv[]) {
 
 	processData * pdata;
-	int k, notValid, companyID, count, i, j, turn = 0;
+	int k, companyID, count, i, j, turn = 0;
 	pid_t * pids;
 	servADT server;
 	comuADT * clients;
-	mapData * mapFile;
+	FILE * file = NULL;
 	plane ** p;
-
-	server = startServer();
-	pdata = malloc(sizeof(processData));
-	pdata->server = server;
-	pdata->pid = getpid();
-	pdata->name = malloc(sizeof(char *) * 20); /* tamaño del string */
-
-	pids = malloc(sizeof(pid_t) * (argc)); /*poner en el back*/
-	clients = malloc(sizeof(comuADT *) * (argc)); /*poner en el back*/
-	pids[0] = getpid();
-	mapClient = clients[0] = connectToServer(server); /*map client*/
 
 	if (argc <= 2) {
 		printf("Invalid arguments\n");
 		return 1;
 	}
 
-	strcpy(pdata->name, "map");
-
-	if (allocMapData(&mapFile)) {
-		return 1;
-	}
-	if (!openFile(mapFile, argv[1])) {
+	if (!openFile(&file, argv[1])) {
 		allocMapSt(&mapSt, argc);
-		notValid = createCities(mapFile, mapSt);
-		if (notValid) {
+		if (createCities(file, mapSt)) {
 			printf("Map File Error\n");
-			return notValid;
+			return 1;
 		}
+		/*fclose(file);*/
 	} else {
 		printf("Impossible to open file\n");
 		return 1;
 	}
+
+	server = startServer();
+	pdata = malloc(sizeof(processData));
+	pdata->server = server;
+	pdata->pid = getpid();
+
+	if( (pids = malloc(sizeof(pid_t) * (argc))) == NULL )
+		return 1;
+	if( (clients = malloc(sizeof(comuADT *) * (argc))) == NULL)
+		return 1;
+
+	pids[0] = getpid();
+	mapClient = clients[0] = connectToServer(server); /*map client*/
 
 	switch (pids[1] = fork()) {
 	case -1:
@@ -100,7 +99,6 @@ main(int argc, char * argv[]) {
 		}
 	}
 	
-
 	k = 0;
 	while(k < argc - 1) /*wait for all processes to connect to server*/
 	{
@@ -119,7 +117,7 @@ main(int argc, char * argv[]) {
 	while(needMedicines(mapSt))
 	{
 		printf("turn: %d\n", turn++);
-		sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[1]);
+		sendMap(mapSt->citiesCount, mapSt->cities, clients[1]);
 		if( rcvChecksign(clients[0]) )
 		{
 			printf("Error during IPC @ map.c\n");
@@ -129,7 +127,7 @@ main(int argc, char * argv[]) {
 
 		for(k = 2; k < argc; k++)
 		{
-			sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[k]);
+			sendMap(mapSt->citiesCount, mapSt->cities, clients[k]);
 		}
 		
 		k = 0;
@@ -156,19 +154,21 @@ main(int argc, char * argv[]) {
 		}
 
 		for(k = 2; k < argc; k++)
-			sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[k]);
-		
+			sendMap(mapSt->citiesCount, mapSt->cities, clients[k]);
 	}
 
-	sendMap(mapSt->citiesCount, mapSt->graph, mapSt->cities, clients[1]);
+	sendMap(mapSt->citiesCount, mapSt->cities, clients[1]);
 	rcvChecksign(clients[0]);
 
 	disconnectFromServer(clients[0], server);
 	for(k = 1; k < argc; k++)
-		kill(pids[k], SIGTERM);
+		kill(pids[k], SIGINT);	/*SIGTERM o SIGINT?*/
 	endServer(server);
 
 	freeResources();
+	free(pids);
+	free(clients);
+	free(pdata);
 	printf("Simulation ended\n");
 	return 0;
 }
@@ -178,27 +178,33 @@ int
 unloadPlane(plane ** p, map ** mapSt)
 {
 	int i, j, ret = 1;
+	city * cty;
+
+	cty = (*mapSt)->cities[(*p)->destinationID];
 
 	for(i = 0; i < (*mapSt)->cities[(*p)->destinationID]->medCount; i++)
 	{
 		for(j = 0; (*p)->medicines[j] != NULL; j++)
-			if((*mapSt)->cities[(*p)->destinationID]->medicines[i]->quantity > 0 && !strcmp((*p)->medicines[j]->name, (*mapSt)->cities[(*p)->destinationID]->medicines[i]->name))
+		{
+			if( cty->medicines[i]->quantity > 0 && !strcmp((*p)->medicines[j]->name, cty->medicines[i]->name))
 			{
-				if( (*p)->medicines[j]->quantity >= (*mapSt)->cities[(*p)->destinationID]->medicines[i]->quantity)
+				if( (*p)->medicines[j]->quantity >= cty->medicines[i]->quantity)
 				{
-					(*p)->medicines[j]->quantity -= (*mapSt)->cities[(*p)->destinationID]->medicines[i]->quantity;
-					(*mapSt)->cities[(*p)->destinationID]->medicines[i]->quantity = 0;
+					(*p)->medicines[j]->quantity -= cty->medicines[i]->quantity;
+					cty->medicines[i]->quantity = 0;
 				}
 				else{
-					(*mapSt)->cities[(*p)->destinationID]->medicines[i]->quantity -= (*p)->medicines[j]->quantity;
+					cty->medicines[i]->quantity -= (*p)->medicines[j]->quantity;
 					(*p)->medicines[j]->quantity = 0;
 				}
 				ret = 0;
 			}
+		}
 	}		
 	
 	return ret;
 }
+
 
 int
 freeResources(void)
@@ -221,6 +227,7 @@ freeResources(void)
 	return 0;
 }
 
+
 int
 needMedicines(map * mapSt)
 {
@@ -232,7 +239,4 @@ needMedicines(map * mapSt)
 
 	return 0;
 }
-
-
-
 

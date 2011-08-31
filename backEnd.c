@@ -26,25 +26,14 @@
 #define ENDEDFILE -1
 #define CR 13
 
+/***		Functions		***/
+static int getCity( FILE * mapFile, city * newCity);
+static int getInt(FILE * mapFile, int * out);
+static int getString(FILE * mapFile, char ** out);
 
-static int getCity( mapData * mapFile, city * newCity);
-static int getInt(mapData * mapFile, int * out);
-static int getString(mapData * mapFile, char ** out);
-
-
-int
-allocMapData(mapData ** mapFile)
-{
-	if( (*mapFile = malloc(sizeof(mapData))) == NULL)
-	{
-		return 1;
-	}
-	(*mapFile)->valid = 0; 	/*Inicializacion. Vale siempre 0 si no hay error*/
-	return 0;
-}
 
 int
-openFile(mapData * map, char * fName)
+openFile(FILE ** file, char * fName)
 {
 	char * string;
 	
@@ -54,13 +43,11 @@ openFile(mapData * map, char * fName)
 	}
 	strcpy(string, "./"); /* Se busca el archivo en la ubicacion actual */
 	strcat(string, fName);
-	map->file = fopen(string,"r");
+	*file = fopen(string,"r");
 	free(string);
-	if(map->file)
-	{
-		map->line=1; /* Inicializacion */
+	if(*file)
 		return 0;
-	}
+
 	return 1;
 }
 
@@ -71,22 +58,18 @@ allocMapSt(map ** mapSt, int argc)
 	{
 		return 1;
 	}
-	/*if( ( ((*mapSt)->companies) = malloc((argc - 2) * sizeof(company*)) ) == NULL)
-	{
-		return 1;
-	}*/
 	return 0;
 }
 
 int
-createCities(mapData * mapFile, map * mapSt)
+createCities(FILE * file, map * mapSt)
 {
 	int i;
 	char * aux;
-	getInt( mapFile,  &(mapSt->citiesCount) ); /* gets the quantity of cities */
+	getInt( file,  &(mapSt->citiesCount) ); /* gets the quantity of cities */
 
 
-	if( getString(mapFile, &aux) != BLANKLINE )
+	if( getString(file, &aux) != BLANKLINE )
 		return 1;
 
 	if( (mapSt->cities = malloc(mapSt->citiesCount * sizeof(city*))) == NULL )
@@ -97,30 +80,30 @@ createCities(mapData * mapFile, map * mapSt)
 		if( (mapSt->cities[i] = malloc(sizeof(city))) == NULL)
 			return 1;
 
-		if( getCity(mapFile, mapSt->cities[i]) )
+		if( getCity(file, mapSt->cities[i]) )
 			return 1;
 
 		mapSt->cities[i]->ID = i;
 	}
 
-	if( initializeGraph(mapFile, mapSt) )
+	if( initializeGraph(file, mapSt) )
 		return 1;
 
 	return 0;
 }
 
 static int
-getCity( mapData * mapFile, city * newCity)
+getCity( FILE * file, city * newCity)
 {
 	int packages = 0; /*medicines*/
 	char * aux;
 	
-	if( getString(mapFile, &(newCity->name)) )
+	if( getString(file, &(newCity->name)) )
 	{
 		return 1;
 	}
 
-	while( getString( mapFile, &aux ) != BLANKLINE ) /*revisar*/
+	while( getString( file, &aux ) != BLANKLINE ) /*revisar*/
 	{ /*gets the medicine name*/
  		if ( (newCity->medicines = realloc(newCity->medicines, sizeof(medicine*) * ++packages)) == NULL )
 		{
@@ -131,7 +114,7 @@ getCity( mapData * mapFile, city * newCity)
 			return 1;
 		}
 		newCity->medicines[packages-1]->name = aux;
-		if( getInt(mapFile, &(newCity->medicines[packages-1]->quantity) ) )
+		if( getInt(file, &(newCity->medicines[packages-1]->quantity) ) )
 		{/*gets the medicine quantity*/
 			return 1;	
 		}
@@ -142,7 +125,7 @@ getCity( mapData * mapFile, city * newCity)
 }
 
 int
-initializeGraph(mapData * mapFile, map * mapSt)
+initializeGraph(FILE * file, map * mapSt)
 {
 	int i, ID1, ID2, ret, dist;
 	char * aux;
@@ -154,15 +137,15 @@ initializeGraph(mapData * mapFile, map * mapSt)
 		if( (mapSt->graph[i] = calloc(mapSt->citiesCount, sizeof(int))) == NULL)
 			return 1;
 
-	while( (ret = getString( mapFile, &aux )) != ENDEDFILE) /*revisar*/
+	while( (ret = getString( file, &aux )) != ENDEDFILE) /*revisar*/
 	{	
 		if(ret != BLANKLINE)
 		{
 			ID1 = getCityID(aux, mapSt);
-			if( getString( mapFile, &aux ) )
+			if( getString( file, &aux ) )
 				return 1;
 			ID2 = getCityID(aux, mapSt);
-			if( getInt( mapFile, &dist ) ) /* gets the distance to a city */
+			if( getInt( file, &dist ) ) /* gets the distance to a city */
 				return 1;
 			if( ID1 == -1 || ID2 == -1 )
 				return 1;
@@ -175,7 +158,7 @@ initializeGraph(mapData * mapFile, map * mapSt)
 }
 
 int
-createCompany(mapData * mapFile, company ** newCompany)
+createCompany(FILE * file, company ** newCompany)
 {
 	int qtty, i;
 	char * aux;
@@ -186,7 +169,7 @@ createCompany(mapData * mapFile, company ** newCompany)
 		return 1;
 	}
 
-	if(getInt( mapFile, &qtty ))
+	if(getInt( file, &qtty ))
 	{
 		printf("Could not get planes quantity\n");
 		return 1;
@@ -200,7 +183,7 @@ createCompany(mapData * mapFile, company ** newCompany)
 		return 1;
 	}
 	
-	getString(mapFile, &aux);
+	getString(file, &aux);
 	/*if( getString(mapFile, &aux) != BLANKLINE )
 	{
 		printf("File error. Not a blank line before first company plane\n");
@@ -209,7 +192,7 @@ createCompany(mapData * mapFile, company ** newCompany)
 
 	for( i = 0; i<qtty; i++)
 	{
-		if(createPlane(mapFile, &((*newCompany)->companyPlanes[i]) ))
+		if(createPlane(file, &((*newCompany)->companyPlanes[i]) ))
 			return 1;
 		(*newCompany)->companyPlanes[i]->planeID = i;
 	}
@@ -218,30 +201,29 @@ createCompany(mapData * mapFile, company ** newCompany)
 }
 
 int
-createPlane(mapData * mapFile, plane ** newPlane)
+createPlane(FILE * file, plane ** newPlane)
 {
 	char * aux;
 	int packages = 0, ret;
 	
-	if( getString(mapFile, &aux) )
+	if( getString(file, &aux) )
 		return 1;
 	if( (*newPlane = malloc(sizeof(plane))) == NULL )
 		return 1;
 
 	(*newPlane)->startCity = aux;
 
-	while( (ret = getString( mapFile, &aux )) != BLANKLINE && ret != ENDEDFILE) /*revisar*/
+	while( (ret = getString( file, &aux )) != BLANKLINE && ret != ENDEDFILE) /*revisar*/
 	{
 		if ( ((*newPlane)->medicines = realloc((*newPlane)->medicines, sizeof(medicine*) * ++packages)) == NULL )
 			return 1;
 		if( ((*newPlane)->medicines[packages-1] = malloc(sizeof(medicine))) == NULL )
 			return 1;
 		(*newPlane)->medicines[packages-1]->name = aux;
-		if( getInt(mapFile, &((*newPlane)->medicines[packages-1]->quantity) ) )
+		if( getInt(file, &((*newPlane)->medicines[packages-1]->quantity) ) )
 			return 1;	
 	}
 	(*newPlane)->medCount = packages;
-	(*newPlane)->originID = -1;
 
 	return 0;
 }
@@ -262,12 +244,12 @@ getCityID( char * cityName, map * mapSt)
 
 
 static int
-getInt(mapData * mapFile, int * out)
+getInt(FILE * file, int * out)
 {
 	int cant, start=0, c;
 	char * aux=NULL;
 
-	while( !start && (c=fgetc(mapFile->file)) != EOF)
+	while( !start && (c=fgetc(file)) != EOF)
 	{
 		if(isdigit(c))
 		{
@@ -280,7 +262,7 @@ getInt(mapData * mapFile, int * out)
 			do
 			{
 				aux[cant++] = c;
-				c=fgetc(mapFile->file);
+				c=fgetc(file);
 			}while(isdigit(c));
 			aux[cant] = '\0';
 		}
@@ -296,13 +278,13 @@ getInt(mapData * mapFile, int * out)
 }
 
 static int
-getString(mapData * mapFile, char ** out)
+getString(FILE * file, char ** out)
 {
 
 	int cant, start=0, c, cap = BLOCK, newLine = 0;
 	char * aux = NULL;
 
-	while(!start && (c=fgetc(mapFile->file))!=EOF )
+	while(!start && (c=fgetc(file))!=EOF )
 	{
 
 		if(( c==' ' || c=='\t' || c=='\r' || c=='\n' || c==CR) && !start)
@@ -335,7 +317,7 @@ getString(mapData * mapFile, char ** out)
 					}
 				}
 				aux[cant++]=c;
-				c=fgetc(mapFile->file);
+				c=fgetc(file);
 			}while(isalnum(c));
 			aux[cant]='\0';
 		}		
