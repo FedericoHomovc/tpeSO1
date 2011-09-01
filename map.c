@@ -40,7 +40,7 @@ int
 main(int argc, char * argv[]) {
 
 	processData * pdata;
-	int k, companyID, count, i, j, c;
+	int k, companyID, count, i, j, c, unloaded;
 	pid_t * pids;
 	servADT server;
 	comuADT * clients;
@@ -135,15 +135,18 @@ main(int argc, char * argv[]) {
 		while(k < argc - 2)
 		{
 			rcvPlanes(&companyID, &count, &p, clients[0]);
+			unloaded = 0;
 			if(count > 0)
 			{
 				for(i = 0; i < count; i++)
-					unloadPlane(&p[i], &mapSt);
+					unloaded += unloadPlane(&p[i], &mapSt);
 
 				sendPlanes(companyID, count, p, clients[companyID+2]);
 			}
-
-			sendPlanes(companyID, count, p, clients[1]);
+			if(unloaded)
+				sendPlanes(companyID, count, p, clients[1]);
+			else
+				sendPlanes(companyID, 0, p, clients[1]);
 			for(i = 0; i < count; i++)
 			{
 				for(j = 0; j < p[i]->medCount; j++)
@@ -186,7 +189,7 @@ main(int argc, char * argv[]) {
 int
 unloadPlane(plane ** p, map ** mapSt)
 {
-	int i, j, ret = 1;
+	int i, j, ret = 0;
 	city * cty;
 
 	cty = (*mapSt)->cities[(*p)->destinationID];
@@ -195,7 +198,7 @@ unloadPlane(plane ** p, map ** mapSt)
 	{
 		for(j = 0; (*p)->medicines[j] != NULL; j++)
 		{
-			if( cty->medicines[i]->quantity > 0 && !strcmp((*p)->medicines[j]->name, cty->medicines[i]->name))
+			if( cty->medicines[i]->quantity > 0 && (*p)->medicines[j]->quantity > 0 && !strcmp((*p)->medicines[j]->name, cty->medicines[i]->name))
 			{
 				if( (*p)->medicines[j]->quantity >= cty->medicines[i]->quantity)
 				{
@@ -206,7 +209,7 @@ unloadPlane(plane ** p, map ** mapSt)
 					cty->medicines[i]->quantity -= (*p)->medicines[j]->quantity;
 					(*p)->medicines[j]->quantity = 0;
 				}
-				ret = 0;
+				ret = 1;
 			}
 		}
 	}		

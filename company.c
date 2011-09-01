@@ -158,7 +158,7 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 
 void * threadFunc(void * threadId){
 
-	int ID, i, j, notUnloaded, rcvPlane;
+	int ID, i, j, notUnloaded, rcvPlane, next, hasMedicine;
 	plane ** p;
 
 	ID = (int)threadId;
@@ -169,11 +169,12 @@ void * threadFunc(void * threadId){
 		pthread_mutex_lock(&planeMutex);
 		pthread_cond_wait(&planeCond, &planeMutex);	/*wait first instruction*/
 		
-		notUnloaded = 1;
+		notUnloaded = hasMedicine = 1;
 		rcvPlane = -1;
 		planesChecked++;
-		(*p)->distance--;
-		if ((*p)->distance < 0)
+		if((*p)->distance >= 0)
+			(*p)->distance--;
+		if ((*p)->distance == -1)
 		{
 			for (i = 0; med[(*p)->destinationID][i] != NULL && notUnloaded; i++)
 				if (med[(*p)->destinationID][i]->quantity != 0)
@@ -212,8 +213,18 @@ void * threadFunc(void * threadId){
 
 		if((*p)->distance == -1)
 		{
-			(*p)->distance = mapSt->graph[(*p)->destinationID][((*p)->destinationID + 1) % size];
-			(*p)->destinationID = ((*p)->destinationID + 1) % size;
+			for( next = 0; next < mapSt->citiesCount && hasMedicine; next++)
+				for(j = 0; med[next][j] != NULL && hasMedicine; j++)
+					for(i = 0; i < (*p)->medCount && hasMedicine; i++)
+				if( med[next][j]->quantity > 0 && (*p)->medicines[i]->quantity > 0 && !strcmp((*p)->medicines[i]->name, med[next][j]->name))
+							hasMedicine = 0;
+			next--;
+			if(hasMedicine)
+				(*p)->distance--;
+			else{
+				(*p)->distance = mapSt->graph[(*p)->destinationID][next];
+				(*p)->destinationID = next;
+			}
 		}
 
 		pthread_mutex_lock(&mutexVar);

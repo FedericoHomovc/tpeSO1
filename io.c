@@ -99,7 +99,7 @@ ioFunc(processData * pdata, int companyCount)
 			}
 		}
 		if(!planeArrived)
-			printf("No plane arrived\n");
+			printf("No plane unloaded\n");
 		sendChecksign(mapClient);
 	}
 
