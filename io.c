@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <error.h>
 #include <sys/msg.h>
 
 /***		Project Includes		***/
@@ -36,7 +37,7 @@ ioFunc(processData * pdata, int companyCount)
 {
 	comuADT client;
 	medicine *** med;
-	int size, i, j, k, companyID, count, planeArrived, turn = 1;
+	int size, i, j, k, companyID, count, planeArrived;
 	plane ** p;
 
 	struct sigaction signalAction;
@@ -56,17 +57,20 @@ ioFunc(processData * pdata, int companyCount)
 		for(i = 0; i < size; i++)
 		{
 			for(j = 0; j < size; j++)
-				printf("%d\t", map[i][j]);
+				printf("%d\t", mapSt->graph[i][j]);
 			printf("\n");
 		}*/
-		printf("\nTurn: %d\n\n", turn++);
 		for(i = 0; i < size; i++)
 		{
-			printf("***************%s requests: ***************\n", mapSt->cities[i]->name);
+			printf("\n%s requests:\n", mapSt->cities[i]->name);
 			printf("Medicine\t\t\tQuantity\n");
 			for(j = 0; med[i][j] != NULL; j++)
-				printf("%-20s\t\t%d\n", med[i][j]->name, med[i][j]->quantity);
+			{
+				printf("%s\t\t\t%d", med[i][j]->name, med[i][j]->quantity);
+				printf("\n");
+			}
 		}
+		printf("\n");
 		sendChecksign(mapClient);
 		for(i = 0; i < size; i++)
 		{
@@ -78,7 +82,7 @@ ioFunc(processData * pdata, int companyCount)
 			free(med[i]);
 		}
 		free(med);
-		
+
 		for(i = 0; i < companyCount; i++)
 		{
 			rcvPlanes(&companyID, &count, &p, client);
@@ -99,7 +103,7 @@ ioFunc(processData * pdata, int companyCount)
 			}
 		}
 		if(!planeArrived)
-			printf("No plane unloaded\n");
+			printf("No plane arrived\n");
 		sendChecksign(mapClient);
 	}
 

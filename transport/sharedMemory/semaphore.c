@@ -2,10 +2,8 @@
  * semaphore.c
  * Implements a semaphore for shm.c needs.
  * Authors:
- * Mat�as Colotto
- * Santiago Samra
- * Ezequiel Scaruli
- * Date: 14/03/2010
+ *
+ *
  */
 
 #include "../../include/semaphore.h"
@@ -18,7 +16,7 @@ int initSem(void)
     semun arg;
     int i = 0;
     
-    while( (semid = semget( SEM_KEY + i, SEM_NUM, PERMFLAGS)) == -1)
+    while( (semid = semget( SEM_KEY + i, SEM_NUM, FLAGS)) == -1)
         i++;
     
     /* Set recently created semaphores to value 1 */
@@ -37,21 +35,22 @@ int initSem(void)
 }
 
 /* Semaphore wait operation */
-int p(int semid, int semnum, int wait)
+int up(int semid, int semnum, int wait)
 {
     struct sembuf buffer;
     buffer.sem_num = semnum;
     buffer.sem_op = -1;
-    if( wait )
-        buffer.sem_flg = SEM_UNDO;
-    else
+
+
+    buffer.sem_flg = SEM_UNDO;
+    if( !wait )
         buffer.sem_flg = SEM_UNDO | IPC_NOWAIT;
     
     if( semop(semid, &buffer, (size_t) 1) == -1)
     {
         if( errno == EAGAIN )
         {
-            fprintf(stderr, "The semaphore is taken. Please wait\n");
+            fprintf(stderr, "The semaphore is red. Must wait\n");
         }
         else
         {
@@ -64,7 +63,7 @@ int p(int semid, int semnum, int wait)
 }
 
 /* Semaphore signal operation */
-int v(int semid, int semnum)
+int down(int semid, int semnum)
 {
     struct sembuf buffer;
     buffer.sem_num = semnum;

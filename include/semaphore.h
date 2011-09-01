@@ -22,7 +22,7 @@
 /***		Module Defines		***/
 #define SEM_KEY (key_t)0x3FD
 #define SEM_NUM 2
-#define PERMFLAGS (0666 | IPC_CREAT | IPC_EXCL)
+#define FLAGS (0666 | IPC_CREAT | IPC_EXCL)
 
 /*
  * semun
@@ -51,7 +51,7 @@ typedef union _semun {
 int initSem(void);
 
 /*
- * Name: p
+ * Name: up
  * Receives: int semid, int semnum, int wait
  * Returns: int
  * Description: The classic wait semaphore command. Used to request 
@@ -60,10 +60,10 @@ int initSem(void);
  * in case the semaphore is taken (TRUE/FALSE). Returns 0 on success and -1 on
  * failure
  */
-int p(int semid, int semnum, int wait);
+int up(int semid, int semnum, int wait);
 
 /*
- * Name: v
+ * Name: down
  * Receives: int semid, int semnum
  * Returns: int
  * Description: The classic signal semaphore command. Used to leave
@@ -71,7 +71,7 @@ int p(int semid, int semnum, int wait);
  * semaphores (0 to SEM_NUM - 1). Returns 0 on success and -1 on
  * failure.
  */
-int v(int semid, int semnum);
+int down(int semid, int semnum);
 
 /*
  * Name: destroySem

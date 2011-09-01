@@ -1,7 +1,7 @@
 4
 
 city1
-merca 450
+merca 500
 
 city2
 anfeta 250

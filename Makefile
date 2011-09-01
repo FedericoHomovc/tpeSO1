@@ -10,56 +10,36 @@
 .SILENT:
 
 TARGET=tpeSO
-OBJS= map.c backEnd.c company.c io.c
-FIFO= ./transport/fifos/fifo.c
+OBJS= map.o backEnd.o company.o io.o
+FIFO= ./transport/fifos/fifo.o
 FIFO2= fifo.o
-MSGQUEUE= ./transport/msgqueue/msgQueue.c
+MSGQUEUE= ./transport/msgqueue/msgQueue.o
 MSGQUEUE2= msgQueue.o
-SOCKETS= ./transport/sockets/socket.c
+SOCKETS= ./transport/sockets/socket.o
 SOCKETS2= socket.o
-SHM= ./transport/sharedMemory/sharedMemory3.c ./transport/sharedMemory/semaphore.c
-SHM2= sharedMemory3.o semaphore.o
-VARRAY= ./transport/varray.c
+SHM= ./transport/sharedMemory/sharedMemory.o ./transport/sharedMemory/semaphore.o
+SHM2= sharedMemory.o semaphore.o
+VARRAY= ./transport/varray.o
 VARRAY2= varray.o
-MARSHALL = ./marshalling/marshalling.c
+MARSHALL = ./marshalling/marshalling.o
 MARSHALL2 = marshalling.o
 CC= gcc
 COPTS= -Wall -ansi -pedantic -c -g -D_XOPEN_SOURCE=600
 LDOPTS= -lpthread -o 
 
+$(TARGET):	 $(OBJS) $(MSGQUEUE) $(VARRAY) $(MARSHALL)
+	echo Linking $(OBJS) $(MSGQUEUE2) $(VARRAY2) to obtain $(TARGET)
+	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(MSGQUEUE2) $(VARRAY2) $(MARSHALL2)
+
+.c.o:
+	echo Compiling $<
+	$(CC) $(COPTS) $<
+
 backEnd.o: ./include/structs.h ./include/backEnd.h
-company.o io.o map.o: ./include/structs.h ./include/backEnd.h ./include/api.h ./include/marshalling.h
+fifo.o: ../../include/varray.h
 varray.o: ../include/varray.h
-fifo.o:
-sockets.o:
-msgqueue.o: ../../include/api.h 
-shareMemory3.o: ../../include/api.h ../../include/semaphore.h ../../include/shm.h
-semaphore.o: ../../include/semaphore.h
-marshalling.o: ../include/api.h ../include/structs.h
-
-shmem:
-	echo Compiling $(OBJS) $(SHM) $(MARSHALL)
-	$(CC) $(COPTS) $(OBJS) $(SHM) $(MARSHALL)
-	echo Linking $(OBJS) $(SHM2) $(MARSHALL2) to obtain $(TARGET)
-	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(SHM2) $(MARSHALL2)
-
-msgqueue:
-	echo Compiling $(OBJS) $(MSGQUEUE) $(MARSHALL)
-	$(CC) $(COPTS) $(OBJS) $(MSGQUEUE) $(MARSHALL)
-	echo Linking $(OBJS) $(MSGQUEUE2) $(MARSHALL2) to obtain $(TARGET)
-	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(MSGQUEUE2) $(MARSHALL2)
-
-fifo:
-	echo Compiling $(OBJS) $(FIFO) &(VARRAY) $(MARSHALL)
-	$(CC) $(COPTS) $(OBJS) $(FIFO) &(VARRAY) $(MARSHALL)
-	echo Linking $(OBJS) $(FIFO2) $(MARSHALL2) $(VARRAY2) to obtain $(TARGET)
-	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(FIFO2) $(VARRAY2) $(MARSHALL2)
-
-sockets:
-	echo Compiling  $(OBJS) $(SOCKETS) $(MARSHALL)
-	$(CC) $(COPTS) $(OBJS) $(SOCKETS) $(MARSHALL)
-	echo Linking $(OBJS) $(SOCKETS2) $(MARSHALL2) to obtain $(TARGET)
-	$(CC) $(LDOPTS) $(TARGET) $(OBJS) $(SOCKETS2) $(MARSHALL2)
+io.o: ./include/structs.h ./include/backEnd.h ./include/api.h ./include/varray.h
+map.o: ./include/structs.h ./include/backEnd.h ./include/api.h ./include/varray.h
 
 clear:
 	echo Clearing directory
