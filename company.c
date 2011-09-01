@@ -1,14 +1,14 @@
 /***
- ***
- ***		company.c
- ***				Jose Ignacio Galindo
- ***				Federico Homovc
- ***				Nicolas Loreti
- ***			 	     ITBA 2011
- ***
- ***/
+***
+*** 		company.c
+*** 			Jose Ignacio Galindo
+*** 			Federico Homovc
+*** 			Nicolas Loreti
+*** 			     ITBA 2011
+***
+***/
 
-/***		System includes		***/
+/*** System includes ***/
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -16,16 +16,15 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <error.h>
 #include <pthread.h>
 
-/***		Project Includes		***/
+/*** Project Includes ***/
 #include "./include/structs.h"
 #include "./include/backEnd.h"
 #include "./include/api.h"
 #include "./include/marshalling.h"
 
-/***		Functions		***/
+/*** Functions ***/
 static void sigintServHandler(int signo);
 void * threadFunc(void * threadId);
 void freeCompanyResources(void);
@@ -33,8 +32,8 @@ void freeCompanyResources(void);
 
 
 int planesChecked, unloading, size;
-pthread_mutex_t towerMutex, planeMutex;
-pthread_cond_t towerCond, planeCond;
+pthread_mutex_t mutexVar, planeMutex;
+pthread_cond_t condVar, planeCond;
 map * mapSt;
 comuADT mapClient;
 plane ** planes, ** receivedPlanes;
@@ -44,7 +43,7 @@ pthread_t * threads;
 
 int companyFunc(processData * pdata, char * fileName, int companyID) {
 	FILE * file = NULL;
-	comuADT client;	
+	comuADT client;
 	int i, j;
 
 	struct sigaction signalAction;
@@ -69,10 +68,8 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 	}
 	compa->ID = companyID;
 	for (i = 0; i < compa->planesCount; i++)
-		if ((compa->companyPlanes[i]->destinationID = getCityID(
-				compa->companyPlanes[i]->startCity, mapSt)) == -1) {
-			printf("Invalid start city for plane %d in company %d.\n", i,
-					compa->ID);
+		if ((compa->companyPlanes[i]->destinationID = getCityID(compa->companyPlanes[i]->startCity, mapSt)) == -1) {
+			printf("Invalid start city for plane %d in company %d.\n", i, compa->ID);
 			return 1;
 		}
 
@@ -81,12 +78,12 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 	if( (threads = malloc(sizeof(pthread_t *) * compa->planesCount)) == NULL)
 		return 1;
 
-	pthread_mutex_init(&towerMutex, NULL);
-	pthread_cond_init(&towerCond, NULL);
+	pthread_mutex_init(&mutexVar, NULL);
+	pthread_cond_init(&condVar, NULL);
 	pthread_mutex_init(&planeMutex, NULL);
 	pthread_cond_init(&planeCond, NULL);
 
-	for(i = 0; i < compa->planesCount; i++)		/*falta esperar a que se creen todos*/
+	for(i = 0; i < compa->planesCount; i++) /*falta esperar a que se creen todos*/
 		pthread_create(&threads[i], NULL, threadFunc, (void*)i);
 
 	while (TRUE) {
@@ -94,10 +91,10 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 		unloading = 0;
 		rcvMap(&med, client, &size);
 
-		pthread_mutex_lock(&towerMutex);
+		pthread_mutex_lock(&mutexVar); /*wake up planes and wait until they check cargo*/
 		pthread_cond_broadcast(&planeCond);
 		while(planesChecked < compa->planesCount)
-			pthread_cond_wait(&towerCond, &towerMutex);
+			pthread_cond_wait(&condVar, &mutexVar);
 
 		for (i = 0; i < size; i++) {
 			for (j = 0; med[i][j] != NULL; j++) {
@@ -107,23 +104,23 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 			free(med[i]);
 		}
 		free(med);
-		
+
 		if (!unloading)
 			sendPlanes(compa->ID, unloading, NULL, mapClient);
 
 		else {
 			sendPlanes(compa->ID, unloading, planes, mapClient);
 			rcvPlanes(NULL, &unloading, &receivedPlanes, client);
-		}
+		}	
 
 		planesChecked = 0;
 
-		pthread_mutex_lock(&planeMutex);
+		pthread_mutex_lock(&planeMutex); /*wake up planes and wait until they update cargo*/
 		pthread_cond_broadcast(&planeCond);
 		pthread_mutex_unlock(&planeMutex);
 		while(planesChecked < compa->planesCount)
-			pthread_cond_wait(&towerCond, &towerMutex);
-		pthread_mutex_unlock(&towerMutex);
+			pthread_cond_wait(&condVar, &mutexVar);
+		pthread_mutex_unlock(&mutexVar);
 
 		if(unloading)
 			for (i = 0; i < unloading; i++) {
@@ -138,12 +135,12 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 
 		planesChecked = 0;
 
-		pthread_mutex_lock(&planeMutex);
+		pthread_mutex_lock(&planeMutex); /*wake up planes and wait until they set new destination*/
 		pthread_cond_broadcast(&planeCond);
 		pthread_mutex_unlock(&planeMutex);
 		while(planesChecked < compa->planesCount)
-			pthread_cond_wait(&towerCond, &towerMutex);
-		pthread_mutex_unlock(&towerMutex);
+		pthread_cond_wait(&condVar, &mutexVar);
+		pthread_mutex_unlock(&mutexVar);
 
 		for (i = 0; i < size; i++) {
 			for (j = 0; med[i][j] != NULL; j++) {
@@ -160,22 +157,23 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 
 void * threadFunc(void * threadId){
 
-	int ID, i, j, notUnloaded, rcvPlane;
+	int ID, i, j, notUnloaded, rcvPlane, next, hasMedicine;
 	plane ** p;
 
 	ID = (int)threadId;
 	p = &(compa->companyPlanes[ID]);
-	
+
 	while(TRUE)
 	{
 		pthread_mutex_lock(&planeMutex);
-		pthread_cond_wait(&planeCond,&planeMutex);
-		
-		notUnloaded = 1;
+		pthread_cond_wait(&planeCond, &planeMutex); /*wait first instruction*/
+
+		notUnloaded = hasMedicine = 1;
 		rcvPlane = -1;
 		planesChecked++;
-		(*p)->distance--;
-		if ((*p)->distance < 0)
+		if((*p)->distance >= 0)
+			(*p)->distance--;
+		if ((*p)->distance == -1)
 		{
 			for (i = 0; med[(*p)->destinationID][i] != NULL && notUnloaded; i++)
 				if (med[(*p)->destinationID][i]->quantity != 0)
@@ -186,41 +184,51 @@ void * threadFunc(void * threadId){
 							notUnloaded = 0;
 						}
 		}
-	
-		pthread_mutex_lock(&towerMutex);
-		pthread_cond_signal(&towerCond);		/*le digo a company que siga*/
-		pthread_mutex_unlock(&towerMutex);
-		
-		pthread_cond_wait(&planeCond,&planeMutex);	/*me quedo esperando*/
+
+		pthread_mutex_lock(&mutexVar);
+		pthread_cond_signal(&condVar); /*cargo checked, wake up company*/
+		pthread_mutex_unlock(&mutexVar);
+
+		pthread_cond_wait(&planeCond, &planeMutex); /*wait*/
 		planesChecked++;
-		
+
 		if(!notUnloaded)
 		{
 			for( i = 0; i < unloading; i++ )
 				if((*p)->planeID == receivedPlanes[i]->planeID)
 					rcvPlane = i;
-			if( i == -1)
-				printf("Error fatal\n");
-			for (j = 0; j < (*p)->medCount; j++)
-				(*p)->medicines[j]->quantity = receivedPlanes[rcvPlane]->medicines[j]->quantity;
+				if( i == -1)
+					printf("Error fatal\n");
+				for (j = 0; j < (*p)->medCount; j++)
+					(*p)->medicines[j]->quantity = receivedPlanes[rcvPlane]->medicines[j]->quantity;
 		}
 
-		pthread_mutex_lock(&towerMutex);
-		pthread_cond_signal(&towerCond);		/*le digo a company que siga*/
-		pthread_mutex_unlock(&towerMutex);
+		pthread_mutex_lock(&mutexVar);
+		pthread_cond_signal(&condVar); /*cargo updated, wake up company*/
+		pthread_mutex_unlock(&mutexVar);
 
-		pthread_cond_wait(&planeCond,&planeMutex);	/*me quedo esperando*/
+		pthread_cond_wait(&planeCond, &planeMutex); /*wait*/
 		planesChecked++;
 
 		if((*p)->distance == -1)
 		{
-			(*p)->distance = mapSt->graph[(*p)->destinationID][((*p)->destinationID + 1) % size];
-			(*p)->destinationID = ((*p)->destinationID + 1) % size;
+			for( next = 0; next < mapSt->citiesCount && hasMedicine; next++)
+				for(j = 0; med[next][j] != NULL && hasMedicine; j++)
+					for(i = 0; i < (*p)->medCount && hasMedicine; i++)
+	if( med[next][j]->quantity > 0 && (*p)->medicines[i]->quantity > 0 && !strcmp((*p)->medicines[i]->name, med[next][j]->name))
+						hasMedicine = 0;
+			next--;
+			if(hasMedicine)
+				(*p)->distance--;
+			else{
+				(*p)->distance = mapSt->graph[(*p)->destinationID][next];
+				(*p)->destinationID = next;
+			}	
 		}
 
-		pthread_mutex_lock(&towerMutex);
-		pthread_cond_signal(&towerCond);		/*le digo a company que siga*/
-		pthread_mutex_unlock(&towerMutex);
+		pthread_mutex_lock(&mutexVar);
+		pthread_cond_signal(&condVar); /*new destination set, wake up company*/
+		pthread_mutex_unlock(&mutexVar);
 
 		pthread_mutex_unlock(&planeMutex);
 	}
@@ -232,9 +240,9 @@ void * threadFunc(void * threadId){
 static void sigintServHandler(int signo) {
 	int i;
 	for(i = 0; i < compa->planesCount; i++)
-		pthread_cancel(threads[i]);		/*hay que cancelar los threads pero creo que no anda esto*/
+	pthread_cancel(threads[i]); /*hay que matar los threads pero creo que no anda esto*/
 	freeCompanyResources();
-	
+
 	exit(0);
 }
 
@@ -252,8 +260,8 @@ freeCompanyResources(void)
 	}
 	free(compa);
 
-	for(i = 0; i < mapSt->citiesCount; i++)	/*si es la misma direccion de memoria que map.c para mapSt no hace falta liberar*/
-		free(mapSt->graph[i]);	
+	for(i = 0; i < mapSt->citiesCount; i++) /*si es la misma direccion de memoria que map.c para mapSt no hace falta liberar*/
+		free(mapSt->graph[i]);
 	free(mapSt->graph);
 	for(i = 0; i < mapSt->citiesCount; i++)
 	{

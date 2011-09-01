@@ -1,14 +1,14 @@
 /***
 ***
-***		io.c
-***				Jose Ignacio Galindo
-***				Federico Homovc
-***				Nicolas Loreti
-***			 	     ITBA 2011
+*** io.c
+*** Jose Ignacio Galindo
+*** Federico Homovc
+*** Nicolas Loreti
+*** ITBA 2011
 ***
 ***/
 
-/***		System includes		***/
+/*** System includes ***/
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -17,10 +17,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
-#include <error.h>
 #include <sys/msg.h>
 
-/***		Project Includes		***/
+/*** Project Includes ***/
 #include "./include/structs.h"
 #include "./include/backEnd.h"
 #include "./include/api.h"
@@ -37,7 +36,7 @@ ioFunc(processData * pdata, int companyCount)
 {
 	comuADT client;
 	medicine *** med;
-	int size, i, j, k, companyID, count, planeArrived;
+	int size, i, j, k, companyID, count, planeArrived, turn = 1;
 	plane ** p;
 
 	struct sigaction signalAction;
@@ -46,7 +45,7 @@ ioFunc(processData * pdata, int companyCount)
 	sigfillset(&(signalAction.sa_mask));
 
 	sigaction(SIGINT, &signalAction, NULL);
-	
+
 	client = connectToServer(pdata->server);
 	sendChecksign(mapClient);
 	while(TRUE)
@@ -55,22 +54,19 @@ ioFunc(processData * pdata, int companyCount)
 		rcvMap(&med, client, &size);
 		/*printf("\nMap cities distances:\n");
 		for(i = 0; i < size; i++)
-		{
+		{	
 			for(j = 0; j < size; j++)
-				printf("%d\t", mapSt->graph[i][j]);
+				printf("%d\t", map[i][j]);
 			printf("\n");
 		}*/
+		printf("\nTurn: %d\n\n", turn++);
 		for(i = 0; i < size; i++)
 		{
-			printf("\n%s requests:\n", mapSt->cities[i]->name);
+			printf("***************%s requests: ***************\n", mapSt->cities[i]->name);
 			printf("Medicine\t\t\tQuantity\n");
 			for(j = 0; med[i][j] != NULL; j++)
-			{
-				printf("%s\t\t\t%d", med[i][j]->name, med[i][j]->quantity);
-				printf("\n");
-			}
+				printf("%-20s\t\t%d\n", med[i][j]->name, med[i][j]->quantity);
 		}
-		printf("\n");
 		sendChecksign(mapClient);
 		for(i = 0; i < size; i++)
 		{
@@ -80,7 +76,7 @@ ioFunc(processData * pdata, int companyCount)
 				free(med[i][j]);
 			}
 			free(med[i]);
-		}
+		}	
 		free(med);
 
 		for(i = 0; i < companyCount; i++)
@@ -90,7 +86,7 @@ ioFunc(processData * pdata, int companyCount)
 			{
 				planeArrived = TRUE;
 				for(j = 0; j < count; j++)
-		printf("Company %d, plane %d arrived in %s\n", companyID, p[j]->planeID, mapSt->cities[p[j]->destinationID]->name);
+printf("Company %d, plane %d arrived in %s\n", companyID, p[j]->planeID, mapSt->cities[p[j]->destinationID]->name);
 			}
 			for(k = 0; k < count; k++)
 			{
@@ -117,12 +113,12 @@ static void sigintServHandler(int signo) {
 
 
 void
-freeIOResources(void)	/*si es la misma direccion de memoria que map.c para la variable mapSt no hace falta liberar nada*/
+freeIOResources(void) /*si es la misma direccion de memoria que map.c para la variable mapSt no hace falta liberar nada*/
 {
 	int i, j;
 
 	for(i = 0; i < mapSt->citiesCount; i++)
-		free(mapSt->graph[i]);	
+		free(mapSt->graph[i]);
 	free(mapSt->graph);
 	for(i = 0; i < mapSt->citiesCount; i++)
 	{
