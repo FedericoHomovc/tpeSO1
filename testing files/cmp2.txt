@@ -7,7 +7,7 @@ city3
 frula 360
 
 city4
-coca 50
+cocaina 50
 
 city5
 cafeina 450

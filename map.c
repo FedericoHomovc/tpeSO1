@@ -40,7 +40,7 @@ int
 main(int argc, char * argv[]) {
 
 	processData * pdata;
-	int k, companyID, count, i, j, turn = 0;
+	int k, companyID, count, i, j, c;
 	pid_t * pids;
 	servADT server;
 	comuADT * clients;
@@ -82,7 +82,8 @@ main(int argc, char * argv[]) {
 		perror("Error creating IO");
 		exit(1);
 	case 0:
-		ioFunc(pdata, argc - 2);
+		if(ioFunc(pdata, argc - 2))
+			printf("Error during IO execution\n");
 		_exit(0);
 	default:
 		k = 2;
@@ -116,19 +117,19 @@ main(int argc, char * argv[]) {
 
 	while(needMedicines(mapSt))
 	{
-		printf("turn: %d\n", turn++);
 		sendMap(mapSt->citiesCount, mapSt->cities, clients[1]);
 		if( rcvChecksign(clients[0]) )
 		{
 			printf("Error during IPC @ map.c\n");
 			return 1;
 		}
-		sleep(1); /*para que se pueda ver el mapa*/
+		
+		do{
+			c = getchar();
+		}while( c != '\n');
 
 		for(k = 2; k < argc; k++)
-		{
 			sendMap(mapSt->citiesCount, mapSt->cities, clients[k]);
-		}
 		
 		k = 0;
 		while(k < argc - 2)
@@ -142,7 +143,7 @@ main(int argc, char * argv[]) {
 				sendPlanes(companyID, count, p, clients[companyID+2]);
 			}
 
-			sendPlanes(companyID, count, p, clients[1]);	/*para mandar los planes a IO*/
+			sendPlanes(companyID, count, p, clients[1]);
 			for(i = 0; i < count; i++)
 			{
 				for(j = 0; j < p[i]->medCount; j++)

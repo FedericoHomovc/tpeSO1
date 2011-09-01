@@ -21,7 +21,6 @@
 
 /***		Project Includes		***/
 #include "../../include/api.h"
-#include "../../include/structs.h"
 
 /***		Structs 		***/
 typedef struct {

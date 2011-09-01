@@ -16,7 +16,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <error.h>
 #include <pthread.h>
 
 /***		Project Includes		***/
@@ -71,8 +70,7 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 	for (i = 0; i < compa->planesCount; i++)
 		if ((compa->companyPlanes[i]->destinationID = getCityID(
 				compa->companyPlanes[i]->startCity, mapSt)) == -1) {
-			printf("Invalid start city for plane %d in company %d.\n", i,
-					compa->ID);
+			printf("Invalid start city for plane %d in company %d.\n", i, compa->ID);
 			return 1;
 		}
 
@@ -94,7 +92,7 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 		unloading = 0;
 		rcvMap(&med, client, &size);
 
-		pthread_mutex_lock(&mutexVar);
+		pthread_mutex_lock(&mutexVar);			/*wake up planes and wait until they check cargo*/
 		pthread_cond_broadcast(&planeCond);
 		while(planesChecked < compa->planesCount)
 			pthread_cond_wait(&condVar, &mutexVar);
@@ -118,7 +116,7 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 
 		planesChecked = 0;
 
-		pthread_mutex_lock(&planeMutex);
+		pthread_mutex_lock(&planeMutex);		/*wake up planes and wait until they update cargo*/
 		pthread_cond_broadcast(&planeCond);
 		pthread_mutex_unlock(&planeMutex);
 		while(planesChecked < compa->planesCount)
@@ -138,7 +136,7 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 
 		planesChecked = 0;
 
-		pthread_mutex_lock(&planeMutex);
+		pthread_mutex_lock(&planeMutex);		/*wake up planes and wait until they set new destination*/
 		pthread_cond_broadcast(&planeCond);
 		pthread_mutex_unlock(&planeMutex);
 		while(planesChecked < compa->planesCount)
@@ -160,7 +158,7 @@ int companyFunc(processData * pdata, char * fileName, int companyID) {
 
 void * threadFunc(void * threadId){
 
-	int ID, i, j, notUnloaded, rcvPlane, next;
+	int ID, i, j, notUnloaded, rcvPlane;
 	plane ** p;
 
 	ID = (int)threadId;
@@ -169,9 +167,9 @@ void * threadFunc(void * threadId){
 	while(TRUE)
 	{
 		pthread_mutex_lock(&planeMutex);
-		pthread_cond_wait(&planeCond,&planeMutex);
+		pthread_cond_wait(&planeCond, &planeMutex);	/*wait first instruction*/
 		
-		notUnloaded = next = 1;
+		notUnloaded = 1;
 		rcvPlane = -1;
 		planesChecked++;
 		(*p)->distance--;
@@ -188,10 +186,10 @@ void * threadFunc(void * threadId){
 		}
 	
 		pthread_mutex_lock(&mutexVar);
-		pthread_cond_signal(&condVar);		/*le digo a company que siga*/
+		pthread_cond_signal(&condVar);		/*cargo checked, wake up company*/
 		pthread_mutex_unlock(&mutexVar);
 		
-		pthread_cond_wait(&planeCond,&planeMutex);	/*me quedo esperando*/
+		pthread_cond_wait(&planeCond, &planeMutex);	/*wait*/
 		planesChecked++;
 		
 		if(!notUnloaded)
@@ -206,22 +204,20 @@ void * threadFunc(void * threadId){
 		}
 
 		pthread_mutex_lock(&mutexVar);
-		pthread_cond_signal(&condVar);		/*le digo a company que siga*/
+		pthread_cond_signal(&condVar);		/*cargo updated, wake up company*/
 		pthread_mutex_unlock(&mutexVar);
 
-		pthread_cond_wait(&planeCond,&planeMutex);	/*me quedo esperando*/
+		pthread_cond_wait(&planeCond, &planeMutex);	/*wait*/
 		planesChecked++;
 
 		if((*p)->distance == -1)
 		{
-			while ( mapSt->graph[ (*p)->destinationID ][ ((*p)->destinationID + next) % size ] == 0)
-				next++;
-			(*p)->distance = mapSt->graph[(*p)->destinationID][((*p)->destinationID + next) % size];
-			(*p)->destinationID = ((*p)->destinationID + next) % size;
+			(*p)->distance = mapSt->graph[(*p)->destinationID][((*p)->destinationID + 1) % size];
+			(*p)->destinationID = ((*p)->destinationID + 1) % size;
 		}
 
 		pthread_mutex_lock(&mutexVar);
-		pthread_cond_signal(&condVar);		/*le digo a company que siga*/
+		pthread_cond_signal(&condVar);		/*new destination set, wake up company*/
 		pthread_mutex_unlock(&mutexVar);
 
 		pthread_mutex_unlock(&planeMutex);
@@ -234,7 +230,7 @@ void * threadFunc(void * threadId){
 static void sigintServHandler(int signo) {
 	int i;
 	for(i = 0; i < compa->planesCount; i++)
-		pthread_cancel(threads[i]);		/*hay que cancelar los threads pero creo que no anda esto*/
+		pthread_cancel(threads[i]);		/*hay que matar los threads pero creo que no anda esto*/
 	freeCompanyResources();
 	
 	exit(0);

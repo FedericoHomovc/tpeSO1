@@ -17,7 +17,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
-#include <error.h>
 #include <sys/msg.h>
 
 /***		Project Includes		***/
@@ -37,7 +36,7 @@ ioFunc(processData * pdata, int companyCount)
 {
 	comuADT client;
 	medicine *** med;
-	int size, i, j, k, companyID, count, planeArrived;
+	int size, i, j, k, companyID, count, planeArrived, turn = 1;
 	plane ** p;
 
 	struct sigaction signalAction;
@@ -60,17 +59,14 @@ ioFunc(processData * pdata, int companyCount)
 				printf("%d\t", map[i][j]);
 			printf("\n");
 		}*/
+		printf("\nTurn: %d\n\n", turn++);
 		for(i = 0; i < size; i++)
 		{
-			printf("\n%s requests:\n", mapSt->cities[i]->name);
+			printf("***************%s requests: ***************\n", mapSt->cities[i]->name);
 			printf("Medicine\t\t\tQuantity\n");
 			for(j = 0; med[i][j] != NULL; j++)
-			{
-				printf("%s\t\t\t%d", med[i][j]->name, med[i][j]->quantity);
-				printf("\n");
-			}
+				printf("%-20s\t\t%d\n", med[i][j]->name, med[i][j]->quantity);
 		}
-		printf("\n");
 		sendChecksign(mapClient);
 		for(i = 0; i < size; i++)
 		{
@@ -82,7 +78,7 @@ ioFunc(processData * pdata, int companyCount)
 			free(med[i]);
 		}
 		free(med);
-
+		
 		for(i = 0; i < companyCount; i++)
 		{
 			rcvPlanes(&companyID, &count, &p, client);
