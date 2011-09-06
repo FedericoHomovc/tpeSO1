@@ -198,7 +198,7 @@ comuADT connectToServer(servADT serv) {
 
 			/* Abandon exclusivity */
 			down(serv->semid, SEM_CLI_TABLE);
-			usleep(20000);
+			/*TODO usleep(20000);*/
 
 		}
 
@@ -327,13 +327,13 @@ int sendMsg(comuADT comm, message * msg, int flags) {
 	/* variable used to write at the client's reserved position */
 	destination = comm->memory + comm->offset;
 
-	/*blocks the procces if the massage table is full*/
+	/*blocks the process if the massage table is full*/
 	while (((sharedMemoryMessage*) destination)->isWritten == TRUE
 			&& ((sharedMemoryMessage*) destination)->amount != 0) {
 		/* Abandon exclusivity */
 		down(comm->semid, SEM_MEMORY);
 
-		usleep(20000);
+		/*usleep(20000);TODO*/
 
 		/* Requesting exclusivity */
 		up(comm->semid, SEM_MEMORY, TRUE);
@@ -417,7 +417,7 @@ int rcvMsg(comuADT comm, message * msg, int flags) {
 			} else {
 				/* Abandon exclusivity */
 				down(comm->semid, SEM_MEMORY);
-				usleep(20000);
+				/*TODO usleep(20000);*/
 			}
 		}
 	}
