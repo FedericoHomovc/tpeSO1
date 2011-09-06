@@ -58,22 +58,22 @@ serverADT startServer() {
 	return serv;
 }
 
-comuADT connectToServer(serverADT serv) {
-	comuADT client = malloc( sizeof(comuADT));
+clientADT connectToServer(serverADT serv) {
+	clientADT client = malloc( sizeof(clientADT));
 	client->queueID = serv->queueID;
 	client->pid = getpid();
 
 	return client;
 }
 
-comuADT getClient(serverADT serv, pid_t id) {
-	comuADT client = malloc( sizeof(comuADT) );
+clientADT getClient(serverADT serv, pid_t id) {
+	clientADT client = malloc( sizeof(clientADT) );
 	client->queueID = serv->queueID;
 	client->pid = id;
 	return client;
 }
 
-int sendMsg(comuADT comm, message * msg, int flags) {
+int sendMsg(clientADT comm, message * msg, int flags) {
 	msgQueue aux;
 	aux.mtype = comm->pid;
 	strcpy(aux.mtext, msg->message);
@@ -81,7 +81,7 @@ int sendMsg(comuADT comm, message * msg, int flags) {
 	return msgsnd(comm->queueID, &aux,sizeof aux.mtext, flags);
 }
 
-int rcvMsg(comuADT comm, message * msg, int flags) {
+int rcvMsg(clientADT comm, message * msg, int flags) {
 	int ret;
 	msgQueue aux;
 	ret = msgrcv(comm->queueID, &aux, sizeof aux.mtext, comm->pid, flags);
@@ -91,7 +91,7 @@ int rcvMsg(comuADT comm, message * msg, int flags) {
 	return ret;
 }
 
-int disconnectFromServer(comuADT comm, serverADT server)
+int disconnectFromServer(clientADT comm, serverADT server)
 {
 	return 0;
 }

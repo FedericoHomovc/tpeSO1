@@ -9,14 +9,14 @@
 ***/
 
 /***		Functions		***/
-int sendPlanes(int companyID, int count, plane ** p, comuADT client);
+int sendPlanes(int companyID, int count, plane ** p, clientADT client);
 
-int rcvPlanes(int * companyID, int * count, plane *** p, comuADT client);
+int rcvPlanes(int * companyID, int * count, plane *** p, clientADT client);
 
-int sendMap(int size, city ** cities, comuADT client);
+int sendMap(int size, city ** cities, clientADT client);
 
-int rcvMap(medicine **** meds, comuADT client, int * size);
+int rcvMap(medicine **** meds, clientADT client, int * size);
 
-int sendChecksign(comuADT client);
+int sendChecksign(clientADT client);
 
-int rcvChecksign(comuADT client);
+int rcvChecksign(clientADT client);

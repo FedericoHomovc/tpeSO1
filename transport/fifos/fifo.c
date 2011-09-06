@@ -62,7 +62,7 @@ int serverConnected;
 
 /*
  * Name: struct clientCDT
- * Description: This struct is the implementation of comuADT for IPC via FIFOs.
+ * Description: This struct is the implementation of clientADT for IPC via FIFOs.
  * Fields:
  * - clientFifo_r:	File descriptor for the FIFO used by a client to read.
  * - clientName:	Name of clientFifo_r in the file system.
@@ -163,7 +163,7 @@ static void *listeningFunction(void *serverInfo)
 	char c;
 	serverADT server;
 	connectionMsg currentConnection;
-	comuADT comm;
+	clientADT comm;
 
 	server = (serverADT)serverInfo;
 	server->clients = vArray_init(CLIENTS_SIZE);
@@ -289,12 +289,12 @@ serverADT startServer(void)
 }
 
 
-comuADT connectToServer(serverADT serv)
+clientADT connectToServer(serverADT serv)
 {
 	int fileDes_r, fileDes_w, serverFileDes;
 	char c;
 	connectionMsg mesg;
-	comuADT ret;
+	clientADT ret;
 
 	if(serv == NULL)
 	{
@@ -356,7 +356,7 @@ comuADT connectToServer(serverADT serv)
 }
 
 
-comuADT getClient(serverADT serv, pid_t id)
+clientADT getClient(serverADT serv, pid_t id)
 {
 	infoClient matchingClient;
 	infoClient client = {id, NULL};
@@ -373,7 +373,7 @@ comuADT getClient(serverADT serv, pid_t id)
 
 
 
-int sendMsg(comuADT comm, message *msg, int flags)
+int sendMsg(clientADT comm, message *msg, int flags)
 {
 	int ret;
 
@@ -403,7 +403,7 @@ int sendMsg(comuADT comm, message *msg, int flags)
 
 
 
-int rcvMsg(comuADT comm, message *msg, int flags)
+int rcvMsg(clientADT comm, message *msg, int flags)
 {
 	int ret;
 
@@ -439,7 +439,7 @@ int rcvMsg(comuADT comm, message *msg, int flags)
 }
 
 
-int disconnectFromServer(comuADT comm, serverADT server)
+int disconnectFromServer(clientADT comm, serverADT server)
 {
 	if(comm == NULL || server == NULL)
 		return -1;
@@ -486,7 +486,7 @@ int endServer(serverADT server)
 	for(i = 0; i < server->clientsUsed; i++)
 	{
 		infoClient * icp = (infoClient *)vArray_getAt(server->clients, i);
-		comuADT currentComm = icp->comm;
+		clientADT currentComm = icp->comm;
 
 		close(currentComm->clientFifo_r);
 		close(currentComm->clientFifo_w);

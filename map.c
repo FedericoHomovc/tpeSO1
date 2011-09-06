@@ -36,7 +36,7 @@ int needMedicines(map * mapSt);
 
 
 map * mapSt;
-comuADT mapClient;
+clientADT mapClient;
 int semmapid;
 
 int 
@@ -46,7 +46,7 @@ main(int argc, char * argv[]) {
 	int k, companyID, count, i, j, c, unloaded;
 	pid_t * pids;
 	serverADT server;
-	comuADT * clients;
+	clientADT * clients;
 	FILE * file = NULL;
 	plane ** p;
 
@@ -75,7 +75,7 @@ main(int argc, char * argv[]) {
 
 	if( (pids = malloc(sizeof(pid_t) * (argc))) == NULL )
 		return 1;
-	if( (clients = malloc(sizeof(comuADT *) * (argc))) == NULL)
+	if( (clients = malloc(sizeof(clientADT *) * (argc))) == NULL)
 		return 1;
 
 	pids[0] = getpid();

@@ -28,13 +28,13 @@
 static void sigintServHandler(int signo);
 void freeIOResources(void);
 
-comuADT mapClient;
+clientADT mapClient;
 map * mapSt;
 
 int
 ioFunc(processData * pdata, int companyCount)
 {
-	comuADT client;
+	clientADT client;
 	medicine *** med;
 	int size, i, j, k, companyID, count, planeArrived, turn = 1;
 	plane ** p;

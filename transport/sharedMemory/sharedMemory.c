@@ -128,11 +128,11 @@ serverADT startServer() {
 	return serv;
 }
 
-comuADT connectToServer(serverADT serv) {
+clientADT connectToServer(serverADT serv) {
 	struct clientCDT * clients;
 	int permits = 0666;
 	int i;
-	comuADT comm = NULL;
+	clientADT comm = NULL;
 	int flag = TRUE;
 
 
@@ -246,11 +246,11 @@ comuADT connectToServer(serverADT serv) {
 	return comm;
 }
 
-comuADT getClient(serverADT server, pid_t id) {
+clientADT getClient(serverADT server, pid_t id) {
 	struct clientCDT * clients = (struct clientCDT *) server->clients;
 	int i;
 	int permits = 0666;
-	comuADT comm = NULL;
+	clientADT comm = NULL;
 
 	/* Requesting exclusivity */
 	if (up(server->semid, SEM_CLI_TABLE, TRUE) == -1) {
@@ -300,7 +300,7 @@ comuADT getClient(serverADT server, pid_t id) {
 	return comm;
 }
 
-int sendMsg(comuADT comm, message * msg, int flags) {
+int sendMsg(clientADT comm, message * msg, int flags) {
 	int amtSent = 0;
 	char * origin = (char *) (msg->message);
 	void * destination;
@@ -359,7 +359,7 @@ int sendMsg(comuADT comm, message * msg, int flags) {
 	return amtSent;
 }
 
-int rcvMsg(comuADT comm, message * msg, int flags) {
+int rcvMsg(clientADT comm, message * msg, int flags) {
 	int amtRcv = 0;
 	void * origin;
 	sharedMemoryMessage * receiving;
@@ -439,7 +439,7 @@ int rcvMsg(comuADT comm, message * msg, int flags) {
 	return amtRcv;
 }
 
-int disconnectFromServer(comuADT comm, serverADT server) {
+int disconnectFromServer(clientADT comm, serverADT server) {
 	shmdt(comm->memory);
 	free(comm);
 	return 0;

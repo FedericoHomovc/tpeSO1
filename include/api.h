@@ -22,7 +22,7 @@
 
 /***		Structs 		***/
 typedef struct serverCDT * serverADT;
-typedef struct clientCDT * comuADT;
+typedef struct clientCDT * clientADT;
 
 
 typedef struct IPCMessage
@@ -34,7 +34,7 @@ typedef struct IPCMessage
 typedef struct
 {
 	pid_t id;
-	comuADT comm;
+	clientADT comm;
 } infoClient;
 
 typedef struct{
@@ -45,15 +45,15 @@ typedef struct{
 /***		Functions		***/
 serverADT startServer();
 
-comuADT connectToServer(serverADT serv);
+clientADT connectToServer(serverADT serv);
 
-comuADT getClient(serverADT serv, pid_t id);
+clientADT getClient(serverADT serv, pid_t id);
 
-int sendMsg(comuADT comm, message * msg, int flags);
+int sendMsg(clientADT comm, message * msg, int flags);
 
-int rcvMsg(comuADT comm, message * msg, int flags);
+int rcvMsg(clientADT comm, message * msg, int flags);
 
-int disconnectFromServer(comuADT comm, serverADT server);
+int disconnectFromServer(clientADT comm, serverADT server);
 
 int endServer(serverADT server);
 

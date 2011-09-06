@@ -17,7 +17,7 @@
 #define MESG_SIZE 4096
 /* The maximum amount of clients that the IPC can handle */
 #define MAX_CLIENTS 400
-#define SIZE_CLIST ((size_t)(sizeof(comuADT) * (MAX_CLIENTS + 1)))
+#define SIZE_CLIST ((size_t)(sizeof(clientADT) * (MAX_CLIENTS + 1)))
 #define SIZE ((size_t)(sizeof(sharedMemoryMessage)*MAX_CLIENTS*2))
 
 #define SEM_CLI_TABLE 0
@@ -37,18 +37,18 @@ static void cleanUP(void * mem, int bytes);
 serverADT startServer();
 
 /* Connects a client to a given server */
-comuADT connectToServer(serverADT serv);
+clientADT connectToServer(serverADT serv);
 
 /* Gets a client from the server side */
-comuADT getClient(serverADT server, pid_t id);
+clientADT getClient(serverADT server, pid_t id);
 
-int sendMsg(comuADT comm, message * msg, int flags);
+int sendMsg(clientADT comm, message * msg, int flags);
 
 /* Receives a message through comm */
-int rcvMsg(comuADT comm, message * msg, int flags);
+int rcvMsg(clientADT comm, message * msg, int flags);
 
 /* Disconnects a client from a server */
-int disconnectFromServer(comuADT comm, serverADT server);
+int disconnectFromServer(clientADT comm, serverADT server);
 
 /* Ends a server */
 int endServer(serverADT server);

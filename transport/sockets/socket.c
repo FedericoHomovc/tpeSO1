@@ -24,7 +24,7 @@
  * Structs
  */
 
-/* Struct underlying comuADT, have a sockFd Integer that represent the file
+/* Struct underlying clientADT, have a sockFd Integer that represent the file
 Socket descriptor */
 struct clientCDT
 {
@@ -104,7 +104,7 @@ static void * listeningConnection(void * serv)
 		exit(-1);
 	}
 
-	/*comuADT commTemp = malloc(sizeof(struct clientCDT));
+	/*clientADT commTemp = malloc(sizeof(struct clientCDT));
 	if (commTemp == NULL)
 	{
 		
@@ -142,7 +142,7 @@ static void * listeningConnection(void * serv)
 			}
 			icp->id = getpid();
 
-			comuADT comm = malloc(sizeof(comuADT));
+			clientADT comm = malloc(sizeof(clientADT));
 			if (comm == NULL)
 			{
 				/* Major problem */
@@ -227,10 +227,10 @@ serverADT startServer()
 }
 
 /* Connects to a server */
-comuADT connectToServer(serverADT server)
+clientADT connectToServer(serverADT server)
 {
 
-	comuADT comm = (comuADT) malloc ( sizeof( struct clientCDT));
+	clientADT comm = (clientADT) malloc ( sizeof( struct clientCDT));
 	if ( comm == NULL )
 		return NULL;
 	
@@ -299,7 +299,7 @@ int bindRet = -1;
 }
 
 /* Gets a client from the client list */
-comuADT getClient(serverADT server, pid_t id)
+clientADT getClient(serverADT server, pid_t id)
 {
 	if (server == NULL || server->infoClientArray == NULL)
 		return NULL;
@@ -316,7 +316,7 @@ comuADT getClient(serverADT server, pid_t id)
 }
 
 /* Sends a message */
-int sendMsg(comuADT comm, message * msg, int flags)
+int sendMsg(clientADT comm, message * msg, int flags)
 {
 	int ret = 0;
 	ret = send(comm->sockFd, msg->message, msg->size, 0);
@@ -327,7 +327,7 @@ int sendMsg(comuADT comm, message * msg, int flags)
 }
 
 /* Receives a message */
-int rcvMsg(comuADT comm, message *msg, int flags)
+int rcvMsg(clientADT comm, message *msg, int flags)
 {
 	int ret = recv(comm->sockFd, msg->message, msg->size,
 			(flags & IPC_NOWAIT) == 0 ? MSG_WAITALL : 0);
@@ -335,7 +335,7 @@ int rcvMsg(comuADT comm, message *msg, int flags)
 }
 
 /* Disconnects a client from the server */
-int disconnectFromServer(comuADT comm, serverADT server)
+int disconnectFromServer(clientADT comm, serverADT server)
 {
 	close(comm->sockFd);
 	free(comm);
@@ -435,10 +435,10 @@ if( fork() == 0){
 serverADT server = startServer();
 printf("Creo el server\n");
 }else{
-comuADT cliente1 = connectToServer(server);
+clientADT cliente1 = connectToServer(server);
 printf("Cliente 1 enganchado\n");
 
-comuADT cliente2 = connectToServer(server);
+clientADT cliente2 = connectToServer(server);
 printf("Cliente 2 enganchado\n\n");
 
 message mensaje = {10,"holaholac"};

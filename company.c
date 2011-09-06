@@ -40,11 +40,11 @@ plane ** planes, ** receivedPlanes;
 medicine *** med;
 company * compa;
 pthread_t * threads;
-comuADT mapClient;
+clientADT mapClient;
 
 int companyFunc(processData * pdata, char * fileName, int companyID) {
 	FILE * file = NULL;
-	comuADT client;
+	clientADT client;
 	int i, j;
 
 	struct sigaction signalAction;

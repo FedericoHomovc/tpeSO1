@@ -32,7 +32,7 @@ void itoa(int n, char *string);
 
 
 int
-sendChecksign(comuADT client)
+sendChecksign(clientADT client)
 {
 	message msg;
 	int ret;
@@ -49,7 +49,7 @@ sendChecksign(comuADT client)
 
 
 int
-rcvChecksign(comuADT client)
+rcvChecksign(clientADT client)
 {
 	message msg;
 	int ret;
@@ -67,7 +67,7 @@ rcvChecksign(comuADT client)
 
 
 int
-sendPlanes(int companyID, int count, plane ** p, comuADT client)
+sendPlanes(int companyID, int count, plane ** p, clientADT client)
 /*Format: companyID;count;plane1ID;destination1ID;medCount1;med1,c1;med2,c2;...;plane2ID;destination2ID;medCount2;med1,c1;...;*/
 {
 	message msg;
@@ -116,7 +116,7 @@ sendPlanes(int companyID, int count, plane ** p, comuADT client)
 
 
 int
-rcvPlanes(int * companyID, int * count, plane *** p, comuADT client)
+rcvPlanes(int * companyID, int * count, plane *** p, clientADT client)
 /*Format: companyID;count;destination1ID;medCount1;med1,c1;med2,c2;...;destination2ID;medCount2;med1,c1;...;*/
 {
 	message msg;
@@ -179,7 +179,7 @@ rcvPlanes(int * companyID, int * count, plane *** p, comuADT client)
 
 
 int
-sendMap(int size, city ** cities, comuADT client)
+sendMap(int size, city ** cities, clientADT client)
 {
 	message msg;
 	char * aux;
@@ -212,7 +212,7 @@ sendMap(int size, city ** cities, comuADT client)
 
 
 int
-rcvMap(medicine **** meds, comuADT client, int * size)
+rcvMap(medicine **** meds, clientADT client, int * size)
 {
 	message msg;
 	int ret, i = 0, k = 0;
