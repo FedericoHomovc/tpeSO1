@@ -34,7 +34,7 @@ struct serverCDT {
 	int queueID;
 };
 
-struct IPCCDT {
+struct clientCDT {
 	int queueID;
 	int pid;
 };

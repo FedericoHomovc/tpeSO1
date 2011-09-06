@@ -22,7 +22,7 @@
 
 /***		Structs 		***/
 typedef struct serverCDT * servADT;
-typedef struct IPCCDT * comuADT;
+typedef struct clientCDT * comuADT;
 
 
 typedef struct IPCMessage

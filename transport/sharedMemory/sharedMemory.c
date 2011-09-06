@@ -129,7 +129,7 @@ servADT startServer() {
 }
 
 comuADT connectToServer(servADT serv) {
-	struct IPCCDT * clients;
+	struct clientCDT * clients;
 	int permits = 0666;
 	int i;
 	comuADT comm = NULL;
@@ -205,7 +205,7 @@ comuADT connectToServer(servADT serv) {
 	}
 
 	/* initializing the client info */
-	comm = malloc(sizeof(struct IPCCDT));
+	comm = malloc(sizeof(struct clientCDT));
 	if (comm == NULL)
 	{
 		fprintf(stderr, "Malloc returned NULL in connectToServer\n");
@@ -247,7 +247,7 @@ comuADT connectToServer(servADT serv) {
 }
 
 comuADT getClient(servADT server, pid_t id) {
-	struct IPCCDT * clients = (struct IPCCDT *) server->clients;
+	struct clientCDT * clients = (struct clientCDT *) server->clients;
 	int i;
 	int permits = 0666;
 	comuADT comm = NULL;
@@ -264,7 +264,7 @@ comuADT getClient(servADT server, pid_t id) {
 			return NULL;
 		} else if (clients[i].id == id && clients[i].used == TRUE)
 		{
-			comm = malloc(sizeof(struct IPCCDT));
+			comm = malloc(sizeof(struct clientCDT));
 			if (comm == NULL)
 			{
 				fprintf(stderr, "Malloc returned NULL in getClient\n");

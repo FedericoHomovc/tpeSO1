@@ -61,7 +61,7 @@ int serverConnected;
  */
 
 /*
- * Name: struct IPCCDT
+ * Name: struct clientCDT
  * Description: This struct is the implementation of comuADT for IPC via FIFOs.
  * Fields:
  * - clientFifo_r:	File descriptor for the FIFO used by a client to read.
@@ -70,7 +70,7 @@ int serverConnected;
  * - clientName:	Name of clientFifo_w in the file system.
  */
 
-struct IPCCDT
+struct clientCDT
 {
 	int clientFifo_r;
 	char clientName_r[CLI_FIFO_R_LEN];
@@ -185,7 +185,7 @@ static void *listeningFunction(void *serverInfo)
 				return NULL;
 			}
 
-			comm = malloc(sizeof(struct IPCCDT));
+			comm = malloc(sizeof(struct clientCDT));
 
 			if(comm == NULL)
 			{
@@ -302,7 +302,7 @@ comuADT connectToServer(servADT serv)
 		return NULL;
 	}
 
-	ret = malloc(sizeof(struct IPCCDT));
+	ret = malloc(sizeof(struct clientCDT));
 
 	if(ret == NULL)
 		return NULL;

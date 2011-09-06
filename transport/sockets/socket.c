@@ -26,7 +26,7 @@
 
 /* Struct underlying comuADT, have a sockFd Integer that represent the file
 Socket descriptor */
-struct IPCCDT
+struct clientCDT
 {
 	int sockFd;
 };
@@ -104,7 +104,7 @@ static void * listeningConnection(void * serv)
 		exit(-1);
 	}
 
-	/*comuADT commTemp = malloc(sizeof(struct IPCCDT));
+	/*comuADT commTemp = malloc(sizeof(struct clientCDT));
 	if (commTemp == NULL)
 	{
 		
@@ -230,7 +230,7 @@ servADT startServer()
 comuADT connectToServer(servADT server)
 {
 
-	comuADT comm = (comuADT) malloc ( sizeof( struct IPCCDT));
+	comuADT comm = (comuADT) malloc ( sizeof( struct clientCDT));
 	if ( comm == NULL )
 		return NULL;
 	

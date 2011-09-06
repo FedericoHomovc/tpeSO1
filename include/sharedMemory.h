@@ -80,7 +80,7 @@ void itoa(int n, char *string);
  * - memory: The pointer to the shared memory already attached. Is only valid
  * to the process who obtained this struct from connectToServer or getClient.
  */
-struct IPCCDT
+struct clientCDT
 {
 	pid_t id;
     int used;
