@@ -70,13 +70,13 @@ ioFunc(processData * pdata, int companyCount)
 			printf("\n");
 		}*/
 		printf("\nTurn: %d\n\n", turn++);
-		/*for(i = 0; i < size; i++)
+		for(i = 0; i < size; i++)
 		{
 			printf("***************%s requests: ***************\n", mapSt->cities[i]->name);
 			printf("Medicine\t\t\tQuantity\n");
 			for(j = 0; med[i][j] != NULL; j++)
 				printf("%-20s\t\t%d\n", med[i][j]->name, med[i][j]->quantity);
-		}*/
+		}
 		sendChecksign(mapClient);
 		for(i = 0; i < size; i++)
 		{
