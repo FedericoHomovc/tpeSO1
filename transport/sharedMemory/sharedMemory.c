@@ -1,13 +1,12 @@
 /***
-***
-***		sharedMemory.c
-***				Jose Ignacio Galindo
-***				Federico Homovc
-***				Nicolas Loreti
-***			 	     ITBA 2011
-***
-***/
-
+ ***
+ ***		sharedMemory.c
+ ***				Jose Ignacio Galindo
+ ***				Federico Homovc
+ ***				Nicolas Loreti
+ ***			 	     ITBA 2011
+ ***
+ ***/
 
 /***		System includes		***/
 #include <sys/sem.h>
@@ -27,7 +26,6 @@
 
 /***		Functions		***/
 
-
 static void cleanUP(void * mem, int bytes) {
 	int i;
 	char * m = (char *) mem;
@@ -37,10 +35,9 @@ static void cleanUP(void * mem, int bytes) {
 		m[i] = 0;
 }
 
-
 serverADT startServer() {
 	int shmidClients = -1;
-	int shmidMemory = -1;
+	int shmidMessages = -1;
 	int semid = -1;
 	int i = 0;
 	void * clients;
@@ -50,75 +47,53 @@ serverADT startServer() {
 	serverADT serv = malloc(sizeof(struct serverCDT));
 	if (serv == NULL)
 	{
-		fprintf(stderr, "Server: Malloc returned null.");
+		fprintf(stderr,
+				"startServer(): not enough space to initialize serverADT.\n");
 		return NULL;
 	}
 	/* Starting the semaphores */
 	semid = initSem(1);
 	if (semid == -1) {
 		free(serv);
-		fprintf(stderr, "Server: Semaphore initialization failed.");
+		fprintf(stderr, "startServer(): Semaphore initialization failed.\n");
 		return NULL;
 	}
 	serv->semid = semid;
 
-	/* Obtaining the memory for the client table */
-	while ((shmidClients = shmget(KEY_1 + i, SIZE_CLIST, FLAGS)) == -1)
+	/* Obtaining the memory for the client vector memory*/
+	while ((shmidClients = shmget(KEY_1 + i, SIZE_CLI_VEC, FLAGS)) == -1)
 		i++;
 
-	i = 0;
 	/* Obtaining the communication memory */
-	while ((shmidMemory = shmget(KEY_2 + i, SIZE, FLAGS)) == -1)
-		i++;
+	while ((shmidMessages = shmget(KEY_2 + i, SIZE, FLAGS)) == -1)
+			i++;
+
 
 	serv->shmidClients = shmidClients;
-	serv->shmidMemory = shmidMemory;
+	serv->shmidMessages = shmidMessages;
 
-	/* Attaching memory */
+	/* Attaching client vector memory */
 	clients = shmat(serv->shmidClients, NULL, permits | IPC_CREAT | IPC_EXCL);
 
 	if (clients == (void*) -1) {
-		if (errno == EEXIST) {
-			clients = shmat(serv->shmidClients, NULL, 0);
-			if (clients == (void*) -1) {
-				fprintf(
-						stderr,
-						"Server: Error attaching shared memories with server process\n");
-				free(serv);
-				return NULL;
-			}
-			printf("Server: Attach to client table successful\n");
-		} else {
-			fprintf(
-					stderr,
-					"Server: Error attaching shared memories with server process\n");
-			free(serv);
-			return NULL;
-		}
+		fprintf(stderr,
+				"startServer(): error attaching memory to clients pointer.\n");
+		free(serv);
+		return NULL;
 	}
 
-	memory = shmat(serv->shmidMemory, NULL, permits | IPC_CREAT | IPC_EXCL);
+	/* Attaching message memory */
+	memory = shmat(serv->shmidMessages, NULL, permits | IPC_CREAT | IPC_EXCL);
 
 	if (memory == (void*) -1) {
-		if (errno == EEXIST) {
-			memory = shmat(serv->shmidMemory, NULL, 0);
-			if (memory == (void*) -1) {
-				fprintf(stderr, "Server: Error associating shared memories "
-						"with server process\n");
-				free(serv);
-				return NULL;
-			}
-			printf("Server: Attach to memory successful\n");
-		} else {
-			fprintf(stderr, "Server: Error associating shared memories "
-					"with server process\n");
-			free(serv);
-			return NULL;
-		}
+		fprintf(stderr,
+				"startServer(): error attaching memory to memory pointer.\n");
+		free(serv);
+		return NULL;
 	}
 
 	/* Cleaning dirty memory */
-	cleanUP(clients, SIZE_CLIST);
+	cleanUP(clients, SIZE_CLI_VEC);
 	cleanUP(memory, SIZE);
 
 	serv->maxClients = MAX_CLIENTS;
@@ -135,10 +110,9 @@ clientADT connectToServer(serverADT serv) {
 	clientADT comm = NULL;
 	int flag = TRUE;
 
-
 	if (serv == NULL)
 	{
-		fprintf(stderr, "Client: Cannot connect to NULL server\n");
+		fprintf(stderr, "connectToServer():  NULL server.\n");
 		return NULL;
 	}
 
@@ -151,41 +125,30 @@ clientADT connectToServer(serverADT serv) {
 	if (clients == (void*) -1) {
 		fprintf(
 				stderr,
-				"Client: Error associating shared memory with client process\n");
-		if (errno == EEXIST) {
-			clients = shmat(serv->shmidClients, NULL, 0);
-			if (clients == (void*) -1) {
-				fprintf(
-						stderr,
-						"Error associating shared memories with client process\n");
-				return NULL;
-			}
-			printf("Client: The shared client table existed "
-					"and attaching succeded\n");
-		} else {
-			fprintf(stderr, "Error associating shared memories "
-					"with client process\n");
-			return NULL;
-		}
+				"connectToServer(): error attaching memory to clients pointer.\n");
+		return NULL;
 	}
 
-	/* Selecting the first free client on the server client table */
+	/* Selecting the first free client on the server client vector */
 	for (i = 0; i < serv->maxClients; i++) {
 		if (clients[i].id == 0) {
 			clients[i].id = getpid();
 			clients[i].semid = serv->semid;
-			clients[i].shmidMemory = serv->shmidMemory;
-			clients[i].offset = i * 2 * sizeof(sharedMemoryMessage);
+			clients[i].shmidMessages = serv->shmidMessages;
+			clients[i].offset = i * 2 *  sizeof(shmMessage);
 			clients[i].used = TRUE;
 			break;
 		}
 	}
-	if (i == serv->maxClients)
+	if (i == serv->maxClients){
+		fprintf(
+				stderr,
+				"connectToServer():the client vector is full.\n");
 		return NULL;
+	}
 
 	/* Abandon exclusivity */
 	down(serv->semid, SEM_CLI_TABLE);
-
 
 	while (flag) {
 		/* Requesting exclusivity */
@@ -195,11 +158,8 @@ clientADT connectToServer(serverADT serv) {
 		{
 			flag = FALSE;
 		} else {
-
 			/* Abandon exclusivity */
 			down(serv->semid, SEM_CLI_TABLE);
-			/*TODO usleep(20000);*/
-
 		}
 
 	}
@@ -208,34 +168,22 @@ clientADT connectToServer(serverADT serv) {
 	comm = malloc(sizeof(struct clientCDT));
 	if (comm == NULL)
 	{
-		fprintf(stderr, "Malloc returned NULL in connectToServer\n");
+		fprintf(stderr, "Malloc returned NULL in connectToServer.\n");
 		return NULL;
 	}
 
 	comm->semid = (clients[i]).semid;
-	comm->shmidMemory = (clients[i]).shmidMemory;
+	comm->shmidMessages = (clients[i]).shmidMessages;
 	comm->offset = (clients[i]).offset;
 	/* linking the shared memory where the client s supposed to write and read */
-	comm->memory = shmat(serv->shmidMemory, NULL,
+	comm->memory = shmat(serv->shmidMessages, NULL,
 			permits | IPC_CREAT | IPC_EXCL);
 
 	if (comm->memory == (void*) -1) {
-		if (errno == EEXIST) {
-			comm->memory = shmat(serv->shmidMemory, NULL, 0);
-			if (comm->memory == (void*) -1) {
-				fprintf(stderr, "Error associating shared memories "
-						"with client process\n");
-				free(comm);
-				return NULL;
-			}
-			printf(
-					"Client: The shared memory existed and attaching succeded\n");
-		} else {
-			fprintf(stderr, "Error associating shared memories "
-					"with client process\n");
-			free(comm);
-			return NULL;
-		}
+		fprintf(stderr,
+				"connectToServer(): error attaching memory to memory pointer.\n");
+		free(comm);
+		return NULL;
 	}
 
 	/* Detaching client table */
@@ -267,17 +215,17 @@ clientADT getClient(serverADT server, pid_t id) {
 			comm = malloc(sizeof(struct clientCDT));
 			if (comm == NULL)
 			{
-				fprintf(stderr, "Malloc returned NULL in getClient\n");
+				fprintf(stderr, "Malloc returned NULL in getClient.\n");
 			}
 
 			comm->semid = (clients[i]).semid;
-			comm->shmidMemory = (clients[i]).shmidMemory;
+			comm->shmidMessages = (clients[i]).shmidMessages;
 			comm->offset = (clients[i]).offset;
-			comm->memory = shmat(comm->shmidMemory, NULL,
+			comm->memory = shmat(comm->shmidMessages, NULL,
 					permits | IPC_CREAT | IPC_EXCL);
 			if (comm->memory == (void*) -1) {
 				if (errno == EEXIST) {
-					comm->memory = shmat(comm->shmidMemory, NULL, 0);
+					comm->memory = shmat(comm->shmidMessages, NULL, 0);
 					if (comm->memory == (void*) -1) {
 						fprintf(stderr, "Error associating shared memories "
 								"with server process Errno: %d\n", errno);
@@ -304,7 +252,7 @@ int sendMsg(clientADT comm, message * msg, int flags) {
 	int amtSent = 0;
 	char * origin = (char *) (msg->message);
 	void * destination;
-	sharedMemoryMessage * sending;
+	shmMessage * sending;
 
 	if (msg == NULL || comm == NULL)
 	{
@@ -312,7 +260,7 @@ int sendMsg(clientADT comm, message * msg, int flags) {
 		return -1;
 	}
 
-	sending = malloc(sizeof(sharedMemoryMessage));
+	sending = malloc(sizeof(shmMessage));
 
 	if (sending == NULL) {
 		fprintf(stderr, "Malloc returned null in sendMsg\n");
@@ -328,8 +276,8 @@ int sendMsg(clientADT comm, message * msg, int flags) {
 	destination = comm->memory + comm->offset;
 
 	/*blocks the process if the massage table is full*/
-	while (((sharedMemoryMessage*) destination)->isWritten == TRUE
-			&& ((sharedMemoryMessage*) destination)->amount != 0) {
+	while (((shmMessage*) destination)->isWritten == TRUE
+			&& ((shmMessage*) destination)->quantity != 0) {
 		/* Abandon exclusivity */
 		down(comm->semid, SEM_MEMORY);
 
@@ -342,14 +290,14 @@ int sendMsg(clientADT comm, message * msg, int flags) {
 
 	sending->isWritten = TRUE;
 	amtSent = (msg->size > MESG_SIZE) ? MESG_SIZE : msg->size;
-	sending->amount = amtSent;
-	/*printf("sent amount : %d\n", amtSent);*/
+	sending->quantity = amtSent;
+	/*printf("sent quantity : %d\n", amtSent);*/
 	/* Packaging */
 	memcpy(sending->message, origin, amtSent);
 	/*amtSent = 10;
-	strncpy(sending->message, origin, amtSent);*/
+	 strncpy(sending->message, origin, amtSent);*/
 	/* Writing package */
-	memcpy(destination, sending, sizeof(sharedMemoryMessage));
+	memcpy(destination, sending, sizeof(shmMessage));
 
 	free(sending);
 
@@ -362,9 +310,8 @@ int sendMsg(clientADT comm, message * msg, int flags) {
 int rcvMsg(clientADT comm, message * msg, int flags) {
 	int amtRcv = 0;
 	void * origin;
-	sharedMemoryMessage * receiving;
+	shmMessage * receiving;
 	int done;
-
 
 	if (msg == NULL || comm == NULL)
 	{
@@ -372,7 +319,7 @@ int rcvMsg(clientADT comm, message * msg, int flags) {
 		return -1;
 	}
 
-	receiving = malloc(sizeof(sharedMemoryMessage));
+	receiving = malloc(sizeof(shmMessage));
 
 	if (receiving == NULL) {
 		/*TODO: Free any remaining struct.. no point in going on*/
@@ -385,12 +332,11 @@ int rcvMsg(clientADT comm, message * msg, int flags) {
 		return -2;
 	}
 	/*origin = comm->memory + comm->offset
-				+ ((comm->isServer) ? sizeof(sharedMemoryMessage) : 0);*/
+	 + ((comm->isServer) ? sizeof(shmMessage) : 0);*/
 
 	origin = comm->memory + comm->offset;
 
-
-	memcpy(receiving, origin, sizeof(sharedMemoryMessage));
+	memcpy(receiving, origin, sizeof(shmMessage));
 	if (flags == IPC_NOWAIT) {
 		if (receiving->isWritten == FALSE)
 		{
@@ -409,7 +355,7 @@ int rcvMsg(clientADT comm, message * msg, int flags) {
 				free(receiving);
 				return 0;
 			}
-			memcpy(receiving, origin, sizeof(sharedMemoryMessage));
+			memcpy(receiving, origin, sizeof(shmMessage));
 
 			if (receiving->isWritten == TRUE)
 			{
@@ -422,17 +368,17 @@ int rcvMsg(clientADT comm, message * msg, int flags) {
 		}
 	}
 
-	/*printf("received amount : %d\n", receiving->amount);
-	printf("received string: %s\n", (char *)receiving->message );*/
-	msg->message = malloc ( sizeof(char) * receiving->amount );
-	memcpy(msg->message, receiving->message, receiving->amount);
+	/*printf("received quantity : %d\n", receiving->quantity);
+	 printf("received string: %s\n", (char *)receiving->message );*/
+	msg->message = malloc(sizeof(char) * receiving->quantity);
+	memcpy(msg->message, receiving->message, receiving->quantity);
 	/*printf("received string: %s\n", (char *)msg->message );*/
-	msg->size = receiving->amount;
-	amtRcv = receiving->amount;
+	msg->size = receiving->quantity;
+	amtRcv = receiving->quantity;
 
 	free(receiving);
-	((sharedMemoryMessage*) origin)->isWritten = FALSE;
-	((sharedMemoryMessage*) origin)->amount = 0;
+	((shmMessage*) origin)->isWritten = FALSE;
+	((shmMessage*) origin)->quantity = 0;
 
 	/* Abandon exclusivity */
 	down(comm->semid, SEM_MEMORY);
@@ -449,7 +395,7 @@ int endServer(serverADT server) {
 	shmdt(server->memory);
 	shmdt(server->clients);
 	shmctl(server->shmidClients, IPC_RMID, NULL);
-	shmctl(server->shmidMemory, IPC_RMID, NULL);
+	shmctl(server->shmidMessages, IPC_RMID, NULL);
 	destroySem(server->semid);
 	free(server);
 	return 0;

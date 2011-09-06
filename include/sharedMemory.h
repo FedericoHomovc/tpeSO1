@@ -15,10 +15,10 @@
 #define KEY_2 (key_t)0x10000
 /* The maximum message size in bytes */
 #define MESG_SIZE 4096
-/* The maximum amount of clients that the IPC can handle */
+/* The maximum quantity of clients that the IPC can handle */
 #define MAX_CLIENTS 400
-#define SIZE_CLIST ((size_t)(sizeof(clientADT) * (MAX_CLIENTS + 1)))
-#define SIZE ((size_t)(sizeof(sharedMemoryMessage)*MAX_CLIENTS*2))
+#define SIZE_CLI_VEC ((size_t)(sizeof(clientADT) * (MAX_CLIENTS + 1)))
+#define SIZE ((size_t)(sizeof(shmMessage)*MAX_CLIENTS*2))
 
 #define SEM_CLI_TABLE 0
 #define SEM_MEMORY 1
@@ -28,7 +28,7 @@
  * Name: cleanUP
  * Receives: void * mem, int bytes
  * Returns: void
- * Description: This function zeroes out a certain amount of memory,
+ * Description: This function zeroes out a certain quantity of memory,
  * starting from mem until mem + bytes - 1.
  */
 static void cleanUP(void * mem, int bytes);
@@ -75,7 +75,7 @@ void itoa(int n, char *string);
  * purposes. 
  * - semid: The semaphore ID to be able to mutually exclude access to the 
  * message table. 
- * - shmidMemory: The shared memory ID to be able to access the message table.
+ * - shmidMessages: The shared memory ID to be able to access the message table.
  * - offset: The offset (of the message table) assigned for communication. 
  * - memory: The pointer to the shared memory already attached. Is only valid
  * to the process who obtained this struct from connectToServer or getClient.
@@ -85,7 +85,7 @@ struct clientCDT
 	pid_t id;
     int used;
     int semid;
-    int shmidMemory;
+    int shmidMessages;
     int offset;
     void * memory;
 };
@@ -98,21 +98,19 @@ struct clientCDT
  * - semid: The semaphore ID to be able to mutually exclude access to the 
  * message/clients table.
  * - shmidClients: The shared memory ID of the client's table. 
- * - shmidMemory: The shared memory ID of the messages table.
+ * - shmidMessages: The shared memory ID of the messages table.
  * - clients: The pointer to the shared memory client table already attached.
  * It has no sense for a client, only useful on the server side.
  * - memory: The pointer to the shared memory message table already attached.
  * It has no sense for a client, only useful on the server side.
- * - maxClients: The maximum amount of clients that may connect through one 
+ * - maxClients: The maximum quantity of clients that may connect through one
  * server.
  */
 struct serverCDT
 {
     int semid;
     int shmidClients;
-    int shmidMemory;
-    /* The following two parameters, are LOCAL to the server
-     * They have no sense on the client side */
+    int shmidMessages;
     void * clients;
     void * memory;
     int maxClients;
@@ -121,17 +119,17 @@ struct serverCDT
 
 
 /*
- * sharedMemoryMessage
+ * shmMessage
  * Description: Represents a shared memory message, the messages that are
  * stored on the message table.
  * Fields:
- * - amount: Specifies the length of the message.
+ * - quantity: Specifies the length of the message.
  * - message: The message itself.
  */
-typedef struct sharedMemoryMessage
+typedef struct shmMessage
 {
     int isWritten;
-    int amount;
+    int quantity;
     char message[MESG_SIZE];
-} sharedMemoryMessage;
+} shmMessage;
 
