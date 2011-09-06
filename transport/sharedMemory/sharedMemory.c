@@ -38,7 +38,7 @@ static void cleanUP(void * mem, int bytes) {
 }
 
 
-servADT startServer() {
+serverADT startServer() {
 	int shmidClients = -1;
 	int shmidMemory = -1;
 	int semid = -1;
@@ -47,7 +47,7 @@ servADT startServer() {
 	void * memory;
 	int permits = 0666;
 
-	servADT serv = malloc(sizeof(struct serverCDT));
+	serverADT serv = malloc(sizeof(struct serverCDT));
 	if (serv == NULL)
 	{
 		fprintf(stderr, "Server: Malloc returned null.");
@@ -128,7 +128,7 @@ servADT startServer() {
 	return serv;
 }
 
-comuADT connectToServer(servADT serv) {
+comuADT connectToServer(serverADT serv) {
 	struct clientCDT * clients;
 	int permits = 0666;
 	int i;
@@ -246,7 +246,7 @@ comuADT connectToServer(servADT serv) {
 	return comm;
 }
 
-comuADT getClient(servADT server, pid_t id) {
+comuADT getClient(serverADT server, pid_t id) {
 	struct clientCDT * clients = (struct clientCDT *) server->clients;
 	int i;
 	int permits = 0666;
@@ -439,13 +439,13 @@ int rcvMsg(comuADT comm, message * msg, int flags) {
 	return amtRcv;
 }
 
-int disconnectFromServer(comuADT comm, servADT server) {
+int disconnectFromServer(comuADT comm, serverADT server) {
 	shmdt(comm->memory);
 	free(comm);
 	return 0;
 }
 
-int endServer(servADT server) {
+int endServer(serverADT server) {
 	shmdt(server->memory);
 	shmdt(server->clients);
 	shmctl(server->shmidClients, IPC_RMID, NULL);

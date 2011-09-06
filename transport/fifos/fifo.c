@@ -81,7 +81,7 @@ struct clientCDT
 
 /*
  * Name: struct serverCDT
- * Description: This struct is the implementation of servADT for IPC via FIFOs.
+ * Description: This struct is the implementation of serverADT for IPC via FIFOs.
  * Fields:
  * - serverFifo:	File descriptor for a FIFO through which the clients send
  * 					their information (struct connectionMsg) when they get
@@ -161,11 +161,11 @@ static void *listeningFunction(void *serverInfo)
 {
 	int fileDes_r, fileDes_w;
 	char c;
-	servADT server;
+	serverADT server;
 	connectionMsg currentConnection;
 	comuADT comm;
 
-	server = (servADT)serverInfo;
+	server = (serverADT)serverInfo;
 	server->clients = vArray_init(CLIENTS_SIZE);
 
 	while(serverConnected)
@@ -251,11 +251,11 @@ static void *listeningFunction(void *serverInfo)
  */
 
 
-servADT startServer(void)
+serverADT startServer(void)
 {
 	int fileDes, retValue;
 	pthread_t listeningThread;
-	servADT ret = malloc(sizeof(struct serverCDT));
+	serverADT ret = malloc(sizeof(struct serverCDT));
 
 	/* The return value is initialized. */
 
@@ -289,7 +289,7 @@ servADT startServer(void)
 }
 
 
-comuADT connectToServer(servADT serv)
+comuADT connectToServer(serverADT serv)
 {
 	int fileDes_r, fileDes_w, serverFileDes;
 	char c;
@@ -356,7 +356,7 @@ comuADT connectToServer(servADT serv)
 }
 
 
-comuADT getClient(servADT serv, pid_t id)
+comuADT getClient(serverADT serv, pid_t id)
 {
 	infoClient matchingClient;
 	infoClient client = {id, NULL};
@@ -439,7 +439,7 @@ int rcvMsg(comuADT comm, message *msg, int flags)
 }
 
 
-int disconnectFromServer(comuADT comm, servADT server)
+int disconnectFromServer(comuADT comm, serverADT server)
 {
 	if(comm == NULL || server == NULL)
 		return -1;
@@ -461,7 +461,7 @@ int disconnectFromServer(comuADT comm, servADT server)
 
 
 
-int endServer(servADT server)
+int endServer(serverADT server)
 {
 	int i;
 

@@ -31,7 +31,7 @@ struct clientCDT
 	int sockFd;
 };
 
-/* Struct underlying servADT */
+/* Struct underlying serverADT */
 struct serverCDT
 {
 	/* Socket address of the server. */
@@ -93,7 +93,7 @@ static void * listeningSocket(void * ic)
  */
 static void * listeningConnection(void * serv)
 {
-	servADT server = (servADT) serv;
+	serverADT server = (serverADT) serv;
 
 	/* First initialize the table! */
 	server->infoClientArray = vArray_init(ICA_INITIAL_SIZE);
@@ -179,12 +179,12 @@ static void * listeningConnection(void * serv)
 
 /* Starts a server */
 
-servADT startServer()
+serverADT startServer()
 {
 	int bindReturn = 0;
 	int listenReturn = 0;
 	
-	servADT server = malloc(sizeof(struct serverCDT));
+	serverADT server = malloc(sizeof(struct serverCDT));
 	if (server == NULL)
 		return NULL;
 
@@ -227,7 +227,7 @@ servADT startServer()
 }
 
 /* Connects to a server */
-comuADT connectToServer(servADT server)
+comuADT connectToServer(serverADT server)
 {
 
 	comuADT comm = (comuADT) malloc ( sizeof( struct clientCDT));
@@ -299,7 +299,7 @@ int bindRet = -1;
 }
 
 /* Gets a client from the client list */
-comuADT getClient(servADT server, pid_t id)
+comuADT getClient(serverADT server, pid_t id)
 {
 	if (server == NULL || server->infoClientArray == NULL)
 		return NULL;
@@ -335,7 +335,7 @@ int rcvMsg(comuADT comm, message *msg, int flags)
 }
 
 /* Disconnects a client from the server */
-int disconnectFromServer(comuADT comm, servADT server)
+int disconnectFromServer(comuADT comm, serverADT server)
 {
 	close(comm->sockFd);
 	free(comm);
@@ -343,7 +343,7 @@ int disconnectFromServer(comuADT comm, servADT server)
 }
 
 /* Ends the server */
-int endServer(servADT server)
+int endServer(serverADT server)
 {
 	pthread_cancel(server->listeningThread);
 	close(server->sockFd);
@@ -432,7 +432,7 @@ printf("Esto funciona..\n\n");
 
 if( fork() == 0){
 
-servADT server = startServer();
+serverADT server = startServer();
 printf("Creo el server\n");
 }else{
 comuADT cliente1 = connectToServer(server);

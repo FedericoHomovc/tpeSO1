@@ -21,7 +21,7 @@
 #define MSG_SIZE 3000
 
 /***		Structs 		***/
-typedef struct serverCDT * servADT;
+typedef struct serverCDT * serverADT;
 typedef struct clientCDT * comuADT;
 
 
@@ -39,23 +39,23 @@ typedef struct
 
 typedef struct{
 	pid_t pid;
-	servADT server;
+	serverADT server;
 }processData;
 
 /***		Functions		***/
-servADT startServer();
+serverADT startServer();
 
-comuADT connectToServer(servADT serv);
+comuADT connectToServer(serverADT serv);
 
-comuADT getClient(servADT serv, pid_t id);
+comuADT getClient(serverADT serv, pid_t id);
 
 int sendMsg(comuADT comm, message * msg, int flags);
 
 int rcvMsg(comuADT comm, message * msg, int flags);
 
-int disconnectFromServer(comuADT comm, servADT server);
+int disconnectFromServer(comuADT comm, serverADT server);
 
-int endServer(servADT server);
+int endServer(serverADT server);
 
 int infoClient_comparePid(infoClient * ic1, infoClient * ic2);
 

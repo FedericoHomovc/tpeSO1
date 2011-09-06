@@ -34,13 +34,13 @@
 static void cleanUP(void * mem, int bytes);
 
 /* Starts a Server */
-servADT startServer();
+serverADT startServer();
 
 /* Connects a client to a given server */
-comuADT connectToServer(servADT serv);
+comuADT connectToServer(serverADT serv);
 
 /* Gets a client from the server side */
-comuADT getClient(servADT server, pid_t id);
+comuADT getClient(serverADT server, pid_t id);
 
 int sendMsg(comuADT comm, message * msg, int flags);
 
@@ -48,10 +48,10 @@ int sendMsg(comuADT comm, message * msg, int flags);
 int rcvMsg(comuADT comm, message * msg, int flags);
 
 /* Disconnects a client from a server */
-int disconnectFromServer(comuADT comm, servADT server);
+int disconnectFromServer(comuADT comm, serverADT server);
 
 /* Ends a server */
-int endServer(servADT server);
+int endServer(serverADT server);
 
 /* Receives a string and stocks in it the reversed representation of it. */
 void reverse(char *string);

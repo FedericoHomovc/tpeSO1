@@ -48,17 +48,17 @@ void itoa(int n, char *string);
 static key_t queueKey = 0xBEEF0;
 int queueid;
 
-servADT startServer() {
-	servADT serv;
+serverADT startServer() {
+	serverADT serv;
 
 	if ((queueid = msgget(queueKey, 0666 | IPC_CREAT)) == -1)
 		printf("Error msgget\n");
-	serv = malloc(sizeof(servADT));
+	serv = malloc(sizeof(serverADT));
 	serv->queueID = queueid;
 	return serv;
 }
 
-comuADT connectToServer(servADT serv) {
+comuADT connectToServer(serverADT serv) {
 	comuADT client = malloc( sizeof(comuADT));
 	client->queueID = serv->queueID;
 	client->pid = getpid();
@@ -66,7 +66,7 @@ comuADT connectToServer(servADT serv) {
 	return client;
 }
 
-comuADT getClient(servADT serv, pid_t id) {
+comuADT getClient(serverADT serv, pid_t id) {
 	comuADT client = malloc( sizeof(comuADT) );
 	client->queueID = serv->queueID;
 	client->pid = id;
@@ -91,12 +91,12 @@ int rcvMsg(comuADT comm, message * msg, int flags) {
 	return ret;
 }
 
-int disconnectFromServer(comuADT comm, servADT server)
+int disconnectFromServer(comuADT comm, serverADT server)
 {
 	return 0;
 }
 
-int endServer(servADT server)
+int endServer(serverADT server)
 {
 	return 0;
 }

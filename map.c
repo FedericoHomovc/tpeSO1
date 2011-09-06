@@ -45,7 +45,7 @@ main(int argc, char * argv[]) {
 	processData * pdata;
 	int k, companyID, count, i, j, c, unloaded;
 	pid_t * pids;
-	servADT server;
+	serverADT server;
 	comuADT * clients;
 	FILE * file = NULL;
 	plane ** p;
