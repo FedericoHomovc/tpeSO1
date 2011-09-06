@@ -281,7 +281,6 @@ int sendMsg(clientADT comm, message * msg, int flags) {
 		/* Abandon exclusivity */
 		down(comm->semid, SEM_MEMORY);
 
-		/*usleep(20000);TODO*/
 
 		/* Requesting exclusivity */
 		up(comm->semid, SEM_MEMORY, TRUE);
@@ -291,11 +290,8 @@ int sendMsg(clientADT comm, message * msg, int flags) {
 	sending->isWritten = TRUE;
 	amtSent = (msg->size > MESG_SIZE) ? MESG_SIZE : msg->size;
 	sending->quantity = amtSent;
-	/*printf("sent quantity : %d\n", amtSent);*/
 	/* Packaging */
 	memcpy(sending->message, origin, amtSent);
-	/*amtSent = 10;
-	 strncpy(sending->message, origin, amtSent);*/
 	/* Writing package */
 	memcpy(destination, sending, sizeof(shmMessage));
 
@@ -331,8 +327,6 @@ int rcvMsg(clientADT comm, message * msg, int flags) {
 		free(receiving);
 		return -2;
 	}
-	/*origin = comm->memory + comm->offset
-	 + ((comm->isServer) ? sizeof(shmMessage) : 0);*/
 
 	origin = comm->memory + comm->offset;
 
@@ -368,11 +362,8 @@ int rcvMsg(clientADT comm, message * msg, int flags) {
 		}
 	}
 
-	/*printf("received quantity : %d\n", receiving->quantity);
-	 printf("received string: %s\n", (char *)receiving->message );*/
 	msg->message = malloc(sizeof(char) * receiving->quantity);
 	memcpy(msg->message, receiving->message, receiving->quantity);
-	/*printf("received string: %s\n", (char *)msg->message );*/
 	msg->size = receiving->quantity;
 	amtRcv = receiving->quantity;
 
