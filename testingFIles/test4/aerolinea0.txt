@@ -1,0 +1,36 @@
+5
+
+Ankara
+Flumil 200
+Trankimazn 640
+Dianben 310
+Adiro100 140
+Almax 720
+
+Dhaka
+Adiro100 530
+Trankimazn 450
+Dianben 70
+Almax 500
+Flumil 870
+
+Wuhan
+Almax 790
+Trankimazn 500
+Adiro100 870
+Flumil 130
+Dianben 260
+
+Shenyang
+Dianben 610
+Trankimazn 550
+Almax 470
+Adiro100 280
+Flumil 440
+
+London
+Flumil 970
+Almax 140
+Trankimazn 740
+Dianben 220
+Adiro100 900

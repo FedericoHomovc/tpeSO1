@@ -1,0 +1,69 @@
+7
+
+Jaipur
+Flumil 610
+
+LosAngeles
+Neobrufen 480
+
+Shanghai
+Trankimazn 890
+Efferalgan 920
+
+Tehran
+Orfidal 210
+Efferalgan 960
+Sintrom 960
+Augmentine 650
+Cardyl 190
+Lexatn 180
+Neobrufen 200
+Dianben 480
+
+Karachi
+Dianben 60
+Flumil 700
+Lexatn 860
+Trankimazn 580
+Neobrufen 690
+Augmentine 530
+Sintrom 350
+
+Seoul
+Neobrufen 600
+Lexatn 740
+Cardyl 640
+Trankimazn 190
+
+Pune
+Sintrom 130
+Dianben 150
+Efferalgan 900
+Neobrufen 150
+Lexatn 250
+
+Jaipur LosAngeles 60
+Jaipur Shanghai 60
+Jaipur Tehran 140
+Jaipur Karachi 115
+Jaipur Seoul 195
+Jaipur Pune 225
+
+LosAngeles Karachi 100
+LosAngeles Seoul 30
+LosAngeles Pune 150
+
+Shanghai Karachi 275
+Shanghai Pune 10
+
+Tehran LosAngeles 265
+Tehran Karachi 60
+Tehran Seoul 280
+
+Karachi Pune 190
+
+Seoul Shanghai 265
+Seoul Karachi 250
+
+Pune Tehran 165
+Pune Seoul 205

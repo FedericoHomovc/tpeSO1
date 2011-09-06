@@ -1,0 +1,100 @@
+10
+
+Hyderabad
+Efferalgan 4940
+Augmentine 6540
+Enantyum 4630
+
+Wuhan
+Gelocatil 6450
+Efferalgan 4200
+
+Lahore
+Efferalgan 3640
+Orfidal 620
+Gelocatil 1730
+Enantyum 1280
+
+HoChiMinhCity
+Efferalgan 1950
+Enantyum 4310
+Orfidal 7190
+Gelocatil 430
+
+MexicoCity
+Augmentine 8680
+Efferalgan 9650
+Enantyum 6100
+
+Pyongyang
+Enantyum 6030
+Augmentine 1610
+Efferalgan 4270
+Orfidal 60
+
+Berlin
+Orfidal 3980
+
+Bangkok
+Augmentine 9010
+Enantyum 7250
+Orfidal 2340
+
+Seoul
+Efferalgan 3260
+Gelocatil 6150
+
+Nairobi
+Orfidal 4870
+Augmentine 1870
+
+Hyderabad Wuhan 185
+Hyderabad Lahore 270
+Hyderabad HoChiMinhCity 365
+Hyderabad MexicoCity 2345
+Hyderabad Pyongyang 1680
+Hyderabad Berlin 2145
+Hyderabad Bangkok 705
+Hyderabad Seoul 2950
+Hyderabad Nairobi 2705
+
+Wuhan HoChiMinhCity 2550
+Wuhan Pyongyang 2415
+Wuhan Bangkok 1895
+Wuhan Nairobi 1120
+
+Lahore Wuhan 740
+Lahore Pyongyang 2170
+Lahore Berlin 435
+Lahore Bangkok 710
+Lahore Nairobi 920
+
+HoChiMinhCity Lahore 900
+HoChiMinhCity MexicoCity 1750
+HoChiMinhCity Berlin 2565
+HoChiMinhCity Bangkok 950
+HoChiMinhCity Nairobi 1335
+
+MexicoCity Wuhan 2105
+MexicoCity Lahore 2680
+MexicoCity Berlin 2780
+MexicoCity Seoul 1665
+MexicoCity Nairobi 370
+
+Pyongyang Berlin 270
+Pyongyang Bangkok 850
+Pyongyang Seoul 1700
+Pyongyang Nairobi 580
+
+Berlin Wuhan 1535
+Berlin Bangkok 640
+Berlin Seoul 460
+Berlin Nairobi 675
+
+Bangkok Seoul 1585
+Bangkok Nairobi 2535
+
+Seoul Wuhan 1340
+Seoul Lahore 265
+Seoul Nairobi 1310
+

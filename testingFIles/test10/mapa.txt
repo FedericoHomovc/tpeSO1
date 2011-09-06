@@ -1,0 +1,179 @@
+15
+
+Kolkata
+Orfidal 3830
+Gelocatil 4010
+
+Shanghai
+Termalgin 460
+
+Dongguan
+Gelocatil 7950
+Nolotil 3920
+Orfidal 1060
+Enantyum 4530
+
+Jakarta
+Gelocatil 8200
+Termalgin 8680
+
+NewYorkCity
+Orfidal 6800
+Termalgin 140
+
+Shenyang
+Enantyum 8590
+Termalgin 3250
+
+Tehran
+Gelocatil 1900
+Enantyum 960
+
+Jeddah
+Nolotil 5310
+Orfidal 5840
+Gelocatil 2280
+Enantyum 700
+
+Jaipur
+Enantyum 9170
+Termalgin 6980
+Gelocatil 8780
+Nolotil 7970
+
+Wuhan
+Nolotil 7560
+Termalgin 3100
+Enantyum 9870
+Orfidal 7780
+
+Pyongyang
+Termalgin 9750
+
+Riyadh
+Nolotil 5950
+Gelocatil 5590
+Orfidal 310
+Enantyum 5660
+
+Yangon
+Nolotil 6420
+
+Pune
+Termalgin 540
+
+LosAngeles
+Termalgin 7890
+Nolotil 4000
+Gelocatil 2410
+Orfidal 2300
+
+Kolkata Shanghai 275
+Kolkata Dongguan 2425
+Kolkata Jakarta 2830
+Kolkata NewYorkCity 1970
+Kolkata Shenyang 200
+Kolkata Tehran 1190
+Kolkata Jeddah 415
+Kolkata Jaipur 175
+Kolkata Wuhan 1285
+Kolkata Pyongyang 615
+Kolkata Riyadh 435
+Kolkata Yangon 1770
+Kolkata Pune 2280
+Kolkata LosAngeles 2185
+
+Shanghai Dongguan 885
+Shanghai Jakarta 1765
+Shanghai Shenyang 670
+Shanghai Wuhan 2730
+Shanghai Pyongyang 160
+Shanghai Riyadh 2810
+Shanghai Yangon 2025
+Shanghai Pune 2610
+Shanghai LosAngeles 1965
+
+Dongguan Jakarta 1415
+Dongguan NewYorkCity 715
+Dongguan Shenyang 395
+Dongguan Jeddah 1050
+Dongguan Jaipur 890
+Dongguan Wuhan 1040
+Dongguan Pyongyang 990
+Dongguan Yangon 2325
+Dongguan Pune 2340
+Dongguan LosAngeles 780
+
+Jakarta NewYorkCity 1765
+Jakarta Shenyang 1320
+Jakarta Jeddah 2845
+Jakarta Jaipur 1505
+Jakarta Riyadh 2700
+Jakarta Yangon 735
+Jakarta LosAngeles 1030
+
+NewYorkCity Shanghai 2095
+NewYorkCity Shenyang 2535
+NewYorkCity Tehran 2255
+NewYorkCity Jaipur 470
+NewYorkCity Pyongyang 1430
+NewYorkCity LosAngeles 2865
+
+Shenyang Jeddah 2540
+Shenyang Jaipur 1205
+Shenyang Wuhan 2520
+Shenyang Pyongyang 2355
+
+Tehran Shanghai 2860
+Tehran Jakarta 1120
+Tehran Jeddah 1745
+Tehran Pyongyang 2125
+Tehran Riyadh 1975
+Tehran Yangon 2375
+Tehran Pune 2275
+
+Jeddah Shanghai 2010
+Jeddah Jaipur 1090
+Jeddah Riyadh 1150
+Jeddah Pune 75
+Jeddah LosAngeles 1540
+
+Jaipur Shanghai 1995
+Jaipur Tehran 210
+Jaipur Wuhan 2890
+Jaipur Pyongyang 2720
+Jaipur Riyadh 2815
+Jaipur Yangon 1855
+Jaipur Pune 1250
+Jaipur LosAngeles 615
+
+Wuhan Pune 1745
+Wuhan LosAngeles 425
+
+Pyongyang Jakarta 2040
+Pyongyang Jeddah 1315
+Pyongyang Wuhan 1770
+Pyongyang Yangon 1570
+Pyongyang Pune 1805
+
+Riyadh Dongguan 1745
+Riyadh NewYorkCity 1115
+Riyadh Shenyang 440
+Riyadh Wuhan 2285
+Riyadh Yangon 2190
+Riyadh Pune 1205
+Riyadh LosAngeles 2510
+
+Yangon NewYorkCity 60
+Yangon Shenyang 1895
+Yangon Jeddah 2155
+Yangon Wuhan 1380
+Yangon LosAngeles 145
+
+Pune Jakarta 2265
+Pune NewYorkCity 1860
+Pune Yangon 2415
+
+LosAngeles Tehran 1070
+LosAngeles Pyongyang 1285
+LosAngeles Pune 2790

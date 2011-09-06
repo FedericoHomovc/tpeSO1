@@ -1,0 +1,36 @@
+5
+
+MexicoCity
+Orfidal 1540
+Augmentine 5250
+Enantyum 7230
+Efferalgan 7470
+Gelocatil 4410
+
+Wuhan
+Augmentine 6690
+Orfidal 5140
+Efferalgan 3790
+Enantyum 8520
+Gelocatil 310
+
+Bangkok
+Enantyum 6480
+Gelocatil 4880
+Orfidal 9630
+Efferalgan 9850
+Augmentine 4480
+
+Berlin
+Augmentine 5210
+Gelocatil 2730
+Efferalgan 4560
+Enantyum 9730
+Orfidal 8490
+
+Hyderabad
+Efferalgan 3160
+Gelocatil 1210
+Enantyum 1230
+Augmentine 7400
+Orfidal 7300

@@ -1,0 +1,36 @@
+5
+
+Pune
+Viscofresh 9480
+Dianben 110
+Cardyl 930
+Orfidal 9760
+Augmentine 2920
+
+Santiago
+Augmentine 2720
+Cardyl 7350
+Viscofresh 50
+Dianben 2210
+Orfidal 3210
+
+HoChiMinhCity
+Cardyl 5280
+Augmentine 1320
+Dianben 3310
+Orfidal 5160
+Viscofresh 9980
+
+BuenosAires
+Orfidal 5450
+Cardyl 5180
+Viscofresh 4100
+Dianben 3870
+Augmentine 7880
+
+NewYorkCity
+Augmentine 3680
+Dianben 5120
+Orfidal 1040
+Cardyl 4590
+Viscofresh 8640

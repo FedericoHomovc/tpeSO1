@@ -1,0 +1,63 @@
+7
+
+Wuhan
+Flumil 770
+Dianben 660
+Adiro100 200
+Trankimazn 90
+
+Dhaka
+Flumil 730
+Adiro100 70
+
+Shenyang
+Dianben 170
+Flumil 530
+Adiro100 100
+Almax 290
+
+Tianjin
+Trankimazn 280
+
+London
+Trankimazn 640
+Flumil 10
+Adiro100 790
+
+Johannesburg
+Dianben 170
+Adiro100 60
+Almax 140
+Flumil 630
+
+Ankara
+Trankimazn 260
+Adiro100 960
+Flumil 40
+
+Wuhan Dhaka 20
+Wuhan Shenyang 165
+Wuhan Tianjin 195
+Wuhan London 105
+Wuhan Johannesburg 200
+Wuhan Ankara 95
+
+Dhaka Shenyang 205
+Dhaka London 195
+Dhaka Johannesburg 30
+Dhaka Ankara 40
+
+Shenyang Tianjin 275
+Shenyang London 165
+Shenyang Johannesburg 270
+Shenyang Ankara 55
+
+Tianjin Dhaka 90
+Tianjin Johannesburg 255
+Tianjin Ankara 205
+
+London Johannesburg 295
+London Ankara 220
+
+Johannesburg Ankara 250
+

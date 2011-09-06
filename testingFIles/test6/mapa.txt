@@ -1,0 +1,85 @@
+9
+
+Kolkata
+Termalgin 890
+Augmentine 710
+Ventoln 450
+
+Hanoi
+Augmentine 190
+Neobrufen 250
+Ventoln 640
+Termalgin 370
+
+Jeddah
+Ventoln 430
+Neobrufen 360
+Dianben 920
+Termalgin 550
+
+Moscow
+Termalgin 270
+
+Dongguan
+Augmentine 860
+Dianben 730
+Neobrufen 990
+Termalgin 410
+
+Cairo
+Neobrufen 960
+Dianben 870
+
+London
+Termalgin 780
+
+Wuhan
+Neobrufen 300
+Augmentine 250
+
+Lahore
+Dianben 220
+Augmentine 650
+
+Kolkata Hanoi 290
+Kolkata Jeddah 185
+Kolkata Moscow 110
+Kolkata Dongguan 155
+Kolkata Cairo 75
+Kolkata London 160
+Kolkata Wuhan 250
+Kolkata Lahore 20
+
+Hanoi Jeddah 120
+Hanoi Moscow 95
+Hanoi Dongguan 285
+Hanoi London 195
+Hanoi Wuhan 15
+
+Jeddah Moscow 65
+Jeddah Dongguan 200
+Jeddah Cairo 170
+Jeddah London 130
+
+Moscow Dongguan 75
+Moscow Cairo 255
+
+Dongguan Wuhan 230
+Dongguan Lahore 90
+
+Cairo Hanoi 115
+Cairo Dongguan 75
+Cairo Wuhan 280
+Cairo Lahore 105
+
+London Moscow 110
+London Dongguan 55
+London Cairo 85
+
+Wuhan London 280
+Wuhan Lahore 270
+
+Lahore Hanoi 250
+Lahore Jeddah 65
+Lahore Moscow 210
+Lahore London 125

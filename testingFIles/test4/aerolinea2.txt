@@ -1,0 +1,36 @@
+5
+
+Johannesburg
+Almax 490
+Adiro100 80
+Trankimazn 690
+Dianben 730
+Flumil 530
+
+Tianjin
+Trankimazn 730
+Flumil 550
+Almax 70
+Dianben 400
+Adiro100 430
+
+London
+Flumil 560
+Dianben 180
+Almax 410
+Trankimazn 360
+Adiro100 940
+
+Shenyang
+Dianben 160
+Trankimazn 600
+Adiro100 510
+Flumil 970
+Almax 850
+
+Dhaka
+Flumil 780
+Trankimazn 20
+Almax 270
+Dianben 660
+Adiro100 180

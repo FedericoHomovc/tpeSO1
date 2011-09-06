@@ -1,0 +1,93 @@
+10
+
+Surat
+VoltarenEmulgel 4660
+
+Alexandria
+Termalgin 5720
+
+Jakarta
+Flumil 2660
+Gelocatil 4480
+Termalgin 2280
+VoltarenEmulgel 5070
+
+HongKong
+Gelocatil 140
+Termalgin 7090
+
+Baghdad
+Flumil 4740
+Cardyl 1350
+VoltarenEmulgel 3790
+Gelocatil 6130
+
+Wuhan
+Gelocatil 5210
+Termalgin 9780
+Flumil 3790
+Cardyl 8490
+
+RioDeJaneiro
+Cardyl 4090
+
+Guangzhou
+Gelocatil 3870
+VoltarenEmulgel 4620
+Cardyl 2930
+
+Dhaka
+Termalgin 310
+
+Shenyang
+Cardyl 1300
+Termalgin 1910
+Flumil 1210
+Gelocatil 3450
+
+Surat Alexandria 185
+Surat Jakarta 285
+Surat HongKong 220
+Surat Baghdad 145
+Surat Wuhan 225
+Surat RioDeJaneiro 110
+Surat Guangzhou 215
+Surat Dhaka 290
+Surat Shenyang 40
+
+Alexandria Jakarta 215
+Alexandria HongKong 85
+Alexandria Baghdad 185
+Alexandria Wuhan 120
+Alexandria RioDeJaneiro 255
+Alexandria Guangzhou 285
+
+Jakarta HongKong 140
+Jakarta Wuhan 150
+Jakarta RioDeJaneiro 240
+Jakarta Dhaka 245
+Jakarta Shenyang 30
+
+HongKong Wuhan 190
+HongKong Guangzhou 130
+HongKong Dhaka 50
+HongKong Shenyang 145
+
+Baghdad Jakarta 150
+Baghdad Wuhan 175
+Baghdad Guangzhou 290
+Baghdad Dhaka 290
+
+
+RioDeJaneiro Wuhan 70
+RioDeJaneiro Guangzhou 75
+RioDeJaneiro Shenyang 295
+
+Guangzhou Jakarta 90
+Guangzhou Shenyang 90
+
+Dhaka Wuhan 135
+Dhaka RioDeJaneiro 10
+
+Shenyang Alexandria 250
+Shenyang Baghdad 125

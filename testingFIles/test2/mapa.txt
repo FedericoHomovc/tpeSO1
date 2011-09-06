@@ -1,0 +1,37 @@
+5
+
+Jeddah
+Enantyum 90
+
+Yangon
+Nolotil 680
+Augmentine 770
+
+Dongguan
+Flumil 130
+Augmentine 230
+
+Busan
+Nolotil 690
+Adiro100 980
+
+CapeTown
+Augmentine 20
+Flumil 870
+Enantyum 610
+Nolotil 570
+
+Jeddah Yangon 10
+Jeddah Dongguan 160
+Jeddah Busan 55
+Jeddah CapeTown 160
+
+Yangon Busan 15
+
+Dongguan Yangon 180
+Dongguan Busan 275
+Dongguan CapeTown 115
+
+Busan CapeTown 110
+
+CapeTown Yangon 90
