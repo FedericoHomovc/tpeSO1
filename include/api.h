@@ -34,7 +34,7 @@ typedef struct IPCMessage
 typedef struct
 {
 	pid_t id;
-	clientADT comm;
+	clientADT client;
 } infoClient;
 
 typedef struct{
@@ -49,11 +49,11 @@ clientADT connectToServer(serverADT serv);
 
 clientADT getClient(serverADT serv, pid_t id);
 
-int sendMsg(clientADT comm, message * msg, int flags);
+int sendMsg(clientADT client, message * msg, int flags);
 
-int rcvMsg(clientADT comm, message * msg, int flags);
+int rcvMsg(clientADT client, message * msg, int flags);
 
-int disconnectFromServer(clientADT comm, serverADT server);
+int disconnectFromServer(clientADT client, serverADT server);
 
 int endServer(serverADT server);
 

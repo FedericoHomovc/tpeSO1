@@ -163,7 +163,7 @@ static void *listeningFunction(void *serverInfo)
 	char c;
 	serverADT server;
 	connectionMsg currentConnection;
-	clientADT comm;
+	clientADT client;
 
 	server = (serverADT)serverInfo;
 	server->clients = vArray_init(CLIENTS_SIZE);
@@ -185,9 +185,9 @@ static void *listeningFunction(void *serverInfo)
 				return NULL;
 			}
 
-			comm = malloc(sizeof(struct clientCDT));
+			client = malloc(sizeof(struct clientCDT));
 
-			if(comm == NULL)
+			if(client == NULL)
 			{
 				fprintf(stderr, "Not enough memory.\n");
 				return NULL;
@@ -204,27 +204,27 @@ static void *listeningFunction(void *serverInfo)
 			{
 				fprintf(stderr, "Errno = %d, strerror = %s\n", errno, strerror(errno));
 				fprintf(stderr,	"Client FIFO _w couldn't be opened at listening.\n");
-				free(comm);
+				free(client);
 				return NULL;
 			}
 
-			comm->clientFifo_r = fileDes_r;
+			client->clientFifo_r = fileDes_r;
 
 			
 			if((fileDes_w = open(currentConnection.clientName_r, O_RDWR)) == -1)
 			{
 				fprintf(stderr, "Errno = %d, strerror = %s\n", errno, strerror(errno));
 				fprintf(stderr,	"Client FIFO _r couldn't be opened at listening.\n");
-				free(comm);
+				free(client);
 				return NULL;
 			}
 
-			comm->clientFifo_w = fileDes_w;
+			client->clientFifo_w = fileDes_w;
 
-			strcpy(comm->clientName_r, currentConnection.clientName_r);
-			strcpy(comm->clientName_w, currentConnection.clientName_w);
+			strcpy(client->clientName_r, currentConnection.clientName_r);
+			strcpy(client->clientName_w, currentConnection.clientName_w);
 
-			currentClient->comm = comm;
+			currentClient->client = client;
 			currentClient->id = currentConnection.id;
 
 			vArray_insertAtEnd(server->clients, currentClient);
@@ -236,7 +236,7 @@ static void *listeningFunction(void *serverInfo)
 			 */
 
 			message msg = {1, &c};
-			sendMsg(comm, &msg, 0);
+			sendMsg(client, &msg, 0);
 		}
 	}
 
@@ -368,46 +368,46 @@ clientADT getClient(serverADT serv, pid_t id)
 
 	matchingClient = *(infoClient *)arrayMatching;
 
-	return matchingClient.comm;
+	return matchingClient.client;
 }
 
 
 
-int sendMsg(clientADT comm, message *msg, int flags)
+int sendMsg(clientADT client, message *msg, int flags)
 {
 	int ret;
 
 	if(flags == IPC_NOWAIT)
 	{
-		int auxFlags = fcntl(comm->clientFifo_w, F_GETFL, 0);
+		int auxFlags = fcntl(client->clientFifo_w, F_GETFL, 0);
 
-		if(fcntl(comm->clientFifo_w, F_SETFL, O_NONBLOCK) == -1)
+		if(fcntl(client->clientFifo_w, F_SETFL, O_NONBLOCK) == -1)
 		{
 			fprintf(stderr, "Error on unblocking file descriptor.\n");
 			return -1;
 		}
 
-		ret = write(comm->clientFifo_w, msg->message, msg->size);
+		ret = write(client->clientFifo_w, msg->message, msg->size);
 
-		if(fcntl(comm->clientFifo_w, F_SETFL, auxFlags) == -1)
+		if(fcntl(client->clientFifo_w, F_SETFL, auxFlags) == -1)
 		{
 			fprintf(stderr, "Error on blocking file descriptor.\n");
 			return -1;
 		}
 	}
 	else
-		ret = write(comm->clientFifo_w, msg->message, msg->size);
+		ret = write(client->clientFifo_w, msg->message, msg->size);
 
 	return ret;
 }
 
 
 
-int rcvMsg(clientADT comm, message *msg, int flags)
+int rcvMsg(clientADT client, message *msg, int flags)
 {
 	int ret;
 
-	if(comm == NULL || msg == NULL)
+	if(client == NULL || msg == NULL)
 	{
 		fprintf(stderr, "NULL parameters.\n");
 		return -1;
@@ -416,45 +416,45 @@ int rcvMsg(clientADT comm, message *msg, int flags)
 
 	if(flags == IPC_NOWAIT)
 	{
-		int auxFlags = fcntl(comm->clientFifo_r, F_GETFL, 0);
+		int auxFlags = fcntl(client->clientFifo_r, F_GETFL, 0);
 
-		if(fcntl(comm->clientFifo_r, F_SETFL, O_NONBLOCK) == -1)
+		if(fcntl(client->clientFifo_r, F_SETFL, O_NONBLOCK) == -1)
 		{
 			fprintf(stderr, "Error on unblocking file descriptor.\n");
 			return -1;
 		}
 
-		ret = read(comm->clientFifo_r, msg->message, msg->size);
+		ret = read(client->clientFifo_r, msg->message, msg->size);
 
-		if(fcntl(comm->clientFifo_r, F_SETFL, auxFlags) == -1)
+		if(fcntl(client->clientFifo_r, F_SETFL, auxFlags) == -1)
 		{
 			fprintf(stderr, "Error on blocking file descriptor.\n");
 			return -1;
 		}
 	}
 	else
-		ret = read(comm->clientFifo_r, msg->message, msg->size);
+		ret = read(client->clientFifo_r, msg->message, msg->size);
 
 	return ret;
 }
 
 
-int disconnectFromServer(clientADT comm, serverADT server)
+int disconnectFromServer(clientADT client, serverADT server)
 {
-	if(comm == NULL || server == NULL)
+	if(client == NULL || server == NULL)
 		return -1;
 
 	/* File descriptors are closed. */
 
-	if(close(comm->clientFifo_r) == -1 || close(comm->clientFifo_w) == -1)
+	if(close(client->clientFifo_r) == -1 || close(client->clientFifo_w) == -1)
 	{
 		fprintf(stderr, "Client couldn't be closed.\n");
 		return -1;
 	}
 
-	/* comm is freed. */
+	/* client is freed. */
 
-	free(comm);
+	free(client);
 
 	return 0;
 }
@@ -486,19 +486,19 @@ int endServer(serverADT server)
 	for(i = 0; i < server->clientsUsed; i++)
 	{
 		infoClient * icp = (infoClient *)vArray_getAt(server->clients, i);
-		clientADT currentComm = icp->comm;
+		clientADT currentclient = icp->client;
 
-		close(currentComm->clientFifo_r);
-		close(currentComm->clientFifo_w);
+		close(currentclient->clientFifo_r);
+		close(currentclient->clientFifo_w);
 
-		if(unlink(currentComm->clientName_r) == -1 ||
-				unlink(currentComm->clientName_w) == -1)
+		if(unlink(currentclient->clientName_r) == -1 ||
+				unlink(currentclient->clientName_w) == -1)
 		{
 			fprintf(stderr, "Client FIFO couldn't be removed.\n");
 			return -1;
 		}
 
-		free(currentComm);
+		free(currentclient);
 		free(icp);
 
 	}

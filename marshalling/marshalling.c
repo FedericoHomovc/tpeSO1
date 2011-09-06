@@ -87,7 +87,7 @@ sendPlanes(int companyID, int count, plane ** p, clientADT client)
 	strcat(msg.message, ";");
 
 	if(count == 0)
-		return sendMsg(client, &msg, 0); 
+		ret = sendMsg(client, &msg, 0);
 
 	for(i = 0; i< count; i++)
 	{
@@ -100,14 +100,13 @@ sendPlanes(int companyID, int count, plane ** p, clientADT client)
 		free(aux);
 	}
 
-	msg.size = MSG_SIZE;
-
 	/*---------TESTING----------*/
 	/*printf("plane sent: %s\n", (char*)msg.message );
 	printf("plane sent size: %ld\n",msg.size);*/
 	/*---------TESTING----------*/
 	
-	ret = sendMsg(client, &msg, 0);
+	if(count != 0)
+		ret = sendMsg(client, &msg, 0);
 	free(num);
 	free(msg.message);
 

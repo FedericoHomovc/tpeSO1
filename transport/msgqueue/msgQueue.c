@@ -73,31 +73,32 @@ clientADT getClient(serverADT serv, pid_t id) {
 	return client;
 }
 
-int sendMsg(clientADT comm, message * msg, int flags) {
+int sendMsg(clientADT client, message * msg, int flags) {
 	msgQueue aux;
-	aux.mtype = comm->pid;
+	aux.mtype = client->pid;
 	strcpy(aux.mtext, msg->message);
 	
-	return msgsnd(comm->queueID, &aux,sizeof aux.mtext, flags);
+	return msgsnd(client->queueID, &aux,sizeof aux.mtext, flags);
 }
 
-int rcvMsg(clientADT comm, message * msg, int flags) {
+int rcvMsg(clientADT client, message * msg, int flags) {
 	int ret;
 	msgQueue aux;
-	ret = msgrcv(comm->queueID, &aux, sizeof aux.mtext, comm->pid, flags);
+	ret = msgrcv(client->queueID, &aux, sizeof aux.mtext, client->pid, flags);
 	strcpy(msg->message, aux.mtext);
-	((char *)msg->message)[ret - 1] = 0;
 	msg->size = strlen(msg->message);
 	return ret;
 }
 
-int disconnectFromServer(clientADT comm, serverADT server)
+int disconnectFromServer(clientADT client, serverADT server)
 {
+	free(client);
 	return 0;
 }
 
 int endServer(serverADT server)
 {
+	free(server);
 	return 0;
 }
 
