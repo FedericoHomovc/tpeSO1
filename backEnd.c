@@ -27,23 +27,80 @@
 #define CR 13
 
 /***		Functions		***/
+
+/*
+* getCity
+*
+* This function creates a new City struct and fills it with the values read
+* from the file. 
+*
+* @mapFile: pointer to the file from where to get the data.
+* @newCity: pointer to the struct where the data will be put.
+*/
 static int getCity( FILE * mapFile, city * newCity);
+
+/*
+* getInt
+*
+* Reads an integer from the file given and returns it in the pointer given as
+* parameter.
+*
+* @mapFile: pointer to the file from where to get the data.
+* @out: pointer to the integer where the data will be put.
+*/
 static int getInt(FILE * mapFile, int * out);
+
+/*
+* getString
+*
+* Reads a string from the file given and returns it in the pointer given as
+* parameter. Returns ENDEDFILE if there is nothing more to read and BLANKLINE
+* if the current line is empty.
+*
+* @mapFile: pointer to the file from where to get the data.
+* @out: pointer to the string where the data will be put.
+*/
 static int getString(FILE * mapFile, char ** out);
+
+/*
+* initializeGraph
+*
+* Reads the data from the file given and creates a square matrix with all the 
+* distances between the cities.
+*
+* @file: pointer to the file from where to get the data.
+* @mapSt: pointer to the struct where the data will be put.
+*/
 static int initializeGraph(FILE * file, map * mapSt);
+
+/*
+* createPlane
+*
+* Creates a new plane with the data read from the file given.
+*
+* @file: pointer to the file from where to get the data.
+* @newPlane: pointer to the struct where the data will be put.
+*/
 static int createPlane(FILE * file, plane ** newPlane);
-static void dijkstra(int *** matrix, int size);
+
+/*
+* floyd
+*
+* Applies the Floyd-Warshall algorithm to the matrix given.
+*
+* @matrix: pointer to the matrix to applie the algorithm.
+* @size: number of rows and columns of the matrix.
+*/
+static void floyd(int *** matrix, int size);
 
 int
 openFile(FILE ** file, char * fName)
 {
-	char * string;
+	char * string = NULL;
 	
-	if( (string=malloc( strlen(fName) + 3)) == NULL)
-	{
+	if( (string = malloc( strlen(fName) + 3)) == NULL)
 		return 1;
-	}
-	strcpy(string, "./"); /* Se busca el archivo en la ubicacion actual */
+	strcpy(string, "./");
 	strcat(string, fName);
 	*file = fopen(string,"r");
 	free(string);
@@ -54,20 +111,10 @@ openFile(FILE ** file, char * fName)
 }
 
 int
-allocMapSt(map ** mapSt, int argc)
-{
-	if( (*mapSt=malloc(sizeof(map))) == NULL)
-	{
-		return 1;
-	}
-	return 0;
-}
-
-int
 createCities(FILE * file, map * mapSt)
 {
 	int i;
-	char * aux;
+	char * aux = NULL;
 	getInt( file,  &(mapSt->citiesCount) ); /* gets the quantity of cities */
 
 
@@ -90,7 +137,7 @@ createCities(FILE * file, map * mapSt)
 
 	if( initializeGraph(file, mapSt) )
 		return 1;
-	dijkstra(&mapSt->graph, mapSt->citiesCount);
+	floyd(&mapSt->graph, mapSt->citiesCount);
 
 	return 0;
 }
@@ -99,31 +146,25 @@ static int
 getCity( FILE * file, city * newCity)
 {
 	int packages = 0; /*medicines*/
-	char * aux;
+	char * aux = NULL;
 	
-	if( getString(file, &(newCity->name)) )
-	{
+	if( getString(file, &(newCity->name)) ) /*gets the name of the city*/
 		return 1;
-	}
 
 	if( (newCity->medicines = malloc(1)) == NULL)	/*to initially alloc*/
 		return 1;
 
-	while( getString( file, &aux ) != BLANKLINE ) /*revisar*/
-	{ /*gets the medicine name*/
+	while( getString( file, &aux ) != BLANKLINE )
+	{
  		if ( (newCity->medicines = realloc(newCity->medicines, sizeof(medicine*) * ++packages)) == NULL )
-		{
 			return 1;
-		}
+
 		if( (newCity->medicines[packages-1] = malloc(sizeof(medicine))) == NULL )
-		{
 			return 1;
-		}
+
 		newCity->medicines[packages-1]->name = aux;
-		if( getInt(file, &(newCity->medicines[packages-1]->quantity) ) )
-		{/*gets the medicine quantity*/
+		if( getInt(file, &(newCity->medicines[packages-1]->quantity) ) ) /*gets the medicine quantity*/
 			return 1;	
-		}
 	}
 	newCity->medCount = packages;
 
@@ -134,7 +175,7 @@ static int
 initializeGraph(FILE * file, map * mapSt)
 {
 	int i, ID1, ID2, ret, dist;
-	char * aux;
+	char * aux = NULL;
 
 	if( (mapSt->graph = calloc(mapSt->citiesCount, sizeof(int *))) == NULL)
 		return 1;
@@ -143,7 +184,7 @@ initializeGraph(FILE * file, map * mapSt)
 		if( (mapSt->graph[i] = calloc(mapSt->citiesCount, sizeof(int))) == NULL)
 			return 1;
 
-	while( (ret = getString( file, &aux )) != ENDEDFILE) /*revisar*/
+	while( (ret = getString( file, &aux )) != ENDEDFILE)
 	{	
 		if(ret != BLANKLINE)
 		{
@@ -153,7 +194,7 @@ initializeGraph(FILE * file, map * mapSt)
 				return 1;
 			ID2 = getCityID(aux, mapSt);
 			free(aux);
-			if( getInt( file, &dist ) ) /* gets the distance to a city */
+			if( getInt( file, &dist ) ) /*gets the distance to a city*/
 				return 1;
 			if( ID1 == -1 || ID2 == -1 )
 				return 1;
@@ -169,17 +210,17 @@ int
 createCompany(FILE * file, company ** newCompany)
 {
 	int qtty, i;
-	char * aux;
+	char * aux = NULL;
 
 	if( (*newCompany = malloc(sizeof(company))) == NULL )
 	{
-		printf("Could not allocate company memory\n");
+		fprintf(stderr, "Could not allocate company memory\n");
 		return 1;
 	}
 
 	if(getInt( file, &qtty ))
 	{
-		printf("Could not get planes quantity\n");
+		fprintf(stderr, "Could not get planes quantity\n");
 		return 1;
 	}
 
@@ -187,16 +228,11 @@ createCompany(FILE * file, company ** newCompany)
 
 	if( ((*newCompany)->companyPlanes = malloc(sizeof(plane*) * qtty)) == NULL )
 	{
-		printf("Could not allocate company planes memory\n");
+		fprintf(stderr, "Could not allocate company planes memory\n");
 		return 1;
 	}
 	
 	getString(file, &aux);
-	/*if( getString(mapFile, &aux) != BLANKLINE )
-	{
-		printf("File error. Not a blank line before first company plane\n");
-		return 1;
-	}*/
 
 	for( i = 0; i<qtty; i++)
 	{
@@ -211,7 +247,7 @@ createCompany(FILE * file, company ** newCompany)
 static int
 createPlane(FILE * file, plane ** newPlane)
 {
-	char * aux;
+	char * aux = NULL;
 	int packages = 0, ret;
 	
 	if( getString(file, &aux) )
@@ -224,18 +260,20 @@ createPlane(FILE * file, plane ** newPlane)
 	if( ((*newPlane)->medicines = malloc(1)) == NULL) /*to initially alloc*/
 		return 1;
 
-	while( (ret = getString( file, &aux )) != BLANKLINE && ret != ENDEDFILE) /*revisar*/
+	while( (ret = getString( file, &aux )) != BLANKLINE && ret != ENDEDFILE)
 	{
 		if ( ((*newPlane)->medicines = realloc((*newPlane)->medicines, sizeof(medicine*) * ++packages)) == NULL )
 			return 1;
+
 		if( ((*newPlane)->medicines[packages-1] = malloc(sizeof(medicine))) == NULL )
 			return 1;
+
 		(*newPlane)->medicines[packages-1]->name = aux;
 		if( getInt(file, &((*newPlane)->medicines[packages-1]->quantity) ) )
 			return 1;	
 	}
 	(*newPlane)->medCount = packages;
-	(*newPlane)->distance = 0;
+	(*newPlane)->distance = 0; /*initial distance to start city is set to 0*/
 
 	return 0;
 }
@@ -247,9 +285,7 @@ getCityID( char * cityName, map * mapSt)
 	for(i = 0; i<mapSt->citiesCount; i++)
 	{
 		if(! strcmp(mapSt->cities[i]->name, cityName))
-		{
 			return mapSt->cities[i]->ID;
-		}
 	}
 	return -1;
 }
@@ -258,8 +294,8 @@ getCityID( char * cityName, map * mapSt)
 static int
 getInt(FILE * file, int * out)
 {
-	int cant, start=0, c;
-	char * aux=NULL;
+	int cant, start = 0, c;
+	char * aux = NULL;
 
 	while( !start && (c=fgetc(file)) != EOF)
 	{
@@ -268,9 +304,7 @@ getInt(FILE * file, int * out)
 			start = 1;
 			cant = 0;
 			if( (aux = malloc(sizeof(char) * BLOCK)) == NULL)
-			{
 				return 1;
-			}
 			do
 			{
 				aux[cant++] = c;
@@ -278,8 +312,8 @@ getInt(FILE * file, int * out)
 			}while(isdigit(c));
 			aux[cant] = '\0';
 		}
-
 	}
+
 	if(aux)
 	{
 		*out=atoi(aux);
@@ -293,33 +327,28 @@ static int
 getString(FILE * file, char ** out)
 {
 
-	int cant, start=0, c, cap = BLOCK, newLine = 0;
+	int cant, start = 0, c, cap = BLOCK, newLine = 0;
 	char * aux = NULL;
 
 	while(!start && (c=fgetc(file))!=EOF )
 	{
-
 		if(( c==' ' || c=='\t' || c=='\r' || c=='\n' || c==CR) && !start)
 		{
 			if(newLine)
 				return BLANKLINE;
 			if(c == '\n')
-			{
 				newLine = 1;
-			}
 		}
 		if(isalnum(c))
 		{
-			start=1;
-			cant=0;
-			if(	(aux = malloc(sizeof(char) * cap)) == NULL)
-			{
+			start = 1;
+			cant = 0;
+			if( (aux = malloc(sizeof(char) * cap)) == NULL)
 				return 1;
-			}
-			
+
 			do
 			{
-				if(cap==cant)
+				if(cap == cant)
 				{
 					cap *= INCREASERATIO;
 					if ( ( aux = realloc( aux, sizeof(char)*cap ) ) == NULL )
@@ -347,8 +376,8 @@ getString(FILE * file, char ** out)
 	return 1;
 }
 
-void
-dijkstra(int *** map, int size){
+static void
+floyd(int *** map, int size){
 
 	int i, j, k;
 	int ** dist = NULL;
@@ -368,28 +397,30 @@ dijkstra(int *** map, int size){
 
 void itoa(int n, char *string)
 {
-    int i, sign;
+	int i = 0, sign;
 
-    if ((sign = n) < 0)  /* record sign */
-        n = -n;          /* make n positive */
-    i = 0;
-    do {       /* generate digits in reverse order */
-        string[i++] = n % 10 + '0';   /* get next digit */
-    } while ((n /= 10) > 0);     /* delete it */
-    if (sign < 0)
-        string[i++] = '-';
-    string[i] = '\0';
-    reverse(string);
+	if ((sign = n) < 0)
+		n = -n;
+	do {
+		string[i++] = n % 10 + '0';
+	} while ((n /= 10) > 0);
+
+	if (sign < 0)
+		string[i++] = '-';
+	string[i] = '\0';
+	reverse(string);
+
+	return;
 }
 
 void reverse(char *string)
 {
-    int i, j;
-    char c;
+	int i, j;
+	char c;
 
-    for (i = 0, j = strlen(string)-1; i<j; i++, j--) {
-        c = string[i];
-        string[i] = string[j];
-        string[j] = c;
-    }
+	for (i = 0, j = strlen(string)-1; i<j; i++, j--) {
+		c = string[i];
+		string[i] = string[j];
+		string[j] = c;
+	}
 }
