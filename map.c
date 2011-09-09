@@ -58,7 +58,8 @@ main(int argc, char * argv[]) {
 	}
 
 	if (!openFile(&file, argv[1])) {
-		allocMapSt(&mapSt, argc);
+		if( (mapSt = malloc(sizeof(map))) == NULL )
+			return 1;
 		if (createCities(file, mapSt)) {
 			printf("Map File Error\n");
 			return 1;
