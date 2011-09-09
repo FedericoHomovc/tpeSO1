@@ -1,0 +1,88 @@
+9
+
+Surat
+Viscofresh 9870
+
+BuenosAires
+Cardyl 5620
+Dianben 2770
+Augmentine 5930
+
+Jakarta
+Dianben 1810
+Orfidal 4250
+Viscofresh 1520
+
+NewYorkCity
+Cardyl 6870
+Viscofresh 4550
+Dianben 9820
+Orfidal 9450
+
+Jeddah
+Cardyl 4610
+Viscofresh 7970
+Augmentine 8990
+
+HoChiMinhCity
+Orfidal 9800
+Dianben 8850
+Viscofresh 7810
+
+Santiago
+Dianben 1650
+Cardyl 9590
+Augmentine 5600
+Viscofresh 9360
+
+SaoPaulo
+Cardyl 4610
+Orfidal 9380
+Viscofresh 5480
+Augmentine 6320
+
+Pune
+Viscofresh 4570
+
+Surat BuenosAires 265
+Surat Jakarta 45
+Surat NewYorkCity 275
+Surat Jeddah 275
+Surat HoChiMinhCity 35
+Surat Santiago 75
+Surat SaoPaulo 185
+Surat Pune 50
+
+BuenosAires Jakarta 285
+BuenosAires NewYorkCity 275
+BuenosAires Jeddah 215
+BuenosAires HoChiMinhCity 245
+BuenosAires Santiago 170
+BuenosAires Pune 230
+
+Jakarta NewYorkCity 240
+Jakarta Santiago 195
+Jakarta Pune 70
+
+NewYorkCity Jeddah 40
+NewYorkCity Santiago 150
+NewYorkCity Pune 205
+
+Jeddah Jakarta 220
+Jeddah Santiago 240
+Jeddah SaoPaulo 125
+
+HoChiMinhCity NewYorkCity 140
+HoChiMinhCity Jeddah 185
+HoChiMinhCity Santiago 100
+HoChiMinhCity SaoPaulo 260
+HoChiMinhCity Pune 60
+
+Santiago Pune 110
+
+SaoPaulo BuenosAires 155
+SaoPaulo NewYorkCity 35
+SaoPaulo Santiago 250
+SaoPaulo Pune 225
+
+Pune Jeddah 280

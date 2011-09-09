@@ -1,0 +1,36 @@
+5
+
+Johannesburg
+Adiro100 60
+Sintrom 660
+Gelocatil 280
+Efferalgan 850
+Trankimazn 310
+
+Bangkok
+Adiro100 270
+Gelocatil 320
+Trankimazn 960
+Efferalgan 120
+Sintrom 210
+
+Lima
+Adiro100 550
+Efferalgan 900
+Sintrom 400
+Gelocatil 160
+Trankimazn 390
+
+Baghdad
+Trankimazn 920
+Efferalgan 440
+Adiro100 400
+Sintrom 450
+Gelocatil 210
+
+Guangzhou
+Sintrom 560
+Gelocatil 330
+Efferalgan 450
+Trankimazn 350
+Adiro100 720

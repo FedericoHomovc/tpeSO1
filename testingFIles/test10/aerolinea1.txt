@@ -1,0 +1,36 @@
+5
+
+NewYorkCity
+Gelocatil 4480
+Termalgin 1890
+Enantyum 2430
+Orfidal 2270
+Nolotil 8420
+
+Pune
+Gelocatil 3410
+Termalgin 6800
+Nolotil 7120
+Orfidal 440
+Enantyum 810
+
+Wuhan
+Orfidal 9190
+Termalgin 40
+Gelocatil 9570
+Nolotil 7180
+Enantyum 4310
+
+Jakarta
+Orfidal 6320
+Gelocatil 5510
+Termalgin 9920
+Nolotil 6490
+Enantyum 6580
+
+Dongguan
+Termalgin 1830
+Orfidal 1850
+Gelocatil 3960
+Enantyum 8000
+Nolotil 9500

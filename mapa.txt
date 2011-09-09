@@ -1,0 +1,21 @@
+3
+
+Ciudad1
+Med1 3
+Med2 5
+Med3 8
+
+Ciudad1 Ciudad2 8
+
+Ciudad2
+Med1 1
+Med4 6
+Med5 2
+
+Ciudad2 Ciudad1 8
+
+Ciudad3
+Med3 3
+Med4 4
+
+Ciudad3 Ciudad1 5

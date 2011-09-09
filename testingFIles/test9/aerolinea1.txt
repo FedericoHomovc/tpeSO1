@@ -1,0 +1,36 @@
+5
+
+Nairobi
+Enantyum 3290
+Augmentine 6580
+Efferalgan 1090
+Orfidal 3860
+Gelocatil 8670
+
+Bangkok
+Augmentine 80
+Enantyum 4830
+Orfidal 1990
+Efferalgan 7030
+Gelocatil 7420
+
+HoChiMinhCity
+Augmentine 200
+Orfidal 5750
+Gelocatil 8330
+Efferalgan 4610
+Enantyum 8930
+
+Berlin
+Enantyum 4510
+Augmentine 8970
+Orfidal 9510
+Efferalgan 2580
+Gelocatil 1480
+
+Pyongyang
+Augmentine 6780
+Enantyum 9850
+Gelocatil 7020
+Orfidal 6890
+Efferalgan 7380

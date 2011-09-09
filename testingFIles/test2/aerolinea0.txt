@@ -1,0 +1,36 @@
+5
+
+CapeTown
+Flumil 550
+Enantyum 740
+Augmentine 770
+Nolotil 470
+Adiro100 650
+
+Busan
+Augmentine 580
+Flumil 100
+Adiro100 120
+Enantyum 320
+Nolotil 990
+
+Yangon
+Nolotil 10
+Enantyum 530
+Augmentine 150
+Flumil 40
+Adiro100 40
+
+Jeddah
+Adiro100 840
+Nolotil 300
+Flumil 100
+Augmentine 380
+Enantyum 820
+
+Dongguan
+Nolotil 240
+Augmentine 420
+Flumil 680
+Adiro100 40
+Enantyum 940

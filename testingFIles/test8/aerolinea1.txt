@@ -1,0 +1,36 @@
+5
+
+Guangzhou
+Cardyl 8250
+VoltarenEmulgel 5520
+Gelocatil 3030
+Termalgin 4390
+Flumil 4020
+
+Surat
+Cardyl 6770
+Termalgin 9450
+Gelocatil 6260
+VoltarenEmulgel 8520
+Flumil 130
+
+HongKong
+Termalgin 7850
+Gelocatil 2380
+VoltarenEmulgel 450
+Cardyl 8320
+Flumil 3340
+
+Wuhan
+VoltarenEmulgel 2670
+Cardyl 8900
+Gelocatil 1270
+Termalgin 9980
+Flumil 4890
+
+Baghdad
+Termalgin 5070
+Cardyl 5390
+VoltarenEmulgel 3820
+Flumil 7280
+Gelocatil 7670

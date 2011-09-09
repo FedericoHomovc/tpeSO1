@@ -1,0 +1,121 @@
+10
+
+CapeTown
+Neobrufen 550
+VoltarenEmulgel 320
+Flumil 980
+Enantyum 140
+Termalgin 10
+Ventoln 640
+Adiro100 590
+Paracetamol 740
+Viscofresh 440
+Orfidal 530
+
+Santiago
+Neobrufen 470
+Efferalgan 830
+Ventoln 730
+Enantyum 870
+Gelocatil 730
+Orfidal 670
+Adiro100 120
+Flumil 700
+Viscofresh 190
+Termalgin 210
+
+NewYorkCity
+Ventoln 30
+Adiro100 520
+Enantyum 680
+Paracetamol 490
+Trankimazn 120
+Efferalgan 830
+Neobrufen 630
+Almax 320
+Flumil 360
+Viscofresh 400
+
+Pune
+Efferalgan 640
+Trankimazn 230
+Viscofresh 330
+Termalgin 880
+Sintrom 180
+Neobrufen 220
+Orfidal 660
+Adiro100 120
+Gelocatil 590
+Flumil 620
+
+Durban
+Efferalgan 840
+Paracetamol 420
+Termalgin 20
+Trankimazn 560
+Flumil 340
+Neobrufen 680
+VoltarenEmulgel 170
+Sintrom 910
+Viscofresh 860
+Enantyum 620
+
+Dhaka
+Trankimazn 50
+Termalgin 80
+Gelocatil 470
+Orfidal 950
+Ventoln 30
+Adiro100 650
+Flumil 700
+Efferalgan 610
+Viscofresh 610
+Neobrufen 550
+
+Kinshasa
+Sintrom 80
+VoltarenEmulgel 460
+Gelocatil 610
+Termalgin 960
+Enantyum 190
+Almax 780
+Efferalgan 950
+Adiro100 940
+Trankimazn 30
+Ventoln 380
+
+Abidjan
+Orfidal 690
+Efferalgan 960
+Enantyum 500
+Ventoln 190
+Trankimazn 490
+Sintrom 900
+Viscofresh 220
+Paracetamol 150
+Flumil 510
+VoltarenEmulgel 170
+
+Shenzhen
+Orfidal 560
+Efferalgan 560
+Trankimazn 60
+Adiro100 760
+Ventoln 930
+Flumil 330
+Almax 990
+VoltarenEmulgel 70
+Viscofresh 240
+Sintrom 400
+
+MexicoCity
+Ventoln 490
+Efferalgan 330
+Enantyum 110
+Adiro100 450
+Termalgin 940
+Neobrufen 640
+Orfidal 720
+Trankimazn 70
+Flumil 380
+Sintrom 940
