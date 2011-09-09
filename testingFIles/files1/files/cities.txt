@@ -1,0 +1,35 @@
+5
+
+CapeTown
+Orfidal 30
+Paracetamol 50
+Trankimazn 60
+VoltarenEmulgel 30
+
+Shenyang
+Sintrom 90
+VoltarenEmulgel 50
+
+Pyongyang
+Sintrom 90
+Cardyl 50
+Trankimazn 90
+Paracetamol 20
+Orfidal 60
+
+Shanghai
+Trankimazn 90
+Paracetamol 90
+Sintrom 50
+Orfidal 60
+
+London
+Orfidal 80
+
+CapeTown Shenyang 10
+CapeTown Pyongyang 10
+CapeTown Shanghai 10
+CapeTown London 10
+Shanghai Shenyang 10
+Shanghai Pyongyang 10
+

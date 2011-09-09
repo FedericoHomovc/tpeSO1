@@ -1,0 +1,36 @@
+5
+
+Moscow
+Gelocatil 720
+Adiro100 690
+Paracetamol 530
+Nolotil 490
+VoltarenEmulgel 560
+
+Hanoi
+Adiro100 790
+Viscofresh 80
+Paracetamol 640
+Sintrom 520
+Efferalgan 670
+
+Seoul
+Ventoln 980
+VoltarenEmulgel 150
+Gelocatil 250
+Paracetamol 200
+Efferalgan 190
+
+Shenzhen
+Viscofresh 680
+Ventoln 310
+VoltarenEmulgel 600
+Nolotil 210
+Adiro100 700
+
+Jeddah
+Sintrom 820
+Efferalgan 550
+Gelocatil 610
+Cardyl 190
+Viscofresh 390

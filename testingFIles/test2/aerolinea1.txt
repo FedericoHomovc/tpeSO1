@@ -1,0 +1,36 @@
+5
+
+RioDeJaneiro
+Efferalgan 30
+Orfidal 110
+VoltarenEmulgel 30
+Adiro100 230
+Lexatn 110
+
+Baghdad
+Orfidal 20
+Sintrom 190
+Augmentine 270
+VoltarenEmulgel 250
+Dianben 280
+
+Abidjan
+Adiro100 20
+Termalgin 150
+Gelocatil 60
+VoltarenEmulgel 240
+Efferalgan 220
+
+London
+Efferalgan 40
+Adiro100 270
+Dianben 170
+Sintrom 60
+Orfidal 290
+
+Santiago
+VoltarenEmulgel 160
+Gelocatil 10
+Dianben 240
+Termalgin 10
+Orfidal 280

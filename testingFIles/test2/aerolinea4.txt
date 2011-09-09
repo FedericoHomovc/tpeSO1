@@ -1,0 +1,36 @@
+5
+
+London
+Augmentine 20
+Termalgin 210
+Efferalgan 210
+Adiro100 250
+Orfidal 200
+
+Johannesburg
+Adiro100 70
+Gelocatil 130
+VoltarenEmulgel 30
+Augmentine 290
+Termalgin 30
+
+Cairo
+Lexatn 140
+Dianben 140
+Sintrom 190
+Adiro100 10
+Termalgin 60
+
+Seoul
+Adiro100 250
+Efferalgan 70
+Orfidal 90
+Dianben 260
+VoltarenEmulgel 60
+
+Abidjan
+Termalgin 60
+Sintrom 160
+Adiro100 170
+Orfidal 230
+Efferalgan 220

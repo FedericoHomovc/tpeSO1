@@ -1,0 +1,36 @@
+5
+
+Lahore
+Adiro100 920
+VoltarenEmulgel 570
+Viscofresh 810
+Orfidal 920
+Enantyum 70
+
+Surat
+VoltarenEmulgel 820
+Adiro100 580
+Flumil 900
+Enantyum 250
+Efferalgan 620
+
+MexicoCity
+Augmentine 490
+Efferalgan 770
+Viscofresh 950
+Flumil 50
+Nolotil 190
+
+Ankara
+Adiro100 600
+Nolotil 320
+Orfidal 770
+Flumil 810
+Augmentine 770
+
+SaoPaulo
+VoltarenEmulgel 520
+Flumil 640
+Augmentine 480
+Orfidal 370
+Enantyum 690
