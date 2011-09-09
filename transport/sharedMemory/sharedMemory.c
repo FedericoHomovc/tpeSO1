@@ -391,30 +391,3 @@ int endServer(serverADT server) {
 	free(server);
 	return 0;
 }
-
-void reverse(char *string) {
-	int i, j;
-	char c;
-
-	for (i = 0, j = strlen(string) - 1; i < j; i++, j--) {
-		c = string[i];
-		string[i] = string[j];
-		string[j] = c;
-	}
-}
-
-void itoa(int n, char *string) {
-	int i, sign;
-
-	if ((sign = n) < 0) /* record sign */
-		n = -n; /* make n positive */
-	i = 0;
-	do { /* generate digits in reverse order */
-		string[i++] = n % 10 + '0'; /* get next digit */
-	} while ((n /= 10) > 0); /* delete it */
-	if (sign < 0)
-		string[i++] = '-';
-	string[i] = '\0';
-	reverse(string);
-}
-

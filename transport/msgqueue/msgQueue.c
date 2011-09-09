@@ -52,14 +52,21 @@ serverADT startServer() {
 	serverADT serv;
 
 	if ((queueid = msgget(queueKey, 0666 | IPC_CREAT)) == -1)
+	{
 		printf("Error msgget\n");
-	serv = malloc(sizeof(serverADT));
+		return NULL;
+	}
+
+	if( (serv = malloc(sizeof(struct serverCDT))) == NULL )
+		return NULL;
 	serv->queueID = queueid;
 	return serv;
 }
 
 clientADT connectToServer(serverADT serv) {
-	clientADT client = malloc( sizeof(clientADT));
+	clientADT client;
+	if( (client = malloc( sizeof(struct clientCDT))) == NULL)
+		return NULL;
 	client->queueID = serv->queueID;
 	client->pid = getpid();
 
@@ -68,6 +75,8 @@ clientADT connectToServer(serverADT serv) {
 
 clientADT getClient(serverADT serv, pid_t id) {
 	clientADT client = malloc( sizeof(clientADT) );
+	if( (client = malloc( sizeof(struct clientCDT))) == NULL)
+		return NULL;
 	client->queueID = serv->queueID;
 	client->pid = id;
 	return client;
@@ -98,40 +107,7 @@ int disconnectFromServer(clientADT client, serverADT server)
 
 int endServer(serverADT server)
 {
+	msgctl(queueid, IPC_RMID, NULL);
 	free(server);
 	return 0;
-}
-
-int infoClient_comparePid(infoClient * ic1, infoClient * ic2)
-{
-	return 0;
-}
-
-
-void itoa(int n, char *string)
-{
-    int i, sign;
-
-    if ((sign = n) < 0)  /* record sign */
-        n = -n;          /* make n positive */
-    i = 0;
-    do {       /* generate digits in reverse order */
-        string[i++] = n % 10 + '0';   /* get next digit */
-    } while ((n /= 10) > 0);     /* delete it */
-    if (sign < 0)
-        string[i++] = '-';
-    string[i] = '\0';
-    reverse(string);
-}
-
-void reverse(char *string)
-{
-    int i, j;
-    char c;
-
-    for (i = 0, j = strlen(string)-1; i<j; i++, j--) {
-        c = string[i];
-        string[i] = string[j];
-        string[j] = c;
-    }
 }
