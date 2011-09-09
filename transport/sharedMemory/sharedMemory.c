@@ -22,14 +22,85 @@
 /***		Project Includes		***/
 #include "../../include/api.h"
 #include "../../include/semaphore.h"
-#include "../../include/sharedMemory.h"
+
+/*
+ * Symbolic constants
+ */
+#define KEY_1 (key_t)0x1000
+#define KEY_2 (key_t)0x10000
+/* The maximum message size in bytes */
+#define MESG_SIZE 4096
+/* The maximum quantity of clients that the IPC can handle */
+#define MAX_CLIENTS 20
+#define SIZE_CLI_VEC ((size_t)(sizeof(clientADT) * (MAX_CLIENTS + 1)))
+#define SIZE ((size_t)(sizeof(shmMessage)*MAX_CLIENTS*2))
+
+#define SEM_CLI_TABLE 0
+#define SEM_MEMORY 1
+
+
+/*
+ * name: clientCDT
+ * description: is the implementation of serverADT. It stores the necessary
+ * information for a client to connect to the server and to other clients.
+ * @id: unique identification of a client. It holds the pid of the process.
+ * @used: flag to indicate whether this position in the client client is empty or not.
+ * It is not used for communication.
+ * @semid: the semaphore ID, used to be able to mutually exclude access to the
+ * shared memory  message`s vector.
+ * @shmidMessages: the shared memory ID to be able to access the message vector.
+ * @offset: The offset (of the message vector) assigned for communication.
+ * @memory: the pointer to the shared memory already attached.
+ */
+struct clientCDT {
+	pid_t id;
+	int used;
+	int semid;
+	int shmidMessages;
+	int offset;
+	void * memory;
+};
+
+/*
+ * name: serverCDT
+ * description: is the implementation of serverADT. It stores the necessary
+ * information to connect to a server.
+ * @semid: the semaphore ID, used to be able to mutually exclude access to the
+ * shared memory vectors (clients and messages).
+ * @shmidClients: The shared memory ID of the client's vector.
+ * @shmidMessages: The shared memory ID of the message's vector.
+ * @clients: The pointer to the shared memory client vector already attached.
+ * @memory: The pointer to the shared memory message vector already attached.
+ */
+struct serverCDT {
+	int semid;
+	int shmidClients;
+	int shmidMessages;
+	void * clients;
+	void * memory;
+};
+
+/*
+ * name: shmMessage
+ * description:  stands for a message stored in the message shared memory
+ * @isWritten: boolean variable that indicates whether the message have
+ * been written (is full) or not.
+ * @quantity: specifies the length of the message.
+ * @message: a char array with the message.
+ */
+typedef struct shmMessage {
+	int isWritten;
+	int quantity;
+	char message[MESG_SIZE];
+} shmMessage;
 
 /***		Functions		***/
 
 static void cleanUP(void * mem, int bytes) {
 	int i;
 	char * m = (char *) mem;
-	if (mem == NULL)
+	if (mem == NULL
+	)
 		return;
 	for (i = 0; i < bytes; i++)
 		m[i] = 0;
@@ -66,8 +137,7 @@ serverADT startServer() {
 
 	/* Obtaining the clientunication memory */
 	while ((shmidMessages = shmget(KEY_2 + i, SIZE, FLAGS)) == -1)
-			i++;
-
+		i++;
 
 	serv->shmidClients = shmidClients;
 	serv->shmidMessages = shmidMessages;
@@ -96,7 +166,6 @@ serverADT startServer() {
 	cleanUP(clients, SIZE_CLI_VEC);
 	cleanUP(memory, SIZE);
 
-	serv->maxClients = MAX_CLIENTS;
 	serv->clients = (void *) clients;
 	serv->memory = memory;
 
@@ -108,7 +177,6 @@ clientADT connectToServer(serverADT serv) {
 	int permits = 0666;
 	int i;
 	clientADT client = NULL;
-	int flag = TRUE;
 
 	if (serv == NULL)
 	{
@@ -116,7 +184,6 @@ clientADT connectToServer(serverADT serv) {
 		return NULL;
 	}
 
-	/* Requesting exclusivity */
 	if (up(serv->semid, SEM_CLI_TABLE, TRUE) == -1)
 		return NULL;
 
@@ -130,41 +197,25 @@ clientADT connectToServer(serverADT serv) {
 	}
 
 	/* Selecting the first free client on the server client vector */
-	for (i = 0; i < serv->maxClients; i++) {
+	for (i = 0; i < MAX_CLIENTS; i++) {
 		if (clients[i].id == 0) {
+			/*Initializing the client*/
 			clients[i].id = getpid();
 			clients[i].semid = serv->semid;
 			clients[i].shmidMessages = serv->shmidMessages;
-			clients[i].offset = i * 2 *  sizeof(shmMessage);
+			clients[i].offset = i * sizeof(shmMessage);
 			clients[i].used = TRUE;
 			break;
 		}
 	}
-	if (i == serv->maxClients){
-		fprintf(
-				stderr,
-				"connectToServer():the client vector is full.\n");
+	if (i == MAX_CLIENTS) {
+		fprintf(stderr, "connectToServer():the client vector is full.\n");
 		return NULL;
 	}
 
-	/* Abandon exclusivity */
 	down(serv->semid, SEM_CLI_TABLE);
 
-	while (flag) {
-		/* Requesting exclusivity */
-		if (up(serv->semid, SEM_CLI_TABLE, TRUE) == -1)
-			return NULL;
-		if (clients[i].used == TRUE)
-		{
-			flag = FALSE;
-		} else {
-			/* Abandon exclusivity */
-			down(serv->semid, SEM_CLI_TABLE);
-		}
-
-	}
-
-	/* initializing the client info */
+	/* initializing the return client info */
 	client = malloc(sizeof(struct clientCDT));
 	if (client == NULL)
 	{
@@ -175,12 +226,13 @@ clientADT connectToServer(serverADT serv) {
 	client->semid = (clients[i]).semid;
 	client->shmidMessages = (clients[i]).shmidMessages;
 	client->offset = (clients[i]).offset;
-	/* linking the shared memory where the client s supposed to write and read */
+	/* linking the shared memory where the client is supposed to write and read */
 	client->memory = shmat(serv->shmidMessages, NULL,
 			permits | IPC_CREAT | IPC_EXCL);
 
 	if (client->memory == (void*) -1) {
-		fprintf(stderr,
+		fprintf(
+				stderr,
 				"connectToServer(): error attaching memory to memory pointer.\n");
 		free(client);
 		return NULL;
@@ -188,7 +240,6 @@ clientADT connectToServer(serverADT serv) {
 
 	/* Detaching client table */
 	shmdt(clients);
-	/* Abandon exclusivity */
 	down(serv->semid, SEM_CLI_TABLE);
 
 	return client;
@@ -200,49 +251,41 @@ clientADT getClient(serverADT server, pid_t id) {
 	int permits = 0666;
 	clientADT client = NULL;
 
-	/* Requesting exclusivity */
 	if (up(server->semid, SEM_CLI_TABLE, TRUE) == -1) {
-		fprintf(stderr, "p op fail\n");
+		fprintf(stderr, "getClient(): up operation failed\n");
 		return NULL;
 	}
-	for (i = 0; i < server->maxClients; i++) {
+	/* looking for client in client vector */
+	for (i = 0; i < MAX_CLIENTS; i++) {
 		if (clients[i].used == FALSE) {
-			/* Abandon exclusivity */
+			/* Client is absent */
 			down(server->semid, SEM_CLI_TABLE);
 			return NULL;
 		} else if (clients[i].id == id && clients[i].used == TRUE)
 		{
+			/*Client is present */
 			client = malloc(sizeof(struct clientCDT));
 			if (client == NULL)
 			{
-				fprintf(stderr, "Malloc returned NULL in getClient.\n");
+				fprintf(stderr,
+						"getClient(): no enough memory space for client.\n");
+				return NULL;
 			}
-
 			client->semid = (clients[i]).semid;
 			client->shmidMessages = (clients[i]).shmidMessages;
 			client->offset = (clients[i]).offset;
 			client->memory = shmat(client->shmidMessages, NULL,
 					permits | IPC_CREAT | IPC_EXCL);
 			if (client->memory == (void*) -1) {
-				if (errno == EEXIST) {
-					client->memory = shmat(client->shmidMessages, NULL, 0);
-					if (client->memory == (void*) -1) {
-						fprintf(stderr, "Error associating shared memories "
-								"with server process Errno: %d\n", errno);
-						free(client);
-						return NULL;
-					}
-				} else {
-					fprintf(stderr, "Error associating shared memories "
-							"with server process lala Errno: %d\n", errno);
-					free(client);
-					return NULL;
-				}
+				fprintf(
+						stderr,
+						"getClient(): error attaching message memory to client");
+				free(client);
+				return NULL;
 			}
 			break;
 		}
 	}
-	/* Abandon exclusivity */
 	down(server->semid, SEM_CLI_TABLE);
 
 	return client;
@@ -254,50 +297,44 @@ int sendMsg(clientADT client, message * msg, int flags) {
 	void * destination;
 	shmMessage * sending;
 
-	if (msg == NULL || client == NULL)
-	{
-		fprintf(stderr, "Invalid clientunication parameters\n");
+	if (msg == NULL || client == NULL) {
+		fprintf(stderr,
+				"sendMsg(): error in client communication parameters.\n");
 		return -1;
 	}
 
 	sending = malloc(sizeof(shmMessage));
 
 	if (sending == NULL) {
-		fprintf(stderr, "Malloc returned null in sendMsg\n");
+		fprintf(stderr, "sendMsg(): not enough memory to alloc message.\n");
 		return -1;
 	}
 
-	/* Requesting exclusivity */
 	if (up(client->semid, SEM_MEMORY, flags != IPC_NOWAIT) == -1) {
 		free(sending);
+		fprintf(stderr, "sendMsg(): error initializing semaphore.\n");
 		return -1;
 	}
 	/* variable used to write at the client's reserved position */
-	destination = client->memory + client->offset;
+	destination = (void *)((int)client->memory + (int)client->offset);
 
-	/*blocks the process if the massage table is full*/
+	/*blocks the process if the message table is full*/
 	while (((shmMessage*) destination)->isWritten == TRUE
 			&& ((shmMessage*) destination)->quantity != 0) {
-		/* Abandon exclusivity */
 		down(client->semid, SEM_MEMORY);
 
-
-		/* Requesting exclusivity */
 		up(client->semid, SEM_MEMORY, TRUE);
-
 	}
 
+	/* Storing message*/
 	sending->isWritten = TRUE;
 	amtSent = (msg->size > MESG_SIZE) ? MESG_SIZE : msg->size;
 	sending->quantity = amtSent;
-	/* Packaging */
 	memcpy(sending->message, origin, amtSent);
-	/* Writing package */
 	memcpy(destination, sending, sizeof(shmMessage));
 
 	free(sending);
 
-	/* Abandon exclusivity */
 	down(client->semid, SEM_MEMORY);
 
 	return amtSent;
@@ -307,62 +344,58 @@ int rcvMsg(clientADT client, message * msg, int flags) {
 	int amtRcv = 0;
 	void * origin;
 	shmMessage * receiving;
-	int done;
+	int ready;
 
-	if (msg == NULL || client == NULL)
-	{
-		fprintf(stderr, "Invalid clientunication parameters\n");
-		return -1;
+	if (msg == NULL || client == NULL) {
+		fprintf(stderr,
+				"rcvMsg(): Error in client communication parameters.\n");
+		return -2;
 	}
 
 	receiving = malloc(sizeof(shmMessage));
 
 	if (receiving == NULL) {
-		/*TODO: Free any remaining struct.. no point in going on*/
-		fprintf(stderr, "Malloc returned null in rcvMsg\n");
-		return -1;
+		free(receiving);
+		fprintf(stderr, "rcvMsg(): not enough memory to alloc message\n");
+		return -2;
 	}
-	/* Requesting exclusivity */
+
 	if (up(client->semid, SEM_MEMORY, flags != IPC_NOWAIT) == -1) {
 		free(receiving);
 		return -2;
 	}
 
-	origin = client->memory + client->offset;
+	/* variable used to read from the client's reserved position */
+	origin = (void *)((int)client->memory + (int)client->offset);
 
 	memcpy(receiving, origin, sizeof(shmMessage));
 	if (flags == IPC_NOWAIT) {
 		if (receiving->isWritten == FALSE)
 		{
 			free(receiving);
-			/* Abandon exclusivity */
 			down(client->semid, SEM_MEMORY);
-			return 0;
+			return -1;
 		}
 	} else {
-		/* Abandon exclusivity */
 		down(client->semid, SEM_MEMORY);
-		done = FALSE;
-		while (!done) {
-			/* Requesting exclusivity */
+		ready = FALSE;
+		while (!ready) {
 			if (up(client->semid, SEM_MEMORY, flags != IPC_NOWAIT) == -1) {
 				free(receiving);
 				return 0;
 			}
+			/* Reading message */
 			memcpy(receiving, origin, sizeof(shmMessage));
 
 			if (receiving->isWritten == TRUE)
 			{
-				done = TRUE;
+				ready = TRUE;
 			} else {
-				/* Abandon exclusivity */
 				down(client->semid, SEM_MEMORY);
-				/*TODO usleep(20000);*/
 			}
 		}
 	}
 
-	/*msg->message = malloc(sizeof(char) * receiving->quantity);*/
 	memcpy(msg->message, receiving->message, receiving->quantity);
 	msg->size = receiving->quantity;
 	amtRcv = receiving->quantity;
@@ -371,7 +404,6 @@ int rcvMsg(clientADT client, message * msg, int flags) {
 	((shmMessage*) origin)->isWritten = FALSE;
 	((shmMessage*) origin)->quantity = 0;
 
-	/* Abandon exclusivity */
 	down(client->semid, SEM_MEMORY);
 	return amtRcv;
 }
