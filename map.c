@@ -18,38 +18,39 @@
 #include <sys/wait.h>
 #include <error.h>
 
-
 /***		Project Includes		***/
 #include "./include/api.h"
 #include "./include/structs.h"
 #include "./include/backEnd.h"
 #include "./include/marshalling.h"
-#include "./include/semaphore.h"
 
 /***		Functions		***/
-int companyFunc(processData * pdata, char * fileName, int companyID);
-int ioFunc(processData * pdata, int companyCount);
-int unloadPlane(plane ** p, map ** mapSt);
-int freeResources(void);
-int needMedicines(map * mapSt);
+int companyFunc(char * fileName, int companyID);
+int ioFunc(void);
+static int unloadPlane(plane ** p, map ** mapSt);
+static int freeResources(void);
+static int needMedicines(map * mapSt);
+static void sigintServHandler(int signo);
 
 
 
 map * mapSt;
-clientADT mapClient;
-int semmapid;
+pid_t * pids;
+serverADT server;
+clientADT * clients;
 
 int 
 main(int argc, char * argv[]) {
 
-	processData * pdata;
 	int k, companyID, count, i, j, c, unloaded;
-	pid_t * pids;
-	serverADT server;
-	clientADT * clients;
 	FILE * file = NULL;
 	plane ** p;
 
+	struct sigaction signalAction;
+	signalAction.sa_flags = 0;
+	signalAction.sa_handler = sigintServHandler;
+	sigfillset(&(signalAction.sa_mask));
+	sigaction(SIGINT, &signalAction, NULL);
 
 	if (argc <= 2) {
 		printf("Invalid arguments\n");
@@ -62,16 +63,15 @@ main(int argc, char * argv[]) {
 			printf("Map File Error\n");
 			return 1;
 		}
-		/*fclose(file);*/
+		fclose(file);
 	} else {
 		printf("Impossible to open file\n");
 		return 1;
 	}
+	mapSt->companiesCount = argc -2;
 
-	server = startServer();
-	pdata = malloc(sizeof(processData));
-	pdata->server = server;
-	pdata->pid = getpid();
+	if( (server = startServer()) == NULL)
+		return 1;
 
 	if( (pids = malloc(sizeof(pid_t) * (argc))) == NULL )
 		return 1;
@@ -79,7 +79,7 @@ main(int argc, char * argv[]) {
 		return 1;
 
 	pids[0] = getpid();
-	if( (mapClient = clients[0] = connectToServer(server)) == NULL) /*map client*/
+	if( (clients[0] = connectToServer(server)) == NULL) /*map client*/
 	{
 		return 1;
 	}
@@ -89,7 +89,7 @@ main(int argc, char * argv[]) {
 		perror("Error creating IO");
 		exit(1);
 	case 0:
-		if(ioFunc(pdata, argc - 2))
+		if(ioFunc())
 			printf("Error during IO execution\n");
 		_exit(0);
 	default:
@@ -99,7 +99,7 @@ main(int argc, char * argv[]) {
 			case -1:
 				perror("Error creating company");
 			case 0:
-				if (companyFunc(pdata, argv[k], k - 2))
+				if (companyFunc(argv[k], k - 2))
 					printf("Error during company %d execution\n", k - 2);
 				_exit(0);
 			}
@@ -110,7 +110,7 @@ main(int argc, char * argv[]) {
 	k = 0;
 	while(k < argc - 1) /*wait for all processes to connect to server*/
 	{
-		if( rcvChecksign(clients[0]) )
+		if( rcvChecksign(clients[0]) == -1)
 		{
 			printf("Error connecting processes.\n");
 			return 1;
@@ -133,7 +133,7 @@ main(int argc, char * argv[]) {
 	while(needMedicines(mapSt))
 	{
 		sendMap(mapSt->citiesCount, mapSt->cities, clients[1]);
-		if( rcvChecksign(mapClient) )
+		if( rcvChecksign(clients[0]) == -1 )
 		{
 			printf("Error during IPC @ map.c\n");
 			return 1;
@@ -159,25 +159,29 @@ main(int argc, char * argv[]) {
 				sendPlanes(companyID, count, p, clients[companyID+2]);
 			}
 			if(unloaded)
-				sendPlanes(companyID, count, p, clients[1]);
-			else
-				sendPlanes(companyID, 0, p, clients[1]);
-			for(i = 0; i < count; i++)
 			{
-				for(j = 0; j < p[i]->medCount; j++)
+				sendPlanes(companyID, count, p, clients[1]);
+				for(i = 0; i < count; i++)
 				{
-					free(p[i]->medicines[j]->name);
-					free(p[i]->medicines[j]);
+					for(j = 0; j < p[i]->medCount; j++)
+					{
+						free(p[i]->medicines[j]->name);
+						free(p[i]->medicines[j]);
+					}
+					free(p[i]->medicines);
+					free(p[i]);
 				}
-				free(p[i]);
+				free(p);
 			}
+			else
+				sendPlanes(companyID, 0, NULL, clients[1]);
 		k++;
 		}
 
 		for(k = 2; k < argc; k++)
 			sendMap(mapSt->citiesCount, mapSt->cities, clients[k]);
 		
-		if( rcvChecksign(clients[0]) )
+		if( rcvChecksign(clients[0]) == -1)
 		{
 			printf("Error during IPC @ map.c\n");
 			return 1;
@@ -187,21 +191,21 @@ main(int argc, char * argv[]) {
 	sendMap(mapSt->citiesCount, mapSt->cities, clients[1]);
 	rcvChecksign(clients[0]);
 
-	disconnectFromServer(clients[0], server);
 	for(k = 1; k < argc; k++)
+	{
 		kill(pids[k], SIGINT);	/*SIGTERM o SIGINT?*/
+		disconnectFromServer(clients[k], server);
+	}
+	disconnectFromServer(clients[0], server);
 	endServer(server);
 
 	freeResources();
-	free(pids);
-	free(clients);
-	free(pdata);
 	printf("Simulation ended\n");
 	return 0;
 }
 
 
-int
+static int
 unloadPlane(plane ** p, map ** mapSt)
 {
 	int i, j, ret = 0;
@@ -233,7 +237,7 @@ unloadPlane(plane ** p, map ** mapSt)
 }
 
 
-int
+static int
 freeResources(void)
 {
 	int i, j;
@@ -247,15 +251,34 @@ freeResources(void)
 			free( mapSt->cities[i]->medicines[j]->name);
 			free(mapSt->cities[i]->medicines[j]);
 		}
+		free(mapSt->cities[i]->medicines);
+		free(mapSt->cities[i]->name);
 		free(mapSt->cities[i]);
 	}
+	free(mapSt->cities);
 	free(mapSt);
+	free(clients);
+	free(pids);
 
 	return 0;
 }
 
+static void sigintServHandler(int signo) {	
+	int k;
+	
+	for(k = 1; k < mapSt->companiesCount + 2; k++)
+	{
+		kill(pids[k], SIGINT);	/*SIGTERM o SIGINT?*/
+		disconnectFromServer(clients[k], server);
+	}
+	disconnectFromServer(clients[0], server);
+	endServer(server);
+	freeResources();
 
-int
+	exit(0);
+}
+
+static int
 needMedicines(map * mapSt)
 {
 	int i, j;

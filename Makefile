@@ -12,12 +12,12 @@
 TARGET=tpeSO
 OBJS= map.c backEnd.c company.c io.c
 OBJS2= map.o backEnd.o company.o io.o
-FIFO= ./transport/fifos/fifo.c ./transport/fifos/varray.c
-FIFO2= fifo.o varray.o
+FIFO= ./transport/fifos/fifo.c
+FIFO2= fifo.o
 MSGQUEUE= ./transport/msgqueue/msgQueue.c
 MSGQUEUE2= msgQueue.o
-SOCKETS= ./transport/sockets/socket.c
-SOCKETS2= socket.o
+SOCKETS= ./transport/sockets/socket.c semaphore.c
+SOCKETS2= socket.o semaphore.o
 SHM= ./transport/sharedMemory/sharedMemory.c semaphore.c
 SHM2= sharedMemory.o semaphore.o
 MARSHALL = ./marshalling/marshalling.c
@@ -28,8 +28,8 @@ LDOPTS= -lpthread -o
 
 backEnd.o: ./include/structs.h ./include/backEnd.h
 company.o io.o map.o: ./include/structs.h ./include/backEnd.h ./include/api.h ./include/marshalling.h
-fifo.o: ../../include/api.h ../../include/varray.h
-sockets.o:
+fifo.o: ../../include/api.h ../../include/backEnd.h
+sockets.o: ../../include/api.h ../../include/semaphore.h
 msgqueue.o: ../../include/api.h
 shareMemory.o: ../../include/api.h ../../include/semaphore.h ../../include/shm.h
 semaphore.o: ../../include/semaphore.h

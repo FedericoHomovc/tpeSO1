@@ -18,8 +18,8 @@ int createCities(FILE * mapFile, map * mapSt);
 
 int createCompany(FILE * mapFile, company ** newCompany);
 
-int initializeGraph(FILE * mapFile, map * mapSt);
-
 int getCityID( char * cityName, map * mapSt);
 
-int createPlane(FILE * mapFile, plane ** newPlane);
+void itoa(int n, char *string);
+
+void reverse(char * string);

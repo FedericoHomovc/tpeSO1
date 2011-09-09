@@ -15,7 +15,7 @@ int rcvPlanes(int * companyID, int * count, plane *** p, clientADT client);
 
 int sendMap(int size, city ** cities, clientADT client);
 
-int rcvMap(medicine **** meds, clientADT client, int * size);
+int rcvMap(medicine **** meds, clientADT client, int size);
 
 int sendChecksign(clientADT client);
 

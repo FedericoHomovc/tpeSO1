@@ -18,7 +18,7 @@
 /***		Module Defines		***/
 #define TRUE 1
 #define FALSE 0
-#define MSG_SIZE 3000
+#define MSG_SIZE 1630
 
 /***		Structs 		***/
 typedef struct serverCDT * serverADT;
@@ -37,11 +37,6 @@ typedef struct
 	clientADT client;
 } infoClient;
 
-typedef struct{
-	pid_t pid;
-	serverADT server;
-}processData;
-
 /***		Functions		***/
 serverADT startServer();
 
@@ -56,7 +51,5 @@ int rcvMsg(clientADT client, message * msg, int flags);
 int disconnectFromServer(clientADT client, serverADT server);
 
 int endServer(serverADT server);
-
-int infoClient_comparePid(infoClient * ic1, infoClient * ic2);
 
 #endif

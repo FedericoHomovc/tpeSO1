@@ -24,15 +24,11 @@
 
 /***		Project Includes		***/
 #include "../../include/api.h"
-#include "../../include/varray.h"
-
-/***		Functions		***/
-void itoa(int n, char *string);
-void reverse(char *string);
-
+#include "../../include/structs.h"
+#include "../../include/backEnd.h"
 
 /***		Module Defines		***/
-#define	CLIENTS_SIZE	10
+#define	CLIENTS_SIZE	15
 #define CHARS_ADD		10
 
 #define SER_FIFO_S		"/tmp/serverFifo"
@@ -97,7 +93,7 @@ struct serverCDT
 	int serverFifo;
 	char serverName[SER_FIFO_LEN];
 
-	vArray clients;
+	infoClient ** clients;
 	int clientsUsed;
 };
 
@@ -160,13 +156,14 @@ static int mkopFifo(const char *expecName, char *resultName, mode_t modeCr,
 static void *listeningFunction(void *serverInfo)
 {
 	int fileDes_r, fileDes_w;
-	char c;
 	serverADT server;
 	connectionMsg currentConnection;
-	clientADT client;
+	clientADT comm;
+	infoClient * currentClient;
+	message msg;
 
 	server = (serverADT)serverInfo;
-	server->clients = vArray_init(CLIENTS_SIZE);
+	server->clients = malloc( sizeof(infoClient*) * CLIENTS_SIZE );
 
 	while(serverConnected)
 	{
@@ -177,17 +174,13 @@ static void *listeningFunction(void *serverInfo)
 			 * It is stored into the client array.
 			 */
 
-			infoClient *currentClient = malloc(sizeof(infoClient));
-
-			if(currentClient == NULL)
+			if( (currentClient = malloc(sizeof(infoClient))) == NULL)
 			{
 				fprintf(stderr, "Not enough memory.\n");
 				return NULL;
 			}
 
-			client = malloc(sizeof(struct clientCDT));
-
-			if(client == NULL)
+			if( (comm = malloc(sizeof(struct clientCDT))) == NULL )
 			{
 				fprintf(stderr, "Not enough memory.\n");
 				return NULL;
@@ -198,45 +191,42 @@ static void *listeningFunction(void *serverInfo)
 			 * They are swapped in order to be treated indifferently by
 			 * sndMsg and rcvMsg functions.
 			 */
-
-
 			if((fileDes_r = open(currentConnection.clientName_w, O_RDWR)) == -1)
 			{
 				fprintf(stderr, "Errno = %d, strerror = %s\n", errno, strerror(errno));
 				fprintf(stderr,	"Client FIFO _w couldn't be opened at listening.\n");
-				free(client);
+				free(comm);
 				return NULL;
 			}
 
-			client->clientFifo_r = fileDes_r;
+			comm->clientFifo_r = fileDes_r;
 
 			
 			if((fileDes_w = open(currentConnection.clientName_r, O_RDWR)) == -1)
 			{
 				fprintf(stderr, "Errno = %d, strerror = %s\n", errno, strerror(errno));
 				fprintf(stderr,	"Client FIFO _r couldn't be opened at listening.\n");
-				free(client);
+				free(comm);
 				return NULL;
 			}
 
-			client->clientFifo_w = fileDes_w;
+			comm->clientFifo_w = fileDes_w;
 
-			strcpy(client->clientName_r, currentConnection.clientName_r);
-			strcpy(client->clientName_w, currentConnection.clientName_w);
-
-			currentClient->client = client;
+			strcpy(comm->clientName_r, currentConnection.clientName_r);
+			strcpy(comm->clientName_w, currentConnection.clientName_w);
+			currentClient->client = comm;
 			currentClient->id = currentConnection.id;
 
-			vArray_insertAtEnd(server->clients, currentClient);
+			server->clients[server->clientsUsed] = currentClient;
 			(server->clientsUsed)++;
-			/*printf("client connected. ID: %d, clientsUsed: %d\n", getpid(), server->clientsUsed);*/
 
 			/* The listening thread sends a one-byte message to the client
 			 * to ensure that the client was put into the array.
 			 */
 
-			message msg = {1, &c};
-			sendMsg(client, &msg, 0);
+			msg.message = "OK";
+			msg.size = 3;
+			sendMsg(comm, &msg, 0);
 		}
 	}
 
@@ -255,16 +245,15 @@ serverADT startServer(void)
 {
 	int fileDes, retValue;
 	pthread_t listeningThread;
-	serverADT ret = malloc(sizeof(struct serverCDT));
+	serverADT ret;
 
 	/* The return value is initialized. */
 
-	if(ret == NULL)
+	if( (ret = malloc(sizeof(struct serverCDT))) == NULL)
 		return NULL;
 
 
-	if((fileDes = mkopFifo(SER_FIFO_S, ret->serverName, 0666,
-			O_RDWR | O_NONBLOCK)) == ERR_FIFO)
+	if((fileDes = mkopFifo(SER_FIFO_S, ret->serverName, 0666, O_RDWR | O_NONBLOCK)) == ERR_FIFO)
 	{
 		free(ret);
 		return NULL;
@@ -292,9 +281,9 @@ serverADT startServer(void)
 clientADT connectToServer(serverADT serv)
 {
 	int fileDes_r, fileDes_w, serverFileDes;
-	char c;
 	connectionMsg mesg;
 	clientADT ret;
+	message msg;
 
 	if(serv == NULL)
 	{
@@ -302,9 +291,7 @@ clientADT connectToServer(serverADT serv)
 		return NULL;
 	}
 
-	ret = malloc(sizeof(struct clientCDT));
-
-	if(ret == NULL)
+	if( (ret = malloc(sizeof(struct clientCDT))) == NULL)
 		return NULL;
 
 	/* The two FIFOs are created. */
@@ -349,8 +336,15 @@ clientADT connectToServer(serverADT serv)
 	 * that it was added to the clients array.
 	 */
 
-	message msg = {1, &c};
-	rcvMsg(ret, &msg, 0);
+	if( (msg.message = calloc(3, sizeof(char))) == NULL)
+		return NULL;
+	msg.size = 3;
+
+	if( rcvMsg(ret, &msg, 0) != -1 )
+		if( strcmp((char*)msg.message, "OK") )
+			return NULL;
+
+	free(msg.message);
 
 	return ret;
 }
@@ -358,123 +352,71 @@ clientADT connectToServer(serverADT serv)
 
 clientADT getClient(serverADT serv, pid_t id)
 {
-	infoClient matchingClient;
-	infoClient client = {id, NULL};
+	int i;
+	
+	for(i = 0; i < serv->clientsUsed; i++)
+		if( !(serv->clients[i]->id - id) )
+			return serv->clients[i]->client;
 
-	void *arrayMatching = vArray_search(serv->clients, (int (*)(void *, void *))infoClient_comparePid, &client);
-
-	if(arrayMatching == NULL)
-		return NULL;
-
-	matchingClient = *(infoClient *)arrayMatching;
-
-	return matchingClient.client;
+	return NULL;
 }
 
 
-
-int sendMsg(clientADT client, message *msg, int flags)
+int sendMsg(clientADT comm, message *msg, int flags)
 {
-	int ret;
-
-	if(flags == IPC_NOWAIT)
-	{
-		int auxFlags = fcntl(client->clientFifo_w, F_GETFL, 0);
-
-		if(fcntl(client->clientFifo_w, F_SETFL, O_NONBLOCK) == -1)
-		{
-			fprintf(stderr, "Error on unblocking file descriptor.\n");
-			return -1;
-		}
-
-		ret = write(client->clientFifo_w, msg->message, msg->size);
-
-		if(fcntl(client->clientFifo_w, F_SETFL, auxFlags) == -1)
-		{
-			fprintf(stderr, "Error on blocking file descriptor.\n");
-			return -1;
-		}
-	}
-	else
-		ret = write(client->clientFifo_w, msg->message, msg->size);
-
-	return ret;
-}
-
-
-
-int rcvMsg(clientADT client, message *msg, int flags)
-{
-	int ret;
-
-	if(client == NULL || msg == NULL)
+	if(comm == NULL || msg == NULL)
 	{
 		fprintf(stderr, "NULL parameters.\n");
 		return -1;
 	}
-
-
-	if(flags == IPC_NOWAIT)
-	{
-		int auxFlags = fcntl(client->clientFifo_r, F_GETFL, 0);
-
-		if(fcntl(client->clientFifo_r, F_SETFL, O_NONBLOCK) == -1)
-		{
-			fprintf(stderr, "Error on unblocking file descriptor.\n");
-			return -1;
-		}
-
-		ret = read(client->clientFifo_r, msg->message, msg->size);
-
-		if(fcntl(client->clientFifo_r, F_SETFL, auxFlags) == -1)
-		{
-			fprintf(stderr, "Error on blocking file descriptor.\n");
-			return -1;
-		}
-	}
-	else
-		ret = read(client->clientFifo_r, msg->message, msg->size);
-
-	return ret;
+	return write(comm->clientFifo_w, msg->message, msg->size);
 }
 
 
-int disconnectFromServer(clientADT client, serverADT server)
+
+int rcvMsg(clientADT comm, message *msg, int flags)
 {
-	if(client == NULL || server == NULL)
+	if(comm == NULL || msg == NULL)
+	{
+		fprintf(stderr, "NULL parameters.\n");
+		return -1;
+	}
+	return read(comm->clientFifo_r, msg->message, msg->size);
+}
+
+
+int disconnectFromServer(clientADT comm, serverADT server)
+{
+	if(comm == NULL || server == NULL)
 		return -1;
 
 	/* File descriptors are closed. */
 
-	if(close(client->clientFifo_r) == -1 || close(client->clientFifo_w) == -1)
+	if(close(comm->clientFifo_r) == -1 || close(comm->clientFifo_w) == -1)
 	{
 		fprintf(stderr, "Client couldn't be closed.\n");
 		return -1;
 	}
 
-	/* client is freed. */
+	/* comm is freed. */
 
-	free(client);
+	free(comm);
 
 	return 0;
 }
 
 
-
 int endServer(serverADT server)
 {
 	int i;
+	clientADT currentComm;
 
 	if(server == NULL)
 		return -1;
 
 	serverConnected = FALSE;
 
-	if(close(server->serverFifo) == -1)
-	{
-		fprintf(stderr, "Server FIFO couldn't be closed.\n");
-		return -1;
-	}
+	close(server->serverFifo);
 
 	if(unlink(server->serverName) == -1)
 	{
@@ -482,72 +424,25 @@ int endServer(serverADT server)
 		return -1;
 	}
 
-	
 	for(i = 0; i < server->clientsUsed; i++)
 	{
-		infoClient * icp = (infoClient *)vArray_getAt(server->clients, i);
-		clientADT currentclient = icp->client;
+		currentComm = server->clients[i]->client;
 
-		close(currentclient->clientFifo_r);
-		close(currentclient->clientFifo_w);
+		close(currentComm->clientFifo_r);
+		close(currentComm->clientFifo_w);
 
-		if(unlink(currentclient->clientName_r) == -1 ||
-				unlink(currentclient->clientName_w) == -1)
+		if(unlink(currentComm->clientName_r) == -1 || unlink(currentComm->clientName_w) == -1)
 		{
 			fprintf(stderr, "Client FIFO couldn't be removed.\n");
 			return -1;
 		}
 
-		free(currentclient);
-		free(icp);
-
+		free(currentComm);
+		free(server->clients[i]);
 	}
 
-	vArray_destroy(server->clients);
-
+	free(server->clients);
 	free(server);
 
 	return 0;
-}
-
-
-int infoClient_comparePid(infoClient * ic1, infoClient * ic2)
-{
-	if(ic1 == ic2)
-		return 0;
-	if(ic1 == NULL || ic2 == NULL)
-		return 1;
-	
-	if( ic1->id == ic2->id)
-        return 0;
-    else
-        return 1;
-}
-
-void itoa(int n, char *string)
-{
-    int i, sign;
-
-    if ((sign = n) < 0)  /* record sign */
-        n = -n;          /* make n positive */
-    i = 0;
-    do {       /* generate digits in reverse order */
-        string[i++] = n % 10 + '0';   /* get next digit */
-    } while ((n /= 10) > 0);     /* delete it */
-    if (sign < 0)
-        string[i++] = '-';
-    string[i] = '\0';
-    reverse(string);
-}
-
-void reverse(char *string)
-{
-    int i, j;
-    char c;
-
-    for (i = 0, j = strlen(string)-1; i<j; i++, j--) {
-        c = string[i];
-        string[i] = string[j];
-        string[j] = c;
-    }
 }

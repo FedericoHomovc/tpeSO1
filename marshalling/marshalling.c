@@ -37,12 +37,10 @@ sendChecksign(clientADT client)
 	message msg;
 	int ret;
 
-	msg.message = calloc(MSG_SIZE, sizeof(char));
-	msg.size = MSG_SIZE;
-	strcpy(msg.message, "OK");
+	msg.message = "OK";
+	msg.size = 3;
 
 	ret = sendMsg(client, &msg, 0);
-	free(msg.message);
 	
 	return ret;
 }
@@ -54,15 +52,16 @@ rcvChecksign(clientADT client)
 	message msg;
 	int ret;
 
-	msg.message = calloc(MSG_SIZE, sizeof(char));
-	msg.size = MSG_SIZE;
+	if( (msg.message = calloc(3, sizeof(char))) == NULL)
+		return -1;
+	msg.size = 3;
 
 	if( (ret = rcvMsg(client, &msg, 0)) != -1 )
 		if( strcmp((char*)msg.message, "OK") )
 			return -1;
 
 	free(msg.message);
-	return (ret != MSG_SIZE);
+	return ret;
 }
 
 
@@ -76,8 +75,10 @@ sendPlanes(int companyID, int count, plane ** p, clientADT client)
 	int i, ret;
 
 	
-	num = calloc(10, sizeof(char));
-	msg.message = calloc(MSG_SIZE, sizeof(char));
+	if( (num = calloc(10, sizeof(char))) == NULL)
+		return -1;
+	if( (msg.message = calloc(MSG_SIZE, sizeof(char))) == NULL )
+		return -1;
 	msg.size = MSG_SIZE;
 
 	itoa(companyID, msg.message);
@@ -99,11 +100,6 @@ sendPlanes(int companyID, int count, plane ** p, clientADT client)
 		strcat(msg.message, aux);
 		free(aux);
 	}
-
-	/*---------TESTING----------*/
-	/*printf("plane sent: %s\n", (char*)msg.message );
-	printf("plane sent size: %ld\n",msg.size);*/
-	/*---------TESTING----------*/
 	
 	if(count != 0)
 		ret = sendMsg(client, &msg, 0);
@@ -123,18 +119,15 @@ rcvPlanes(int * companyID, int * count, plane *** p, clientADT client)
 	char * aux = NULL;
 	plane ** retPlane;
 
-	msg.message = calloc(MSG_SIZE, sizeof(char));
+	if( (msg.message = calloc(MSG_SIZE, sizeof(char))) == NULL)
+		return -1;
 	msg.size = MSG_SIZE;
 	
 	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
 		return -1;
 
-	/*---------TESTING----------*/
-	/*printf("planes rcv: %s\n", (char *)msg.message);
-	printf("rcv size: %ld\n",msg.size);*/
-	/*---------TESTING----------*/
-
-	aux = calloc(10, sizeof(char));
+	if( (aux = calloc(10, sizeof(char))) == NULL)
+		return -1;
 	pos = 0;
 
 	while( ((char *)msg.message)[i] != ';')
@@ -182,71 +175,51 @@ sendMap(int size, city ** cities, clientADT client)
 {
 	message msg;
 	char * aux;
-	int i, ret;
+	int i;
 
-	msg.message = calloc(MSG_SIZE, sizeof(char));
-	itoa(size, (char*)msg.message);
-	strcat((char*)msg.message, ";");
+	if( (msg.message = calloc(MSG_SIZE, sizeof(char))) == NULL)
+		return -1;
+	msg.size = MSG_SIZE;
 
 	for(i = 0; i<size; i++)
 	{
 		if( (aux = wrappMedicine(cities[i]->medicines, cities[i]->ID, cities[i]->medCount)) == NULL)
 			return -1;
-		strcat(msg.message, aux);
+		strcpy(msg.message, aux);
+		sendMsg(client, &msg, 0);
 		free(aux);
 	}
-
-	msg.size = MSG_SIZE;
-	
-	/*---------TESTING----------*/
-	/*printf("map sent @ marshalling.c: %s\n", (char*)msg.message );
-	printf("send size: %ld\n",msg.size);*/
-	/*---------TESTING----------*/
-
-	ret = sendMsg(client, &msg, 0);
 	free(msg.message);
 
-	return ret;
+	return 0;
 }
 
 
 int
-rcvMap(medicine **** meds, clientADT client, int * size)
+rcvMap(medicine **** meds, clientADT client, int size)
 {
 	message msg;
-	int ret, i = 0, k = 0;
+	int k = 0;
 	medicine *** m = NULL;
-	char * aux;
 
 	if( (msg.message = calloc(MSG_SIZE, sizeof(char))) == NULL )
 		return -1;
 	msg.size = MSG_SIZE;
 
-	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
+	if( (m = malloc(sizeof(medicine *) * size)) == NULL)
 		return -1;
 
-	/*---------TESTING----------*/
-	/*printf("map rcv: %s\n", (char *)msg.message);
-	printf("rcv size: %ld\n", msg.size);*/
-	/*---------TESTING----------*/
-
-	aux = calloc(10, sizeof(char));
-
-	while( ((char *)msg.message)[i] != ';')
-		aux[k++] = ((char *)msg.message)[i++];
-	i++;
-
-	*size = atoi(aux);
-	m = malloc(sizeof(medicine *) * (* size));
-
-	for(k = 0; k<*size; k++)
-		i += unwrappMedicine(&m[k], (char *)msg.message + i, NULL);
+	for(k = 0; k < size; k++)
+	{
+		if( rcvMsg(client, &msg, 0) == -1 )
+			return -1;
+		unwrappMedicine(&m[k], (char *)msg.message, NULL);
+	}
 
 	*meds = m;
 	free(msg.message);
-	free(aux);
 
-	return ret;
+	return 0;
 }
 
 
@@ -258,8 +231,10 @@ wrappMedicine(medicine ** med, int ID, int medCount)
 	char * number = NULL;
 	char * aux = NULL;
 
-	aux = calloc(10, sizeof(char));	/*set to serialize ID and medCount. initial size may be increased*/
-	number = calloc(10, sizeof(char));
+	if( (aux = calloc(10, sizeof(char))) == NULL)	/*set to serialize ID and medCount. initial size may be increased*/
+		return NULL;
+	if( (number = calloc(10, sizeof(char))) == NULL)
+		return NULL;
 	
 	itoa(ID, number);
 	strcat(aux, number);
@@ -293,7 +268,8 @@ unwrappMedicine(medicine *** meds, char * array, int * ID)
 	char * aux;				/*max medicine name length = 20. may be increased if necessary*/
 	medicine ** m;
 	
-	aux = calloc(20, sizeof(char));
+	if( (aux = calloc(20, sizeof(char))) == NULL)
+		return -1;
 
 	while(array[i] != ';')
 		aux[pos++] = array[i++];

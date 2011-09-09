@@ -30,8 +30,9 @@
 static int getCity( FILE * mapFile, city * newCity);
 static int getInt(FILE * mapFile, int * out);
 static int getString(FILE * mapFile, char ** out);
-void dijkstra(int *** matrix, int size);
-
+static int initializeGraph(FILE * file, map * mapSt);
+static int createPlane(FILE * file, plane ** newPlane);
+static void dijkstra(int *** matrix, int size);
 
 int
 openFile(FILE ** file, char * fName)
@@ -105,6 +106,9 @@ getCity( FILE * file, city * newCity)
 		return 1;
 	}
 
+	if( (newCity->medicines = malloc(1)) == NULL)	/*to initially alloc*/
+		return 1;
+
 	while( getString( file, &aux ) != BLANKLINE ) /*revisar*/
 	{ /*gets the medicine name*/
  		if ( (newCity->medicines = realloc(newCity->medicines, sizeof(medicine*) * ++packages)) == NULL )
@@ -126,7 +130,7 @@ getCity( FILE * file, city * newCity)
 	return 0;
 }
 
-int
+static int
 initializeGraph(FILE * file, map * mapSt)
 {
 	int i, ID1, ID2, ret, dist;
@@ -144,9 +148,11 @@ initializeGraph(FILE * file, map * mapSt)
 		if(ret != BLANKLINE)
 		{
 			ID1 = getCityID(aux, mapSt);
+			free(aux);
 			if( getString( file, &aux ) )
 				return 1;
 			ID2 = getCityID(aux, mapSt);
+			free(aux);
 			if( getInt( file, &dist ) ) /* gets the distance to a city */
 				return 1;
 			if( ID1 == -1 || ID2 == -1 )
@@ -202,7 +208,7 @@ createCompany(FILE * file, company ** newCompany)
 	return 0;
 }
 
-int
+static int
 createPlane(FILE * file, plane ** newPlane)
 {
 	char * aux;
@@ -215,6 +221,9 @@ createPlane(FILE * file, plane ** newPlane)
 
 	(*newPlane)->startCity = aux;
 
+	if( ((*newPlane)->medicines = malloc(1)) == NULL) /*to initially alloc*/
+		return 1;
+
 	while( (ret = getString( file, &aux )) != BLANKLINE && ret != ENDEDFILE) /*revisar*/
 	{
 		if ( ((*newPlane)->medicines = realloc((*newPlane)->medicines, sizeof(medicine*) * ++packages)) == NULL )
@@ -226,6 +235,7 @@ createPlane(FILE * file, plane ** newPlane)
 			return 1;	
 	}
 	(*newPlane)->medCount = packages;
+	(*newPlane)->distance = 0;
 
 	return 0;
 }
@@ -330,7 +340,10 @@ getString(FILE * file, char ** out)
 		return 0;
 	}
 	if( c == EOF )
+	{
+		free(aux);
 		return ENDEDFILE;
+	}
 	return 1;
 }
 
@@ -351,4 +364,32 @@ dijkstra(int *** map, int size){
 	}	
 
 	*map = dist;
+}
+
+void itoa(int n, char *string)
+{
+    int i, sign;
+
+    if ((sign = n) < 0)  /* record sign */
+        n = -n;          /* make n positive */
+    i = 0;
+    do {       /* generate digits in reverse order */
+        string[i++] = n % 10 + '0';   /* get next digit */
+    } while ((n /= 10) > 0);     /* delete it */
+    if (sign < 0)
+        string[i++] = '-';
+    string[i] = '\0';
+    reverse(string);
+}
+
+void reverse(char *string)
+{
+    int i, j;
+    char c;
+
+    for (i = 0, j = strlen(string)-1; i<j; i++, j--) {
+        c = string[i];
+        string[i] = string[j];
+        string[j] = c;
+    }
 }
