@@ -1,10 +1,10 @@
 /***
 ***
 ***		fifo.c
-***				Jose Ignacio Galindo
-***				Federico Homovc
-***				Nicolas Loreti
-***			 	     ITBA 2011
+***			Jose Ignacio Galindo
+***			Federico Homovc
+***			Nicolas Loreti
+***		 	     ITBA 2011
 ***
 ***/
 
@@ -28,14 +28,12 @@
 #include "../../include/backEnd.h"
 
 /***		Module Defines		***/
-#define	CLIENTS_SIZE	15
-
 #define CLI_FIFO_R_S	"/tmp/clientFifo_read"
 #define CLI_FIFO_W_S	"/tmp/clientFifo_write"
 #define SER_FIFO_S	"/tmp/serverFIFO"
 
+#define	CLIENTS_SIZE	15
 #define FIFO_NAMES	30
-
 #define ERR_FIFO	-1
 
 
@@ -107,22 +105,25 @@ typedef struct
 /*
 * function mkopFifo
 *
-* Creates a new FIFO file to communicate with. The file name and modes of creating
+* Creates a new FIFO file to communicate with. The file name and modes for creating
 * and opening are given as parameters.
 *
-* @expecName: 
-* @resulName: 
-* @modeCr: 
-* @modeOp:
+* @expecName: Constant, first part of fifo file name. Depends if fifo is server, 
+* reading or writing.
+* @resulName: Final name of the fifo file. Includes the first part and a number that 
+* differentiates each file.
+* @modeCr: Mode for creating fifo.
+* @modeOp: Mode for opening fifo.
 */
 static int mkopFifo(const char *expecName, char *resultName, mode_t modeCr, mode_t modeOp);
 
 /*
 * function listeningThread
 *
+* Thread that is constantly checking if a new client connects to server. In such a case,
+* reads from the Server Fifo file and creates a new client with the specified data.
 *
-*
-* @serverInfo:
+* @serverInfo: Void pointer to the current server information.
 */
 static void * listeningThread(void *serverInfo);
 
@@ -188,7 +189,7 @@ static void * listeningThread(void *serverInfo)
 			if((fileDes_r = open(currentConnection.clientName_write, O_RDWR)) == -1)
 			{
 				fprintf(stderr, "Errno = %d, strerror = %s\n", errno, strerror(errno));
-				fprintf(stderr,	"Client FIFO _w couldn't be opened at listening.\n");
+				fprintf(stderr,	"Client FIFO_w couldn't be opened at listening.\n");
 				free(comm);
 				return NULL;
 			}
@@ -199,7 +200,7 @@ static void * listeningThread(void *serverInfo)
 
 			{
 				fprintf(stderr, "Errno = %d, strerror = %s\n", errno, strerror(errno));
-				fprintf(stderr,	"Client FIFO _r couldn't be opened at listening.\n");
+				fprintf(stderr,	"Client FIFO_r couldn't be opened at listening.\n");
 				free(comm);
 				return NULL;
 			}
@@ -292,7 +293,7 @@ clientADT connectToServer(serverADT serv)
 	if((serverFileDes = open(serv->serverName, O_WRONLY)) == -1)
 	{
 		free(ret);
-		fprintf(stderr, "Main FIFO couldn't be opened.\n");
+		fprintf(stderr, "Server FIFO couldn't be opened.\n");
 		return NULL;
 	}
 

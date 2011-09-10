@@ -1,10 +1,10 @@
 /***
 ***
-*** io.c
-*** Jose Ignacio Galindo
-*** Federico Homovc
-*** Nicolas Loreti
-*** ITBA 2011
+*** 		io.c
+*** 			Jose Ignacio Galindo
+*** 			Federico Homovc
+*** 			Nicolas Loreti
+*** 			     ITBA 2011
 ***
 ***/
 
@@ -25,8 +25,23 @@
 #include "./include/api.h"
 #include "./include/marshalling.h"
 
+/***		Functions		***/
+
+/*
+* function sigintServHandler
+*
+* Handler for SIGINT signal. Calls freeIOResources().
+*/
 static void sigintServHandler(int signo);
+
+/*
+* function freeIOResources
+*
+* Frees all the possible remaining memory alloc'd. 
+*/
 static void freeIOResources(void);
+
+
 
 clientADT * clients;
 serverADT server;
@@ -48,13 +63,13 @@ ioFunc(void)
 
 	if( (clients[1] = connectToServer(server)) == NULL )
 	{
-		printf("IO couldn't connect to server\n");
+		fprintf(stderr, "IO couldn't connect to server\n");
 		return 1;
 	}
 
 	if( (clients[0] = getClient(server, getppid())) == NULL )
 	{
-		printf("Map client not found\n");
+		fprintf(stderr, "Map client not found\n");
 		return 1;
 	}
 

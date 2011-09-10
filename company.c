@@ -26,8 +26,30 @@
 #include "./include/marshalling.h"
 
 /*** 		Functions 		***/
+
+/*
+* function sigintServHandler
+*
+* Handler for SIGINT signal. Calls freeCompanyResources().
+*/
 static void sigintServHandler(int signo);
+
+/*
+* function freeCompanyResources
+*
+* Frees all the possible remaining memory alloc'd. 
+*/
 static void freeCompanyResources(void);
+
+/*
+* function threadFunc
+*
+* Function that performs all the planes operations like setting a new destination and
+* updating cargo. It is synchronized so that only one plane thread can be running each
+* time.
+*
+* @threadId: Plane ID (from 0 to 9).
+*/
 void * threadFunc(void * threadId);
 
 
@@ -57,31 +79,31 @@ int companyFunc(char * fileName, int companyID) {
 
 	if( (client = connectToServer(server)) == NULL )
 	{
-		printf("Company %d couldn't connect to server.", companyID);
+		fprintf(stderr, "Company %d couldn't connect to server.", companyID);
 		return 1;
 	}
 
 	if( (clients[0] = getClient(server, getppid())) == NULL )
 	{
-		printf("Map client not found\n");
+		fprintf(stderr, "Map client not found\n");
 		return 1;
 	}
 
 	sendChecksign(clients[0]);
 	if (!openFile(&file, fileName)){
 		if (createCompany(file, &compa)) {
-			printf("File Error\n");
+			fprintf(stderr, "File Error\n");
 			return 1;
 		}
 		fclose(file);
 	} else {
-		printf("Impossible to open file\n");
+		fprintf(stderr, "Impossible to open file\n");
 		return 1;
 	}
 	compa->ID = companyID;
 	for (i = 0; i < compa->planesCount; i++)
 		if ((compa->companyPlanes[i]->destinationID = getCityID(compa->companyPlanes[i]->startCity, mapSt)) == -1) {
-			printf("Invalid start city for plane %d in company %d.\n", i, compa->ID);
+			fprintf(stderr, "Invalid start city for plane %d in company %d.\n", i, compa->ID);
 			return 1;
 		}
 
@@ -133,7 +155,6 @@ int companyFunc(char * fileName, int companyID) {
 			rcvPlanes(NULL, &unloading, &receivedPlanes, client);
 		}	
 
-
 		pthread_mutex_lock(&planeMutex); /*wake up planes and wait until they update cargo*/
 		pthread_mutex_lock(&mutexVar);
 		planesChecked = 0;
@@ -157,7 +178,6 @@ int companyFunc(char * fileName, int companyID) {
 		}
 
 		rcvMap(&med, client, mapSt->citiesCount);
-
 
 		pthread_mutex_lock(&planeMutex); /*wake up planes and wait until they set new destination*/
 		pthread_mutex_lock(&mutexVar);

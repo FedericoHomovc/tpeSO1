@@ -1,10 +1,10 @@
 /***
  ***
  ***		frontEnd.c
- ***				Jose Ignacio Galindo
- ***				Federico Homovc
- ***				Nicolas Loreti
- ***			 	     ITBA 2011
+ ***			Jose Ignacio Galindo
+ ***			Federico Homovc
+ ***			Nicolas Loreti
+ ***			     ITBA 2011
  ***
  ***/
 
@@ -25,12 +25,63 @@
 #include "./include/marshalling.h"
 
 /***		Functions		***/
+
+/*
+* function companyFunc
+*
+* Function to be executed once the company process is forked. It performs all
+* the companies operations like setting planes destinations and unloading 
+* their cargo.
+*
+* @fileName: Name of the company file name.
+* @companyID: Company ID (from 0 to 9).
+*/
 int companyFunc(char * fileName, int companyID);
+
+/*
+* function ioFunc
+*
+* Function to be executed once the Imput/Output process is forked. Receives the 
+* medicines from each city and the planes that unloaded cargo in each turn and 
+* prints it on screen.
+*/
 int ioFunc(void);
+
+/*
+* function unloadPlane
+*
+* Checks if the plane can unload cargo in its destination city and, if so, updates both
+* the city and plane's quantity of each correspondig medicine.
+*
+* @p: Plane arrived to its destination. 
+* @mapSt: Map struct with all the current map information.
+*/
 static int unloadPlane(plane ** p, map ** mapSt);
+
+/*
+* function freeResources
+*
+* Frees all the possible remaining memory alloc'd. 
+*/
 static int freeResources(void);
+
+/*
+* function needMedicines
+*
+* Checks if any city in the map still needs any medicine.
+*
+* @mapSt: Map struct with all the current map information.
+*/
 static int needMedicines(map * mapSt);
+
+/*
+* function sigintServHandler
+*
+* Handler for SIGINT signal. Sends SIGINT to all child processes and calls freeResources().
+*/
 static void sigintServHandler(int signo);
+
+
 
 map * mapSt;
 pid_t * pids;
@@ -60,29 +111,25 @@ int main(int argc, char * argv[]) {
 	}
 
 	if (!openFile(&file, argv[1])) {
-		if ((mapSt = malloc(sizeof(map))) == NULL
-			)
+		if ((mapSt = malloc(sizeof(map))) == NULL )
 			return 1;
 		if (createCities(file, mapSt)) {
-			printf("Map File Error\n");
+			fprintf(stderr, "Map File Error\n");
 			return 1;
 		}
 		fclose(file);
 	} else {
-		printf("Impossible to open file\n");
+		fprintf(stderr, "Impossible to open file\n");
 		return 1;
 	}
 	mapSt->companiesCount = argc - 2;
 
-	if ((server = startServer()) == NULL
-	)
+	if ((server = startServer()) == NULL )
 		return 1;
 
-	if ((pids = malloc(sizeof(pid_t) * (argc))) == NULL
-		)
+	if ((pids = malloc(sizeof(pid_t) * (argc))) == NULL )
 		return 1;
-	if ((clients = malloc(sizeof(clientADT *) * (argc))) == NULL
-	)
+	if ((clients = malloc(sizeof(clientADT *) * (argc))) == NULL )
 		return 1;
 
 	pids[0] = getpid();
@@ -97,7 +144,7 @@ int main(int argc, char * argv[]) {
 		exit(1);
 	case 0:
 		if (ioFunc())
-			printf("Error during IO execution\n");
+			fprintf(stderr, "Error during IO execution\n");
 		_exit(0);
 	default:
 		k = 2;
@@ -107,7 +154,7 @@ int main(int argc, char * argv[]) {
 				perror("Error creating company");
 			case 0:
 				if (companyFunc(argv[k], k - 2))
-					printf("Error during company %d execution\n", k - 2);
+					fprintf(stderr, "Error during company %d execution\n", k - 2);
 				_exit(0);
 			}
 			k++;
@@ -190,7 +237,7 @@ int main(int argc, char * argv[]) {
 	rcvChecksign(clients[0]);
 
 	for (k = 1; k < argc; k++) {
-		kill(pids[k], SIGINT); /*SIGTERM o SIGINT?*/
+		kill(pids[k], SIGINT);
 		disconnectFromServer(clients[k], server);
 	}
 	disconnectFromServer(clients[0], server);
@@ -205,7 +252,6 @@ int main(int argc, char * argv[]) {
 	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0; /* sec to ms */
 	elapsedTime += (t2.tv_usec - t1.tv_usec) / 1000.0; /* us to ms */
 	printf("Elapsed time: %f miliseconds\n", elapsedTime);
-	return 0;
 	return 0;
 }
 
@@ -263,7 +309,7 @@ static void sigintServHandler(int signo) {
 	int k;
 
 	for (k = 1; k < mapSt->companiesCount + 2; k++) {
-		kill(pids[k], SIGINT); /*SIGTERM o SIGINT?*/
+		kill(pids[k], SIGINT);
 		disconnectFromServer(clients[k], server);
 	}
 	disconnectFromServer(clients[0], server);
