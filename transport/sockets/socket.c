@@ -55,6 +55,7 @@ struct clientCDT
 {
 	int sockfd;
 	int semid;
+	char filePath[MAX_PATH_LENGTH];
 	struct sockaddr_un data;
 };
 
@@ -119,6 +120,7 @@ clientADT connectToServer(serverADT server)
 		}
 
 		public_sockfd = client->sockfd;
+		client->data = *addr_cli2;
 
 	if (up(server->semid, SEM_CLI_TABLE, TRUE) == -1)
 		return NULL;
@@ -162,7 +164,8 @@ int sendMsg(clientADT comm, message * msg, int flags)
 {
 	int ret;
 	
-	if( (ret = sendto(comm->sockfd,msg->message,msg->size,MSG_WAITALL,(struct sockaddr *)&comm->data, sizeof(struct sockaddr_un))) == -1){
+	if((ret=sendto(comm->sockfd,msg->message,msg->size,MSG_WAITALL,(struct sockaddr *)&comm->data, sizeof(struct sockaddr_un))) == -1)
+	{
 		perror("server:sending");
 		return -1;
 	}
@@ -186,7 +189,6 @@ int rcvMsg(clientADT comm, message *msg, int flags)
 /* Disconnects a client from the server */
 int disconnectFromServer(clientADT comm, serverADT server)
 {
-	printf("closing %s\n", comm->data.sun_path);
 	unlink(comm->data.sun_path);
 	free(comm);
 	return 0;
