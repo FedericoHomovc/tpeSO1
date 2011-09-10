@@ -1,0 +1,36 @@
+5
+
+Surat
+Flumil 960
+Nolotil 10
+Augmentine 950
+Enantyum 690
+Adiro100 530
+
+Pyongyang
+Nolotil 660
+Adiro100 70
+Efferalgan 590
+Viscofresh 810
+Termalgin 390
+
+Baghdad
+VoltarenEmulgel 630
+Termalgin 300
+Enantyum 210
+Viscofresh 20
+Orfidal 340
+
+RioDeJaneiro
+Nolotil 330
+Termalgin 820
+Adiro100 90
+Efferalgan 710
+Augmentine 560
+
+Seoul
+Nolotil 550
+Enantyum 920
+Flumil 170
+Orfidal 270
+Augmentine 330
