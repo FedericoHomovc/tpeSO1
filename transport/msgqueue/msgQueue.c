@@ -20,7 +20,7 @@
 #include <unistd.h>
 
 /***		Project Includes		***/
-#include "../../include/api.h"
+#include "../../include/transport.h"
 #include "../../include/structs.h"
 
 /***		Structs 		***/
@@ -44,7 +44,7 @@ struct clientCDT {
 static key_t queueKey = 0xBEEF0;
 int queueid;
 
-serverADT startServer() {
+serverADT createServer() {
 	serverADT serv;
 
 	if ((queueid = msgget(queueKey, 0666 | IPC_CREAT)) == -1)
@@ -78,7 +78,7 @@ clientADT getClient(serverADT serv, pid_t id) {
 	return client;
 }
 
-int sendMsg(clientADT client, message * msg, int flags) {
+int sendMessage(clientADT client, message * msg, int flags) {
 	msgQueue aux;
 	aux.mtype = client->pid;
 	strcpy(aux.mtext, msg->message);
@@ -86,7 +86,7 @@ int sendMsg(clientADT client, message * msg, int flags) {
 	return msgsnd(client->queueID, &aux,sizeof aux.mtext, flags);
 }
 
-int rcvMsg(clientADT client, message * msg, int flags) {
+int rcvMessage(clientADT client, message * msg, int flags) {
 	int ret;
 	msgQueue aux;
 	ret = msgrcv(client->queueID, &aux, sizeof aux.mtext, client->pid, flags);
@@ -101,7 +101,7 @@ int disconnectFromServer(clientADT client, serverADT server)
 	return 0;
 }
 
-int endServer(serverADT server)
+int terminateServer(serverADT server)
 {
 	msgctl(queueid, IPC_RMID, NULL);
 	free(server);

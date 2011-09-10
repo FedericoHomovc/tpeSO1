@@ -20,7 +20,7 @@
 #include <unistd.h>
 
 /***		Project Includes		***/
-#include "../../include/api.h"
+#include "../../include/transport.h"
 #include "../../include/semaphore.h"
 
 /*
@@ -108,7 +108,7 @@ static void cleanUP(void * mem, int bytes) {
 		m[i] = 0;
 }
 
-serverADT startServer() {
+serverADT createServer() {
 	int semid = -1;
 	int shmidClients = -1;
 	int shmidMessages = -1;
@@ -120,14 +120,14 @@ serverADT startServer() {
 	if (serv == NULL)
 	{
 		fprintf(stderr,
-				"startServer(): not enough space to initialize serverADT.\n");
+				"createServer(): not enough space to initialize serverADT.\n");
 		return NULL;
 	}
-	/* Starting the semaphores */
+	/* Starting the semaphores with initial value 1 */
 	semid = initSem(1);
 	if (semid == -1) {
 		free(serv);
-		fprintf(stderr, "startServer(): Semaphore initialization failed.\n");
+		fprintf(stderr, "createServer(): Semaphore initialization failed.\n");
 		return NULL;
 	}
 	serv->semid = semid;
@@ -148,7 +148,7 @@ serverADT startServer() {
 
 	if (clients == (void*) -1) {
 		fprintf(stderr,
-				"startServer(): error attaching memory to clients pointer.\n");
+				"createServer(): error attaching memory to clients pointer.\n");
 		free(serv);
 		return NULL;
 	}
@@ -158,7 +158,7 @@ serverADT startServer() {
 
 	if (memory == (void*) -1) {
 		fprintf(stderr,
-				"startServer(): error attaching memory to memory pointer.\n");
+				"createServer(): error attaching memory to memory pointer.\n");
 		free(serv);
 		return NULL;
 	}
@@ -290,7 +290,7 @@ clientADT getClient(serverADT server, pid_t id) {
 	return client;
 }
 
-int sendMsg(clientADT client, message * msg, int flags) {
+int sendMessage(clientADT client, message * msg, int flags) {
 	int amtSent = 0;
 	char * origin = (char *) (msg->message);
 	void * destination;
@@ -298,20 +298,20 @@ int sendMsg(clientADT client, message * msg, int flags) {
 
 	if (msg == NULL || client == NULL) {
 		fprintf(stderr,
-				"sendMsg(): error in client communication parameters.\n");
+				"sendMessage(): error in client communication parameters.\n");
 		return -1;
 	}
 
 	sending = malloc(sizeof(shmMessage));
 
 	if (sending == NULL) {
-		fprintf(stderr, "sendMsg(): not enough memory to alloc message.\n");
+		fprintf(stderr, "sendMessage(): not enough memory to alloc message.\n");
 		return -1;
 	}
 
 	if (up(client->semid, SEM_MEMORY, flags != IPC_NOWAIT) == -1) {
 		free(sending);
-		fprintf(stderr, "sendMsg(): error initializing semaphore.\n");
+		fprintf(stderr, "sendMessage(): error initializing semaphore.\n");
 		return -1;
 	}
 	/* variable used to write at the client's reserved position */
@@ -339,7 +339,7 @@ int sendMsg(clientADT client, message * msg, int flags) {
 	return amtSent;
 }
 
-int rcvMsg(clientADT client, message * msg, int flags) {
+int rcvMessage(clientADT client, message * msg, int flags) {
 	int amtRcv = 0;
 	void * origin;
 	shmMessage * receiving;
@@ -347,7 +347,7 @@ int rcvMsg(clientADT client, message * msg, int flags) {
 
 	if (msg == NULL || client == NULL) {
 		fprintf(stderr,
-				"rcvMsg(): Error in client communication parameters.\n");
+				"rcvMessage(): Error in client communication parameters.\n");
 		return -2;
 	}
 
@@ -355,7 +355,7 @@ int rcvMsg(clientADT client, message * msg, int flags) {
 
 	if (receiving == NULL) {
 		free(receiving);
-		fprintf(stderr, "rcvMsg(): not enough memory to alloc message\n");
+		fprintf(stderr, "rcvMessage(): not enough memory to alloc message\n");
 		return -2;
 	}
 
@@ -413,7 +413,7 @@ int disconnectFromServer(clientADT client, serverADT server) {
 	return 0;
 }
 
-int endServer(serverADT server) {
+int terminateServer(serverADT server) {
 	shmdt(server->memory);
 	shmdt(server->clients);
 	shmctl(server->shmidClients, IPC_RMID, NULL);

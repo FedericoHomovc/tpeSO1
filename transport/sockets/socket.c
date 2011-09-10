@@ -28,7 +28,7 @@
 #include <signal.h>
 
 /***		Project Includes		***/
-#include "../../include/api.h"
+#include "../../include/transport.h"
 #include "../../include/semaphore.h"
 
 /***		Module Defines		***/
@@ -70,7 +70,7 @@ struct serverCDT
 };
 
 
-serverADT startServer()
+serverADT createServer()
 {
 	int semid;
 
@@ -160,7 +160,7 @@ struct sockaddr_un * getStruct(int pid){
 }
 
 /* Sends a message */
-int sendMsg(clientADT comm, message * msg, int flags)
+int sendMessage(clientADT comm, message * msg, int flags)
 {
 	int ret;
 	
@@ -174,7 +174,7 @@ int sendMsg(clientADT comm, message * msg, int flags)
 }
 
 /* Receives a message */
-int rcvMsg(clientADT comm, message *msg, int flags)
+int rcvMessage(clientADT comm, message *msg, int flags)
 {
 	int ret;
 
@@ -196,7 +196,7 @@ int disconnectFromServer(clientADT comm, serverADT server)
 }
 
 /* Ends the server */
-int endServer(serverADT server)
+int terminateServer(serverADT server)
 {
 	close(server->sockFd);
 	free(server);

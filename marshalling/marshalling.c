@@ -21,7 +21,7 @@
 #include <error.h>
 
 /***		Project Includes		***/
-#include "../include/api.h"
+#include "../include/transport.h"
 #include "../include/structs.h"
 
 /***		Functions		***/
@@ -40,7 +40,7 @@ sendChecksign(clientADT client)
 	msg.message = "OK";
 	msg.size = 3;
 
-	ret = sendMsg(client, &msg, 0);
+	ret = sendMessage(client, &msg, 0);
 	
 	return ret;
 }
@@ -56,7 +56,7 @@ rcvChecksign(clientADT client)
 		return -1;
 	msg.size = 3;
 
-	if( (ret = rcvMsg(client, &msg, 0)) != -1 )
+	if( (ret = rcvMessage(client, &msg, 0)) != -1 )
 		if( strcmp((char*)msg.message, "OK") )
 			return -1;
 
@@ -88,7 +88,7 @@ sendPlanes(int companyID, int count, plane ** p, clientADT client)
 	strcat(msg.message, ";");
 
 	if(count == 0)
-		ret = sendMsg(client, &msg, 0);
+		ret = sendMessage(client, &msg, 0);
 
 	for(i = 0; i< count; i++)
 	{
@@ -102,7 +102,7 @@ sendPlanes(int companyID, int count, plane ** p, clientADT client)
 	}
 	
 	if(count != 0)
-		ret = sendMsg(client, &msg, 0);
+		ret = sendMessage(client, &msg, 0);
 	free(num);
 	free(msg.message);
 
@@ -123,7 +123,7 @@ rcvPlanes(int * companyID, int * count, plane *** p, clientADT client)
 		return -1;
 	msg.size = MSG_SIZE;
 	
-	if( (ret = rcvMsg(client, &msg, 0)) == -1 )
+	if( (ret = rcvMessage(client, &msg, 0)) == -1 )
 		return -1;
 
 	if( (aux = calloc(10, sizeof(char))) == NULL)
@@ -186,7 +186,7 @@ sendMap(int size, city ** cities, clientADT client)
 		if( (aux = wrappMedicine(cities[i]->medicines, cities[i]->ID, cities[i]->medCount)) == NULL)
 			return -1;
 		strcpy(msg.message, aux);
-		sendMsg(client, &msg, 0);
+		sendMessage(client, &msg, 0);
 		free(aux);
 	}
 	free(msg.message);
@@ -211,7 +211,7 @@ rcvMap(medicine **** meds, clientADT client, int size)
 
 	for(k = 0; k < size; k++)
 	{
-		if( rcvMsg(client, &msg, 0) == -1 )
+		if( rcvMessage(client, &msg, 0) == -1 )
 			return -1;
 		unwrappMedicine(&m[k], (char *)msg.message, NULL);
 	}

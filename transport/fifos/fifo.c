@@ -23,7 +23,7 @@
 #include <sys/ipc.h>
 
 /***		Project Includes		***/
-#include "../../include/api.h"
+#include "../../include/transport.h"
 #include "../../include/structs.h"
 #include "../../include/backEnd.h"
 
@@ -218,7 +218,7 @@ static void * listeningThread(void *serverInfo)
 
 			msg.message = "OK"; 
 			msg.size = 3;
-			sendMsg(comm, &msg, 0); /*A message is sent to ensure that the client was created*/
+			sendMessage(comm, &msg, 0); /*A message is sent to ensure that the client was created*/
 		}
 	}
 
@@ -227,7 +227,7 @@ static void * listeningThread(void *serverInfo)
 	return NULL;
 }
 
-serverADT startServer(void)
+serverADT createServer(void)
 {
 	int fileDes, retValue;
 	pthread_t thread;
@@ -314,7 +314,7 @@ clientADT connectToServer(serverADT serv)
 		return NULL;
 	msg.size = 3;
 
-	if( rcvMsg(ret, &msg, 0) != -1 )
+	if( rcvMessage(ret, &msg, 0) != -1 )
 		if( strcmp((char*)msg.message, "OK") )
 			return NULL;
 
@@ -336,7 +336,7 @@ clientADT getClient(serverADT serv, pid_t id)
 }
 
 
-int sendMsg(clientADT comm, message *msg, int flags)
+int sendMessage(clientADT comm, message *msg, int flags)
 {
 	if(comm == NULL || msg == NULL)
 	{
@@ -348,7 +348,7 @@ int sendMsg(clientADT comm, message *msg, int flags)
 
 
 
-int rcvMsg(clientADT comm, message *msg, int flags)
+int rcvMessage(clientADT comm, message *msg, int flags)
 {
 	if(comm == NULL || msg == NULL)
 	{
@@ -375,7 +375,7 @@ int disconnectFromServer(clientADT comm, serverADT server)
 }
 
 
-int endServer(serverADT server)
+int terminateServer(serverADT server)
 {
 	int i;
 	clientADT currentComm;
