@@ -39,10 +39,6 @@ struct clientCDT {
 	int pid;
 };
 
-/***		Functions		***/
-void reverse(char *string);
-void itoa(int n, char *string);
-
 
 
 static key_t queueKey = 0xBEEF0;
