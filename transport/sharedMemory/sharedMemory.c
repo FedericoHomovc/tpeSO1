@@ -136,7 +136,7 @@ serverADT createServer() {
 	while ((shmidClients = shmget(KEY_1 + i, SIZE_CLI_VEC, FLAGS)) == -1)
 		i++;
 
-	/* Obtaining the clientunication memory */
+	/* Obtaining the client communication memory */
 	while ((shmidMessages = shmget(KEY_2 + i, SIZE, FLAGS)) == -1)
 		i++;
 
