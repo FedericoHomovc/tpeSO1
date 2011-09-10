@@ -10,7 +10,7 @@
 .SILENT:
 
 TARGET=tpeSO
-OBJS= map.c backEnd.c company.c io.c
+OBJS= ./application/map.c backEnd.c ./application/company.c ./application/io.c
 OBJS2= map.o backEnd.o company.o io.o
 FIFO= ./transport/fifos/fifo.c
 FIFO2= fifo.o
