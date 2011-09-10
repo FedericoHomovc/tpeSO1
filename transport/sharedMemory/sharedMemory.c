@@ -38,6 +38,8 @@
 #define SEM_CLI_TABLE 0
 #define SEM_MEMORY 1
 
+#define PERMS 0666 | IPC_CREAT | IPC_EXCL
+
 
 /*
  * name: clientCDT
@@ -113,7 +115,6 @@ serverADT startServer() {
 	void * clients;
 	void * memory;
 	int i = 0;
-	int permits = 0666;
 
 	serverADT serv = malloc(sizeof(struct serverCDT));
 	if (serv == NULL)
@@ -143,7 +144,7 @@ serverADT startServer() {
 	serv->shmidMessages = shmidMessages;
 
 	/* Attaching client vector memory */
-	clients = shmat(serv->shmidClients, NULL, permits | IPC_CREAT | IPC_EXCL);
+	clients = shmat(serv->shmidClients, NULL, PERMS);
 
 	if (clients == (void*) -1) {
 		fprintf(stderr,
@@ -153,7 +154,7 @@ serverADT startServer() {
 	}
 
 	/* Attaching message memory */
-	memory = shmat(serv->shmidMessages, NULL, permits | IPC_CREAT | IPC_EXCL);
+	memory = shmat(serv->shmidMessages, NULL, PERMS);
 
 	if (memory == (void*) -1) {
 		fprintf(stderr,
@@ -174,7 +175,6 @@ serverADT startServer() {
 
 clientADT connectToServer(serverADT serv) {
 	struct clientCDT * clients;
-	int permits = 0666;
 	int i;
 	clientADT client = NULL;
 
@@ -188,7 +188,7 @@ clientADT connectToServer(serverADT serv) {
 		return NULL;
 
 	/* Attaching memory */
-	clients = shmat(serv->shmidClients, NULL, permits | IPC_CREAT | IPC_EXCL);
+	clients = shmat(serv->shmidClients, NULL, PERMS);
 	if (clients == (void*) -1) {
 		fprintf(
 				stderr,
@@ -228,7 +228,7 @@ clientADT connectToServer(serverADT serv) {
 	client->offset = (clients[i]).offset;
 	/* linking the shared memory where the client is supposed to write and read */
 	client->memory = shmat(serv->shmidMessages, NULL,
-			permits | IPC_CREAT | IPC_EXCL);
+			PERMS);
 
 	if (client->memory == (void*) -1) {
 		fprintf(
@@ -248,7 +248,6 @@ clientADT connectToServer(serverADT serv) {
 clientADT getClient(serverADT server, pid_t id) {
 	struct clientCDT * clients = (struct clientCDT *) server->clients;
 	int i;
-	int permits = 0666;
 	clientADT client = NULL;
 
 	if (up(server->semid, SEM_CLI_TABLE, TRUE) == -1) {
@@ -275,7 +274,7 @@ clientADT getClient(serverADT server, pid_t id) {
 			client->shmidMessages = (clients[i]).shmidMessages;
 			client->offset = (clients[i]).offset;
 			client->memory = shmat(client->shmidMessages, NULL,
-					permits | IPC_CREAT | IPC_EXCL);
+					PERMS);
 			if (client->memory == (void*) -1) {
 				fprintf(
 						stderr,
