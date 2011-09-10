@@ -1,10 +1,10 @@
 /***
  ***
  ***		sharedMemory.c
- ***				Jose Ignacio Galindo
- ***				Federico Homovc
- ***				Nicolas Loreti
- ***			 	     ITBA 2011
+ ***		Jose Ignacio Galindo
+ ***		Federico Homovc
+ ***		Nicolas Loreti
+ ***		ITBA 2011
  ***
  ***/
 
@@ -44,8 +44,8 @@
  * description: is the implementation of serverADT. It stores the necessary
  * information for a client to connect to the server and to other clients.
  * @id: unique identification of a client. It holds the pid of the process.
- * @used: flag to indicate whether this position in the client client is empty or not.
- * It is not used for communication.
+ * @used: flag to indicate whether this position in the client vector is empty
+ *  or not(it is not used for communication).
  * @semid: the semaphore ID, used to be able to mutually exclude access to the
  * shared memory  message`s vector.
  * @shmidMessages: the shared memory ID to be able to access the message vector.
@@ -99,20 +99,20 @@ typedef struct shmMessage {
 static void cleanUP(void * mem, int bytes) {
 	int i;
 	char * m = (char *) mem;
-	if (mem == NULL
-	)
+	if (mem == NULL){
 		return;
+	}
 	for (i = 0; i < bytes; i++)
 		m[i] = 0;
 }
 
 serverADT startServer() {
+	int semid = -1;
 	int shmidClients = -1;
 	int shmidMessages = -1;
-	int semid = -1;
-	int i = 0;
 	void * clients;
 	void * memory;
+	int i = 0;
 	int permits = 0666;
 
 	serverADT serv = malloc(sizeof(struct serverCDT));
