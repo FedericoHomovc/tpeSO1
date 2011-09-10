@@ -10,15 +10,15 @@
 .SILENT:
 
 TARGET=tpeSO
-OBJS= ./application/map.c backEnd.c ./application/company.c ./application/io.c
+OBJS= ./application/map.c ./utils/backEnd.c ./application/company.c ./application/io.c
 OBJS2= map.o backEnd.o company.o io.o
 FIFO= ./transport/fifos/fifo.c
 FIFO2= fifo.o
 MSGQUEUE= ./transport/msgqueue/msgQueue.c
 MSGQUEUE2= msgQueue.o
-SOCKETS= ./transport/sockets/socket.c semaphore.c
+SOCKETS= ./transport/sockets/socket.c ./utils/semaphore.c
 SOCKETS2= socket.o semaphore.o
-SHM= ./transport/sharedMemory/sharedMemory.c semaphore.c
+SHM= ./transport/sharedMemory/sharedMemory.c ./utils/semaphore.c
 SHM2= sharedMemory.o semaphore.o
 MARSHALL = ./marshalling/marshalling.c
 MARSHALL2 = marshalling.o
