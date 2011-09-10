@@ -1,0 +1,121 @@
+10
+
+Kolkata
+Gelocatil 660
+Enantyum 790
+Augmentine 500
+Orfidal 950
+Ventoln 970
+Lexatn 860
+Flumil 370
+Nolotil 510
+Trankimazn 140
+Dianben 440
+
+Bogota
+Augmentine 550
+Dianben 460
+Orfidal 960
+Flumil 430
+Enantyum 760
+Ventoln 720
+Nolotil 970
+Lexatn 780
+Gelocatil 570
+Trankimazn 450
+
+Jaipur
+Dianben 280
+Ventoln 10
+Lexatn 430
+Enantyum 780
+Trankimazn 120
+Augmentine 80
+Gelocatil 200
+Orfidal 120
+Nolotil 970
+Flumil 890
+
+Alexandria
+Enantyum 40
+Dianben 440
+Orfidal 820
+Nolotil 690
+Flumil 430
+Gelocatil 80
+Augmentine 270
+Ventoln 830
+Lexatn 230
+Trankimazn 930
+
+Nairobi
+Flumil 170
+Augmentine 980
+Dianben 630
+Ventoln 330
+Nolotil 310
+Trankimazn 140
+Enantyum 40
+Lexatn 970
+Gelocatil 890
+Orfidal 30
+
+Baghdad
+Enantyum 480
+Trankimazn 520
+Ventoln 500
+Dianben 590
+Orfidal 220
+Lexatn 990
+Flumil 490
+Augmentine 30
+Nolotil 40
+Gelocatil 500
+
+CapeTown
+Lexatn 560
+Nolotil 780
+Trankimazn 480
+Orfidal 100
+Flumil 690
+Enantyum 950
+Ventoln 350
+Augmentine 440
+Dianben 660
+Gelocatil 740
+
+Jakarta
+Flumil 950
+Enantyum 690
+Dianben 140
+Augmentine 420
+Orfidal 340
+Trankimazn 890
+Ventoln 310
+Nolotil 370
+Gelocatil 40
+Lexatn 380
+
+Yangon
+Flumil 520
+Enantyum 260
+Orfidal 650
+Dianben 190
+Ventoln 210
+Trankimazn 250
+Gelocatil 760
+Lexatn 660
+Augmentine 170
+Nolotil 790
+
+Wuhan
+Orfidal 670
+Trankimazn 520
+Dianben 520
+Ventoln 900
+Augmentine 180
+Gelocatil 650
+Flumil 50
+Enantyum 260
+Lexatn 70
+Nolotil 550

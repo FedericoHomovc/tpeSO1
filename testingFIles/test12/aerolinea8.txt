@@ -1,0 +1,121 @@
+10
+
+Durban
+Flumil 840
+Augmentine 690
+Cardyl 730
+Paracetamol 430
+Almax 440
+Dianben 110
+Gelocatil 340
+Viscofresh 630
+Neobrufen 760
+Sintrom 40
+
+Wuhan
+Lexatn 40
+Dianben 880
+Adiro100 720
+VoltarenEmulgel 780
+Cardyl 880
+Flumil 920
+Enantyum 920
+Almax 640
+Termalgin 150
+Trankimazn 950
+
+Yangon
+Orfidal 600
+Augmentine 850
+Ventoln 730
+Adiro100 400
+Lexatn 140
+Gelocatil 780
+Almax 930
+Trankimazn 180
+Dianben 110
+Enantyum 170
+
+Tokyo
+Orfidal 780
+VoltarenEmulgel 900
+Sintrom 80
+Gelocatil 30
+Adiro100 450
+Enantyum 20
+Ventoln 930
+Viscofresh 130
+Efferalgan 340
+Paracetamol 470
+
+London
+Adiro100 810
+Flumil 100
+Dianben 170
+Lexatn 110
+Termalgin 350
+Enantyum 970
+Gelocatil 770
+Neobrufen 170
+VoltarenEmulgel 200
+Viscofresh 920
+
+Kinshasa
+Ventoln 860
+Efferalgan 570
+Almax 470
+Termalgin 950
+Adiro100 450
+Flumil 810
+VoltarenEmulgel 560
+Lexatn 600
+Augmentine 990
+Trankimazn 850
+
+Moscow
+Nolotil 200
+Efferalgan 390
+Termalgin 480
+VoltarenEmulgel 430
+Paracetamol 20
+Enantyum 80
+Sintrom 570
+Adiro100 660
+Trankimazn 50
+Ventoln 250
+
+Abidjan
+Viscofresh 860
+Neobrufen 10
+Sintrom 920
+Efferalgan 840
+Ventoln 840
+Gelocatil 640
+Augmentine 380
+Nolotil 490
+Adiro100 950
+Almax 970
+
+Bogota
+Cardyl 60
+Augmentine 400
+Enantyum 90
+Efferalgan 600
+Adiro100 50
+VoltarenEmulgel 770
+Gelocatil 410
+Flumil 120
+Almax 390
+Trankimazn 40
+
+Seoul
+Augmentine 410
+Viscofresh 420
+Neobrufen 960
+Enantyum 270
+Trankimazn 750
+Almax 650
+Sintrom 990
+Efferalgan 710
+VoltarenEmulgel 810
+Cardyl 320

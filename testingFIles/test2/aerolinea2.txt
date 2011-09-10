@@ -1,0 +1,36 @@
+5
+
+Santiago
+Augmentine 220
+Efferalgan 260
+Sintrom 30
+Orfidal 70
+VoltarenEmulgel 100
+
+Hyderabad
+VoltarenEmulgel 140
+Dianben 220
+Adiro100 170
+Augmentine 260
+Orfidal 200
+
+Seoul
+VoltarenEmulgel 70
+Gelocatil 240
+Dianben 190
+Augmentine 290
+Termalgin 180
+
+SaoPaulo
+Augmentine 20
+VoltarenEmulgel 90
+Adiro100 160
+Dianben 120
+Termalgin 180
+
+Kolkata
+Augmentine 250
+Dianben 10
+Efferalgan 270
+Adiro100 290
+Lexatn 160

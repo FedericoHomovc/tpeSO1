@@ -1,0 +1,36 @@
+5
+
+LosAngeles
+Neobrufen 30
+Efferalgan 830
+Augmentine 590
+Almax 550
+Adiro100 860
+
+SaoPaulo
+Viscofresh 280
+Almax 820
+Orfidal 290
+Efferalgan 240
+Augmentine 110
+
+Wuhan
+Augmentine 10
+Efferalgan 270
+Orfidal 990
+Almax 10
+Nolotil 260
+
+Kinshasa
+Flumil 200
+Nolotil 320
+Adiro100 310
+Efferalgan 520
+Almax 150
+
+London
+Almax 580
+Flumil 880
+Neobrufen 240
+Viscofresh 150
+Nolotil 630

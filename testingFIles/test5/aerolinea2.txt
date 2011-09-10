@@ -1,0 +1,36 @@
+5
+
+Istanbul
+Viscofresh 520
+Neobrufen 250
+Sintrom 360
+VoltarenEmulgel 200
+Termalgin 720
+
+Bangalore
+Viscofresh 410
+Termalgin 310
+Sintrom 630
+VoltarenEmulgel 990
+Neobrufen 660
+
+Hanoi
+Sintrom 790
+Termalgin 500
+VoltarenEmulgel 660
+Viscofresh 150
+Neobrufen 230
+
+Riyadh
+Neobrufen 970
+Viscofresh 580
+Termalgin 90
+VoltarenEmulgel 930
+Sintrom 460
+
+Madrid
+Viscofresh 750
+Neobrufen 730
+VoltarenEmulgel 710
+Termalgin 660
+Sintrom 940

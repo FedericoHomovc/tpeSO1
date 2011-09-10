@@ -1,0 +1,118 @@
+10
+
+Durban
+Adiro100 920
+Lexatn 850
+Enantyum 200
+Paracetamol 300
+Augmentine 410
+
+Surat
+Sintrom 620
+Augmentine 300
+Gelocatil 580
+
+Busan
+Flumil 810
+Augmentine 840
+Viscofresh 900
+Adiro100 220
+Sintrom 10
+Lexatn 420
+Gelocatil 130
+Paracetamol 920
+
+MexicoCity
+Enantyum 200
+Adiro100 980
+
+Guangzhou
+Flumil 430
+Enantyum 510
+Sintrom 840
+Gelocatil 70
+Augmentine 20
+Paracetamol 260
+Adiro100 410
+Cardyl 170
+Viscofresh 800
+
+Baghdad
+Sintrom 160
+Adiro100 750
+Flumil 50
+Paracetamol 730
+Lexatn 900
+
+Santiago
+Sintrom 550
+Viscofresh 570
+
+Alexandria
+Sintrom 210
+
+Yangon
+Augmentine 710
+Cardyl 630
+Sintrom 450
+Gelocatil 990
+Paracetamol 340
+Viscofresh 680
+
+Madrid
+Enantyum 230
+Augmentine 880
+Gelocatil 340
+
+Durban Surat 160
+Durban Busan 85
+Durban MexicoCity 225
+Durban Guangzhou 165
+Durban Baghdad 165
+Durban Santiago 85
+Durban Alexandria 125
+Durban Yangon 230
+Durban Madrid 120
+
+Surat Busan 145
+Surat MexicoCity 135
+Surat Guangzhou 85
+Surat Baghdad 275
+Surat Santiago 120
+Surat Yangon 275
+
+Busan MexicoCity 25
+Busan Guangzhou 270
+Busan Baghdad 200
+Busan Santiago 240
+Busan Alexandria 15
+Busan Yangon 280
+Busan Madrid 40
+
+MexicoCity Baghdad 115
+MexicoCity Santiago 130
+MexicoCity Alexandria 290
+MexicoCity Yangon 110
+MexicoCity Madrid 165
+
+Guangzhou MexicoCity 45
+Guangzhou Santiago 225
+Guangzhou Alexandria 80
+Guangzhou Yangon 215
+Guangzhou Madrid 275
+
+Baghdad Guangzhou 95
+Baghdad Santiago 145
+Baghdad Alexandria 130
+Baghdad Madrid 210
+
+Santiago Alexandria 290
+Santiago Yangon 270
+Santiago Madrid 280
+
+Alexandria Yangon 255
+Alexandria Madrid 240
+
+Yangon Madrid 105
+
+Madrid Surat 195

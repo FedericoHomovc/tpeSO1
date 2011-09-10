@@ -1,0 +1,351 @@
+20
+
+Mumbai
+Lexatn 370
+Dianben 950
+Neobrufen 110
+Enantyum 440
+
+Guangzhou
+Lexatn 30
+Dianben 970
+Ventoln 170
+Paracetamol 150
+Gelocatil 530
+Orfidal 250
+Efferalgan 180
+Viscofresh 590
+
+Pune
+Gelocatil 940
+Orfidal 160
+Dianben 720
+Lexatn 410
+Viscofresh 170
+Efferalgan 550
+
+Kinshasa
+Efferalgan 300
+
+Ankara
+Dianben 570
+Orfidal 910
+Lexatn 10
+
+Bangalore
+Enantyum 460
+Neobrufen 540
+Ventoln 500
+Efferalgan 310
+Viscofresh 80
+
+Hyderabad
+Orfidal 210
+Viscofresh 210
+Neobrufen 210
+Lexatn 10
+Paracetamol 260
+Gelocatil 890
+
+Tehran
+Neobrufen 820
+Gelocatil 340
+Ventoln 720
+
+NewYorkCity
+Neobrufen 940
+Lexatn 340
+Viscofresh 80
+Gelocatil 820
+Enantyum 990
+
+Dongguan
+Neobrufen 640
+Enantyum 400
+Viscofresh 80
+Gelocatil 430
+Ventoln 520
+
+Hanoi
+Gelocatil 410
+Neobrufen 780
+Paracetamol 380
+Efferalgan 170
+Dianben 540
+Enantyum 200
+Ventoln 420
+Viscofresh 120
+Lexatn 270
+
+Jakarta
+Ventoln 140
+Paracetamol 460
+Orfidal 240
+
+Cairo
+Paracetamol 960
+Dianben 950
+Ventoln 930
+Lexatn 50
+Viscofresh 890
+Orfidal 110
+
+SaoPaulo
+Viscofresh 650
+Ventoln 190
+Gelocatil 80
+Paracetamol 330
+Orfidal 340
+Lexatn 20
+
+Yokohama
+Viscofresh 310
+Efferalgan 350
+Lexatn 370
+Enantyum 700
+Paracetamol 590
+Dianben 450
+Ventoln 610
+
+Chongqing
+Lexatn 960
+Viscofresh 30
+Dianben 680
+Ventoln 630
+Orfidal 580
+
+Bogota
+Gelocatil 110
+Dianben 810
+Orfidal 230
+Lexatn 190
+Viscofresh 40
+Efferalgan 460
+Paracetamol 960
+Ventoln 810
+Enantyum 350
+
+Istanbul
+Paracetamol 440
+
+Seoul
+Enantyum 160
+Dianben 750
+Efferalgan 400
+Paracetamol 130
+Lexatn 200
+
+Kanpur
+Enantyum 500
+Gelocatil 970
+Ventoln 420
+Lexatn 330
+Paracetamol 240
+
+Mumbai Guangzhou 60
+Mumbai Pune 35
+Mumbai Kinshasa 140
+Mumbai Ankara 185
+Mumbai Bangalore 135
+Mumbai Hyderabad 205
+Mumbai Tehran 70
+Mumbai NewYorkCity 10
+Mumbai Dongguan 15
+Mumbai Hanoi 55
+Mumbai Jakarta 70
+Mumbai Cairo 165
+Mumbai SaoPaulo 170
+Mumbai Yokohama 150
+Mumbai Chongqing 210
+Mumbai Bogota 75
+Mumbai Istanbul 220
+Mumbai Seoul 210
+Mumbai Kanpur 145
+
+Guangzhou Pune 185
+Guangzhou Kinshasa 185
+Guangzhou Ankara 250
+Guangzhou Bangalore 20
+Guangzhou Hyderabad 30
+Guangzhou Tehran 210
+Guangzhou NewYorkCity 295
+Guangzhou Dongguan 95
+Guangzhou Hanoi 115
+Guangzhou Jakarta 270
+Guangzhou Cairo 85
+Guangzhou SaoPaulo 260
+Guangzhou Yokohama 200
+Guangzhou Chongqing 50
+Guangzhou Bogota 255
+Guangzhou Istanbul 160
+Guangzhou Seoul 140
+Guangzhou Kanpur 150
+
+Pune Kinshasa 200
+Pune Ankara 70
+Pune Bangalore 190
+Pune Hyderabad 210
+Pune Tehran 35
+Pune NewYorkCity 40
+Pune Dongguan 265
+Pune Hanoi 285
+Pune Jakarta 125
+Pune Cairo 45
+Pune SaoPaulo 125
+Pune Yokohama 95
+Pune Chongqing 225
+Pune Bogota 10
+Pune Istanbul 50
+Pune Seoul 200
+Pune Kanpur 45
+
+Kinshasa Bangalore 175
+Kinshasa Hyderabad 165
+Kinshasa NewYorkCity 125
+Kinshasa Dongguan 225
+Kinshasa Hanoi 185
+Kinshasa Cairo 280
+Kinshasa SaoPaulo 160
+Kinshasa Yokohama 55
+Kinshasa Chongqing 200
+Kinshasa Bogota 265
+Kinshasa Istanbul 100
+Kinshasa Seoul 275
+Kinshasa Kanpur 30
+
+Ankara Bangalore 90
+Ankara Hyderabad 200
+Ankara Tehran 275
+Ankara NewYorkCity 70
+Ankara Dongguan 165
+Ankara Hanoi 155
+Ankara Jakarta 145
+Ankara Cairo 285
+Ankara SaoPaulo 110
+Ankara Yokohama 190
+Ankara Chongqing 55
+Ankara Bogota 235
+Ankara Istanbul 215
+Ankara Seoul 235
+Ankara Kanpur 45
+
+Bangalore Hyderabad 75
+Bangalore Tehran 75
+Bangalore NewYorkCity 230
+Bangalore Dongguan 225
+Bangalore Hanoi 240
+Bangalore Jakarta 295
+Bangalore Cairo 180
+Bangalore SaoPaulo 40
+Bangalore Yokohama 145
+Bangalore Chongqing 260
+Bangalore Bogota 245
+Bangalore Kanpur 240
+
+Hyderabad NewYorkCity 145
+Hyderabad Dongguan 120
+Hyderabad Jakarta 60
+Hyderabad Cairo 155
+Hyderabad SaoPaulo 100
+Hyderabad Bogota 15
+Hyderabad Istanbul 250
+Hyderabad Seoul 255
+
+Tehran Kinshasa 110
+Tehran NewYorkCity 295
+Tehran Dongguan 20
+Tehran Hanoi 15
+Tehran Jakarta 115
+Tehran Cairo 55
+Tehran SaoPaulo 110
+Tehran Yokohama 250
+Tehran Bogota 135
+Tehran Istanbul 105
+Tehran Seoul 290
+
+NewYorkCity Jakarta 255
+NewYorkCity Cairo 110
+NewYorkCity SaoPaulo 295
+NewYorkCity Yokohama 190
+NewYorkCity Chongqing 105
+NewYorkCity Bogota 255
+NewYorkCity Seoul 50
+NewYorkCity Kanpur 240
+
+Dongguan NewYorkCity 265
+Dongguan Hanoi 180
+Dongguan Jakarta 225
+Dongguan Cairo 255
+Dongguan SaoPaulo 65
+Dongguan Yokohama 260
+Dongguan Bogota 155
+Dongguan Istanbul 140
+Dongguan Seoul 175
+Dongguan Kanpur 250
+
+Hanoi Hyderabad 105
+Hanoi NewYorkCity 85
+Hanoi Jakarta 80
+Hanoi Cairo 105
+Hanoi Yokohama 245
+Hanoi Chongqing 25
+Hanoi Bogota 170
+Hanoi Istanbul 200
+Hanoi Seoul 250
+Hanoi Kanpur 30
+
+Jakarta Kinshasa 265
+Jakarta Cairo 180
+Jakarta SaoPaulo 195
+Jakarta Yokohama 220
+Jakarta Bogota 285
+Jakarta Istanbul 55
+Jakarta Seoul 265
+Jakarta Kanpur 275
+
+Cairo SaoPaulo 125
+Cairo Yokohama 210
+Cairo Chongqing 230
+Cairo Bogota 195
+Cairo Istanbul 235
+Cairo Seoul 170
+
+SaoPaulo Hanoi 245
+SaoPaulo Yokohama 135
+SaoPaulo Chongqing 230
+SaoPaulo Bogota 75
+SaoPaulo Istanbul 35
+SaoPaulo Seoul 290
+SaoPaulo Kanpur 140
+
+Yokohama Hyderabad 180
+Yokohama Bogota 140
+Yokohama Istanbul 190
+Yokohama Seoul 195
+Yokohama Kanpur 80
+
+Chongqing Hyderabad 250
+Chongqing Tehran 115
+Chongqing Dongguan 20
+Chongqing Jakarta 170
+Chongqing Yokohama 175
+Chongqing Bogota 265
+Chongqing Istanbul 60
+Chongqing Seoul 250
+Chongqing Kanpur 110
+
+Bogota Seoul 65
+
+Istanbul Bangalore 10
+Istanbul NewYorkCity 210
+Istanbul Bogota 20
+Istanbul Seoul 140
+Istanbul Kanpur 170
+
+Seoul Bangalore 235
+Seoul Kanpur 155
+
+Kanpur Hyderabad 185
+Kanpur Tehran 155
+Kanpur Cairo 105
+Kanpur Bogota 230

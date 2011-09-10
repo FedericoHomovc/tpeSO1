@@ -1,0 +1,36 @@
+5
+
+Alexandria
+Sintrom 50
+Termalgin 110
+VoltarenEmulgel 110
+Adiro100 140
+Orfidal 250
+
+London
+Adiro100 240
+Efferalgan 280
+Sintrom 110
+Dianben 100
+Gelocatil 220
+
+Shanghai
+Termalgin 200
+Orfidal 200
+Adiro100 10
+Sintrom 10
+Efferalgan 210
+
+Durban
+Dianben 120
+Adiro100 160
+Orfidal 210
+Augmentine 10
+Efferalgan 140
+
+BuenosAires
+Dianben 120
+VoltarenEmulgel 50
+Adiro100 90
+Lexatn 200
+Termalgin 230
