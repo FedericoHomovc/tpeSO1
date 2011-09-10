@@ -236,10 +236,8 @@ int main(int argc, char * argv[]) {
 	sendMap(mapSt->citiesCount, mapSt->cities, clients[1]);
 	rcvChecksign(clients[0]);
 
-	for (k = 1; k < argc; k++) {
+	for (k = 1; k < argc; k++)
 		kill(pids[k], SIGINT);
-		disconnectFromServer(clients[k], server);
-	}
 	disconnectFromServer(clients[0], server);
 	endServer(server);
 
@@ -308,10 +306,8 @@ static int freeResources(void) {
 static void sigintServHandler(int signo) {
 	int k;
 
-	for (k = 1; k < mapSt->companiesCount + 2; k++) {
+	for (k = 1; k < mapSt->companiesCount + 2; k++)
 		kill(pids[k], SIGINT);
-		disconnectFromServer(clients[k], server);
-	}
 	disconnectFromServer(clients[0], server);
 	endServer(server);
 	freeResources();

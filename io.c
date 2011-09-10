@@ -129,8 +129,7 @@ ioFunc(void)
 }
 
 static void sigintServHandler(int signo) {
-	/*disconnectFromServer(clients[1], server);*/
-	endServer(server);
+	disconnectFromServer(clients[1], server);
 	freeIOResources();
 	exit(0);
 }
@@ -158,4 +157,5 @@ freeIOResources(void)
 	free(mapSt);
 	free(clients);
 	free(pids);
+	free(server);
 }

@@ -77,7 +77,7 @@ serverADT startServer()
 	if (server == NULL)
 		return NULL;
 
-	if ( (server->sockFd = socket (AF_UNIX, SOCK_DGRAM,0) ) == -1)
+	if ( (server->sockFd = socket(AF_UNIX, SOCK_DGRAM,0) ) == -1)
 	{
 		perror("Socket call failed");
 		free(server);
@@ -107,7 +107,7 @@ clientADT connectToServer(serverADT server)
 
 		addr_cli2 = getStruct(getpid());
 
-		if ( (client->sockfd = socket (AF_UNIX, SOCK_DGRAM,0) ) == -1)
+		if ( (client->sockfd = socket(AF_UNIX, SOCK_DGRAM,0) ) == -1)
 		{
 			perror("Socket call failed");
 			return NULL;
@@ -147,7 +147,7 @@ clientADT getClient(serverADT server, pid_t id)
 struct sockaddr_un * getStruct(int pid){
 				
 		char path1[MAX_PATH_LENGTH];
-		struct sockaddr_un * addr_cli1 = (struct sockaddr_un *)malloc(SIZE);
+		struct sockaddr_un * addr_cli1 = malloc(SIZE);
     		
 		sprintf(path1,"/tmp/sock_%d",pid);
 		memset(addr_cli1, 0 , sizeof(struct sockaddr_un));
@@ -186,7 +186,8 @@ int rcvMsg(clientADT comm, message *msg, int flags)
 /* Disconnects a client from the server */
 int disconnectFromServer(clientADT comm, serverADT server)
 {
-	close(comm->sockfd);
+	printf("closing %s\n", comm->data.sun_path);
+	unlink(comm->data.sun_path);
 	free(comm);
 	return 0;
 

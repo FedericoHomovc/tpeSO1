@@ -361,7 +361,7 @@ int rcvMsg(clientADT comm, message *msg, int flags)
 
 int disconnectFromServer(clientADT comm, serverADT server)
 {
-	if(comm == NULL || server == NULL)
+	if(comm == NULL)
 		return -1;
 
 	if(close(comm->clientFifo_read) == -1 || close(comm->clientFifo_write) == -1)

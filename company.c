@@ -316,10 +316,7 @@ void * threadFunc(void * threadId){
 static void sigintServHandler(int signo) {
 
 	companyWorking = FALSE;
-	/*disconnectFromServer(clients[0], server);
-	disconnectFromServer(clients[1], server);
-	disconnectFromServer(client, server);*/
-	endServer(server);
+	disconnectFromServer(client, server);
 	freeCompanyResources();
 
 	exit(0);
@@ -363,6 +360,7 @@ freeCompanyResources(void)
 	free(planes);
 	free(clients);
 	free(pids);
+	free(server);
 
 	return;
 }
