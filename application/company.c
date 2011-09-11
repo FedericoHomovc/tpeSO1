@@ -316,7 +316,7 @@ void * threadFunc(void * threadId){
 static void sigintServHandler(int signo) {
 
 	companyWorking = FALSE;
-	disconnectFromServer(client, server);
+	disconnectFromServer(client);
 	freeCompanyResources();
 
 	exit(0);

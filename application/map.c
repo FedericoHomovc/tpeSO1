@@ -238,7 +238,7 @@ int main(int argc, char * argv[]) {
 
 	for (k = 1; k < argc; k++)
 		kill(pids[k], SIGINT);
-	disconnectFromServer(clients[0], server);
+	disconnectFromServer(clients[0]);
 	terminateServer(server);
 
 	freeResources();
@@ -308,7 +308,7 @@ static void sigintServHandler(int signo) {
 
 	for (k = 1; k < mapSt->companiesCount + 2; k++)
 		kill(pids[k], SIGINT);
-	disconnectFromServer(clients[0], server);
+	disconnectFromServer(clients[0]);
 	terminateServer(server);
 	freeResources();
 
