@@ -34,14 +34,13 @@
 /***		Module Defines		***/
 #define PATH_CONNECT "/tmp/socket_"
 #define PATH_SIZE 20
-
 #define SEM_CLI_TABLE 1
 #define SIZE sizeof(struct sockaddr_un)
 #define MAX_PATH_LENGTH 24
 
 
 int public_sockfd;
-void fatal(char *s);
+
 /* Starts a server */
 struct sockaddr_un * getStruct(int pid);
 
@@ -50,7 +49,9 @@ struct sockaddr_un * getStruct(int pid);
  */
 
 /* Struct underlying clientADT, have a sockFd Integer that represent the file
-Socket descriptor */
+Socket descriptor, a integer semid that represents a semaphore's ID, a filePath
+and the struct necessary to connect with other processes */
+
 struct clientCDT
 {
 	int sockfd;
@@ -59,7 +60,9 @@ struct clientCDT
 	struct sockaddr_un data;
 };
 
-/* Struct underlying serverADT */
+/* Struct underlying serverADT, have a sockFd integer that represent the file
+Socket descriptor, a semid integer for a semaphora and the struct with the 
+server information */
 struct serverCDT
 {
 	/* Socket file descriptor for the server. */
@@ -69,6 +72,12 @@ struct serverCDT
 	struct sockaddr_in socketAddress;
 };
 
+/* CreateServer()
+ *
+ * Creates a serverADT struct and a semaphore. The implementation use UDP 
+ * instead of TCP. 
+ * 
+ */
 
 serverADT createServer()
 {
@@ -96,7 +105,13 @@ serverADT createServer()
 	return server;	
 }
 
-/* Connects to a server */
+
+/* ConnectToServer()
+ *
+ * The function creates a ClientADT. The implementation is base on AF_UNIX and
+ * UDP. And the path style is "/tmp/socket_PID" where PID is the process id.
+ * 
+ */
 clientADT connectToServer(serverADT server)
 {
 	struct sockaddr_un * addr_cli2;
@@ -128,7 +143,13 @@ clientADT connectToServer(serverADT server)
 	return client;
 }
 
-/* Gets a client from the client list */
+/* getClient()
+ *
+ * Creates and return clientADT based on the information of the integer 
+ * parameter "id" which represents the process id from the process I want to 
+ * connect to. 
+ *
+ */
 clientADT getClient(serverADT server, pid_t id)
 {
 
@@ -146,6 +167,12 @@ clientADT getClient(serverADT server, pid_t id)
 	
 }
 
+/* getStruct()
+ *
+ * Recieves a process id and return a complete sockaddr_un struct 
+ * with the family and the path to make a possible client.
+ *
+*/
 struct sockaddr_un * getStruct(int pid){
 				
 		char path1[MAX_PATH_LENGTH];
@@ -159,7 +186,12 @@ struct sockaddr_un * getStruct(int pid){
 		return addr_cli1;
 }
 
-/* Sends a message */
+/* sendMessage()
+ *
+ * Send a message to a client.
+ *
+ */
+
 int sendMessage(clientADT client, message * msg, int flags)
 {
 	int ret;
@@ -173,7 +205,13 @@ int sendMessage(clientADT client, message * msg, int flags)
 	return ret;
 }
 
-/* Receives a message */
+
+/* sendMessage()
+ *
+ * Receive a message from a client
+ *
+ */
+
 int rcvMessage(clientADT client, message *msg, int flags)
 {
 	int ret;
@@ -186,7 +224,11 @@ int rcvMessage(clientADT client, message *msg, int flags)
 	return ret;	
 }
 
-/* Disconnects a client from the server */
+/* disconnectFromServer()
+ *
+ * Disconnects a client.
+ *
+ */
 int disconnectFromServer(clientADT client)
 {
 	unlink(client->data.sun_path);
@@ -195,7 +237,12 @@ int disconnectFromServer(clientADT client)
 
 }
 
-/* Ends the server */
+/* terminateServer()
+ *
+ * Ends a server.
+ *
+ */
+
 int terminateServer(serverADT server)
 {
 	close(server->sockFd);
@@ -204,7 +251,3 @@ int terminateServer(serverADT server)
 }
 
 
-void fatal(char *s) {
-	perror(s);
-	exit(1);
-}
