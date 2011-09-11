@@ -1,0 +1,36 @@
+5
+
+Seoul
+Sintrom 120
+Adiro100 10
+Orfidal 550
+Augmentine 620
+Efferalgan 110
+
+Chongqing
+Neobrufen 240
+Orfidal 260
+Augmentine 680
+Nolotil 350
+Flumil 850
+
+Kolkata
+Almax 930
+Flumil 70
+Orfidal 740
+Nolotil 40
+Augmentine 260
+
+Santiago
+Adiro100 490
+Neobrufen 300
+Augmentine 370
+Flumil 160
+Viscofresh 580
+
+Karachi
+Neobrufen 30
+Viscofresh 270
+Almax 10
+Flumil 700
+Adiro100 270

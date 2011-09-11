@@ -1,0 +1,121 @@
+10
+
+Dongguan
+Dianben 750
+Adiro100 170
+Efferalgan 570
+Paracetamol 90
+VoltarenEmulgel 110
+Sintrom 260
+Almax 570
+Augmentine 180
+Termalgin 90
+Trankimazn 350
+
+Bangkok
+Sintrom 430
+Dianben 430
+Trankimazn 810
+Paracetamol 950
+Adiro100 330
+Augmentine 650
+Efferalgan 810
+Termalgin 970
+VoltarenEmulgel 240
+Almax 180
+
+Guangzhou
+Termalgin 100
+Efferalgan 820
+Adiro100 640
+Paracetamol 420
+Dianben 860
+Sintrom 550
+Almax 810
+Augmentine 100
+Trankimazn 360
+VoltarenEmulgel 520
+
+MexicoCity
+Efferalgan 470
+Sintrom 510
+VoltarenEmulgel 770
+Dianben 870
+Augmentine 890
+Termalgin 840
+Trankimazn 660
+Adiro100 740
+Almax 520
+Paracetamol 440
+
+Kanpur
+Adiro100 780
+Dianben 30
+Paracetamol 180
+Trankimazn 200
+VoltarenEmulgel 790
+Sintrom 960
+Termalgin 460
+Augmentine 790
+Almax 470
+Efferalgan 680
+
+Wuhan
+Augmentine 130
+Almax 50
+Paracetamol 760
+Termalgin 390
+VoltarenEmulgel 830
+Sintrom 840
+Dianben 520
+Trankimazn 260
+Efferalgan 30
+Adiro100 650
+
+Abidjan
+Termalgin 590
+Almax 370
+Efferalgan 260
+Adiro100 310
+Augmentine 930
+VoltarenEmulgel 120
+Paracetamol 20
+Trankimazn 660
+Sintrom 260
+Dianben 570
+
+Chongqing
+Sintrom 120
+Adiro100 920
+VoltarenEmulgel 320
+Trankimazn 350
+Augmentine 680
+Almax 250
+Dianben 130
+Efferalgan 590
+Paracetamol 290
+Termalgin 200
+
+Mumbai
+Adiro100 970
+Dianben 580
+Paracetamol 970
+VoltarenEmulgel 750
+Termalgin 470
+Sintrom 770
+Trankimazn 980
+Augmentine 630
+Efferalgan 790
+Almax 760
+
+Santiago
+Efferalgan 360
+VoltarenEmulgel 250
+Augmentine 670
+Adiro100 400
+Trankimazn 860
+Sintrom 390
+Dianben 50
+Almax 40
+Paracetamol 630
+Termalgin 150

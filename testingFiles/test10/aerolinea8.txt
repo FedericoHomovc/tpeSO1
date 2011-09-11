@@ -1,0 +1,121 @@
+10
+
+NewYorkCity
+Adiro100 670
+Enantyum 250
+Paracetamol 170
+Dianben 100
+Cardyl 840
+Ventoln 830
+Flumil 750
+Gelocatil 440
+Termalgin 290
+Viscofresh 260
+
+Madrid
+Adiro100 270
+Paracetamol 470
+Dianben 80
+Flumil 810
+Gelocatil 660
+Termalgin 960
+Viscofresh 360
+Cardyl 990
+Ventoln 880
+Enantyum 70
+
+Santiago
+Adiro100 700
+Ventoln 270
+Termalgin 490
+Flumil 860
+Cardyl 950
+Enantyum 960
+Gelocatil 940
+Paracetamol 600
+Dianben 230
+Viscofresh 790
+
+Surat
+Paracetamol 40
+Ventoln 190
+Adiro100 180
+Termalgin 710
+Viscofresh 930
+Gelocatil 290
+Enantyum 950
+Dianben 670
+Flumil 800
+Cardyl 720
+
+BuenosAires
+Adiro100 290
+Paracetamol 910
+Termalgin 550
+Ventoln 740
+Gelocatil 200
+Flumil 250
+Viscofresh 350
+Cardyl 210
+Enantyum 260
+Dianben 340
+
+Chennai
+Cardyl 30
+Enantyum 170
+Paracetamol 730
+Viscofresh 90
+Flumil 860
+Termalgin 690
+Adiro100 270
+Ventoln 310
+Dianben 40
+Gelocatil 920
+
+Bangalore
+Paracetamol 40
+Gelocatil 940
+Flumil 990
+Dianben 550
+Viscofresh 640
+Termalgin 160
+Adiro100 610
+Ventoln 490
+Enantyum 620
+Cardyl 400
+
+RioDeJaneiro
+Dianben 650
+Adiro100 550
+Paracetamol 180
+Viscofresh 250
+Gelocatil 310
+Cardyl 80
+Enantyum 680
+Ventoln 940
+Termalgin 800
+Flumil 120
+
+Dongguan
+Flumil 530
+Adiro100 940
+Gelocatil 290
+Paracetamol 80
+Enantyum 320
+Termalgin 500
+Viscofresh 130
+Ventoln 470
+Dianben 800
+Cardyl 620
+
+Berlin
+Dianben 290
+Flumil 350
+Cardyl 840
+Viscofresh 820
+Gelocatil 290
+Termalgin 910
+Ventoln 70
+Paracetamol 540
+Enantyum 650
+Adiro100 810

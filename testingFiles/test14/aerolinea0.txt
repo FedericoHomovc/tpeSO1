@@ -1,0 +1,121 @@
+10
+
+Ankara
+Enantyum 780
+Almax 110
+Adiro100 850
+Termalgin 720
+Ventoln 930
+Neobrufen 280
+Augmentine 150
+Efferalgan 900
+Dianben 670
+Lexatn 240
+
+Singapore
+Termalgin 630
+Almax 140
+Augmentine 870
+Efferalgan 10
+Enantyum 920
+Dianben 690
+Ventoln 650
+Adiro100 380
+Neobrufen 560
+Lexatn 520
+
+Seoul
+Adiro100 560
+Termalgin 530
+Ventoln 370
+Enantyum 810
+Efferalgan 720
+Dianben 430
+Augmentine 630
+Almax 240
+Lexatn 450
+Neobrufen 790
+
+Yokohama
+Lexatn 850
+Augmentine 300
+Enantyum 460
+Adiro100 170
+Termalgin 450
+Neobrufen 400
+Almax 830
+Efferalgan 170
+Ventoln 540
+Dianben 130
+
+Moscow
+Efferalgan 520
+Adiro100 650
+Almax 520
+Neobrufen 930
+Lexatn 260
+Augmentine 10
+Termalgin 870
+Ventoln 610
+Dianben 300
+Enantyum 910
+
+Bogota
+Adiro100 880
+Enantyum 960
+Neobrufen 950
+Efferalgan 240
+Almax 180
+Ventoln 150
+Augmentine 930
+Termalgin 530
+Lexatn 960
+Dianben 80
+
+Jaipur
+Enantyum 720
+Lexatn 630
+Neobrufen 190
+Efferalgan 280
+Adiro100 960
+Dianben 550
+Ventoln 720
+Termalgin 30
+Almax 190
+Augmentine 800
+
+SaintPetersburg
+Enantyum 630
+Dianben 890
+Lexatn 360
+Almax 730
+Neobrufen 960
+Efferalgan 260
+Augmentine 530
+Ventoln 560
+Adiro100 520
+Termalgin 590
+
+NewYorkCity
+Almax 910
+Termalgin 260
+Enantyum 250
+Adiro100 450
+Dianben 910
+Ventoln 950
+Efferalgan 970
+Lexatn 660
+Neobrufen 710
+Augmentine 600
+
+Kinshasa
+Neobrufen 990
+Dianben 800
+Termalgin 890
+Augmentine 20
+Ventoln 230
+Adiro100 140
+Almax 640
+Efferalgan 890
+Lexatn 730
+Enantyum 330

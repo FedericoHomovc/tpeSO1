@@ -1,0 +1,121 @@
+10
+
+Tehran
+Enantyum 270
+Viscofresh 480
+Ventoln 220
+Paracetamol 460
+Lexatn 530
+Dianben 520
+Neobrufen 750
+Efferalgan 630
+Gelocatil 860
+Orfidal 470
+
+Istanbul
+Lexatn 70
+Ventoln 50
+Efferalgan 570
+Enantyum 980
+Gelocatil 660
+Neobrufen 790
+Viscofresh 990
+Orfidal 610
+Paracetamol 860
+Dianben 590
+
+Hyderabad
+Dianben 390
+Ventoln 620
+Orfidal 750
+Efferalgan 750
+Neobrufen 150
+Enantyum 240
+Paracetamol 510
+Lexatn 540
+Gelocatil 10
+Viscofresh 930
+
+Dongguan
+Efferalgan 10
+Orfidal 740
+Viscofresh 30
+Gelocatil 970
+Enantyum 890
+Dianben 30
+Lexatn 430
+Ventoln 520
+Paracetamol 970
+Neobrufen 290
+
+SaoPaulo
+Orfidal 490
+Efferalgan 710
+Ventoln 840
+Dianben 790
+Lexatn 650
+Gelocatil 130
+Neobrufen 650
+Enantyum 460
+Viscofresh 190
+Paracetamol 710
+
+NewYorkCity
+Enantyum 260
+Orfidal 760
+Ventoln 780
+Efferalgan 880
+Paracetamol 740
+Dianben 160
+Viscofresh 390
+Neobrufen 560
+Gelocatil 710
+Lexatn 700
+
+Seoul
+Viscofresh 200
+Paracetamol 20
+Gelocatil 780
+Orfidal 480
+Enantyum 940
+Ventoln 460
+Efferalgan 430
+Dianben 630
+Neobrufen 690
+Lexatn 600
+
+Cairo
+Ventoln 110
+Dianben 210
+Viscofresh 600
+Neobrufen 170
+Enantyum 80
+Gelocatil 170
+Lexatn 440
+Efferalgan 490
+Orfidal 590
+Paracetamol 830
+
+Mumbai
+Enantyum 330
+Neobrufen 370
+Efferalgan 690
+Gelocatil 680
+Paracetamol 380
+Viscofresh 730
+Dianben 610
+Orfidal 60
+Ventoln 320
+Lexatn 580
+
+Yokohama
+Dianben 810
+Gelocatil 950
+Efferalgan 690
+Enantyum 980
+Orfidal 90
+Lexatn 290
+Neobrufen 550
+Ventoln 400
+Paracetamol 260
+Viscofresh 910

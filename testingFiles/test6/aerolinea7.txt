@@ -1,0 +1,121 @@
+10
+
+Hyderabad
+Flumil 820
+Viscofresh 330
+Augmentine 350
+Neobrufen 190
+Nolotil 140
+Enantyum 370
+Ventoln 370
+Trankimazn 380
+Orfidal 50
+Efferalgan 480
+
+Jakarta
+Nolotil 660
+Enantyum 500
+Viscofresh 880
+Neobrufen 440
+Ventoln 810
+Orfidal 940
+Trankimazn 980
+Augmentine 650
+Efferalgan 20
+Flumil 710
+
+Bangalore
+Efferalgan 130
+Trankimazn 470
+Viscofresh 590
+Orfidal 110
+Nolotil 660
+Neobrufen 480
+Enantyum 740
+Ventoln 280
+Augmentine 240
+Flumil 130
+
+Yangon
+Flumil 180
+Viscofresh 450
+Enantyum 940
+Efferalgan 130
+Augmentine 900
+Neobrufen 360
+Orfidal 840
+Trankimazn 290
+Nolotil 220
+Ventoln 40
+
+Pune
+Enantyum 120
+Neobrufen 650
+Flumil 580
+Augmentine 220
+Efferalgan 60
+Orfidal 560
+Ventoln 440
+Nolotil 940
+Trankimazn 410
+Viscofresh 970
+
+Shenyang
+Ventoln 690
+Viscofresh 990
+Augmentine 150
+Trankimazn 300
+Efferalgan 350
+Enantyum 900
+Flumil 360
+Orfidal 640
+Nolotil 750
+Neobrufen 600
+
+SaintPetersburg
+Nolotil 330
+Trankimazn 610
+Orfidal 450
+Neobrufen 330
+Ventoln 560
+Efferalgan 920
+Enantyum 400
+Augmentine 40
+Viscofresh 640
+Flumil 460
+
+Wuhan
+Nolotil 990
+Orfidal 290
+Augmentine 270
+Neobrufen 260
+Efferalgan 60
+Ventoln 370
+Trankimazn 870
+Enantyum 560
+Flumil 100
+Viscofresh 120
+
+Shenzhen
+Efferalgan 740
+Orfidal 290
+Flumil 360
+Enantyum 820
+Nolotil 380
+Viscofresh 170
+Neobrufen 550
+Augmentine 490
+Ventoln 250
+Trankimazn 410
+
+CapeTown
+Trankimazn 70
+Augmentine 780
+Viscofresh 250
+Enantyum 670
+Nolotil 80
+Efferalgan 40
+Ventoln 60
+Flumil 360
+Neobrufen 890
+Orfidal 200

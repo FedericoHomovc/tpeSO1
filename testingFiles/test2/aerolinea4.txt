@@ -1,0 +1,121 @@
+10
+
+Bangkok
+Sintrom 310
+Efferalgan 190
+Flumil 180
+Enantyum 530
+Lexatn 510
+VoltarenEmulgel 70
+Augmentine 370
+Paracetamol 320
+Cardyl 620
+Nolotil 280
+
+Kanpur
+Cardyl 820
+Efferalgan 970
+Augmentine 620
+Flumil 330
+Sintrom 950
+Lexatn 840
+Nolotil 470
+VoltarenEmulgel 610
+Paracetamol 590
+Enantyum 700
+
+Singapore
+Paracetamol 290
+Flumil 770
+Sintrom 360
+Cardyl 10
+Nolotil 820
+Enantyum 530
+Lexatn 890
+Efferalgan 850
+Augmentine 820
+VoltarenEmulgel 140
+
+Bogota
+Sintrom 710
+Lexatn 220
+Nolotil 830
+Efferalgan 510
+Paracetamol 970
+Flumil 360
+VoltarenEmulgel 630
+Cardyl 60
+Augmentine 230
+Enantyum 110
+
+Kolkata
+Lexatn 270
+Enantyum 340
+Augmentine 670
+Nolotil 650
+Paracetamol 680
+VoltarenEmulgel 20
+Efferalgan 700
+Flumil 360
+Sintrom 340
+Cardyl 170
+
+LosAngeles
+Lexatn 590
+Cardyl 640
+Enantyum 900
+Flumil 530
+VoltarenEmulgel 80
+Efferalgan 800
+Sintrom 120
+Augmentine 620
+Paracetamol 450
+Nolotil 430
+
+Tokyo
+Enantyum 220
+Cardyl 920
+VoltarenEmulgel 610
+Augmentine 290
+Paracetamol 360
+Lexatn 410
+Flumil 270
+Nolotil 130
+Sintrom 200
+Efferalgan 790
+
+Dhaka
+Efferalgan 680
+Flumil 130
+Nolotil 950
+Enantyum 680
+VoltarenEmulgel 680
+Augmentine 600
+Lexatn 570
+Paracetamol 190
+Sintrom 20
+Cardyl 130
+
+Baghdad
+Lexatn 760
+Efferalgan 430
+Paracetamol 470
+Nolotil 500
+Enantyum 180
+VoltarenEmulgel 350
+Cardyl 270
+Sintrom 140
+Flumil 280
+Augmentine 910
+
+Seoul
+Flumil 340
+Augmentine 20
+Cardyl 400
+Sintrom 920
+Paracetamol 540
+Efferalgan 290
+Nolotil 120
+Lexatn 340
+Enantyum 480
+VoltarenEmulgel 450

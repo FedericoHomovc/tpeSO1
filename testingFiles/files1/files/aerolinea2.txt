@@ -1,0 +1,36 @@
+5
+
+London
+Orfidal 40
+Cardyl 10
+Paracetamol 20
+Sintrom 90
+Trankimazn 80
+
+Shanghai
+Cardyl 60
+VoltarenEmulgel 20
+Orfidal 30
+Sintrom 80
+Paracetamol 10
+
+Shenyang
+Trankimazn 80
+Orfidal 30
+Cardyl 10
+Paracetamol 80
+Sintrom 60
+
+CapeTown
+Paracetamol 60
+Orfidal 70
+Trankimazn 40
+Sintrom 20
+VoltarenEmulgel 30
+
+Pyongyang
+VoltarenEmulgel 20
+Sintrom 70
+Cardyl 20
+Trankimazn 20
+Paracetamol 80

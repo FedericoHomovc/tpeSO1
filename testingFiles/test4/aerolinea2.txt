@@ -1,0 +1,36 @@
+5
+
+HoChiMinhCity
+Augmentine 920
+Adiro100 560
+Nolotil 200
+Neobrufen 960
+Viscofresh 150
+
+Abidjan
+Neobrufen 770
+Nolotil 780
+Flumil 580
+Almax 620
+Adiro100 370
+
+London
+Sintrom 90
+Augmentine 290
+Flumil 710
+Neobrufen 720
+Viscofresh 890
+
+Durban
+Augmentine 610
+Flumil 280
+Neobrufen 220
+Sintrom 630
+Nolotil 70
+
+NewYorkCity
+Augmentine 750
+Adiro100 430
+Sintrom 940
+Efferalgan 400
+Viscofresh 710
