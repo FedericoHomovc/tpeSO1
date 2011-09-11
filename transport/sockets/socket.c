@@ -160,11 +160,11 @@ struct sockaddr_un * getStruct(int pid){
 }
 
 /* Sends a message */
-int sendMessage(clientADT comm, message * msg, int flags)
+int sendMessage(clientADT client, message * msg, int flags)
 {
 	int ret;
 	
-	if((ret=sendto(comm->sockfd,msg->message,msg->size,MSG_WAITALL,(struct sockaddr *)&comm->data, sizeof(struct sockaddr_un))) == -1)
+	if((ret=sendto(client->sockfd,msg->message,msg->size,MSG_WAITALL,(struct sockaddr *)&client->data, sizeof(struct sockaddr_un))) == -1)
 	{
 		perror("server:sending");
 		return -1;
@@ -174,11 +174,11 @@ int sendMessage(clientADT comm, message * msg, int flags)
 }
 
 /* Receives a message */
-int rcvMessage(clientADT comm, message *msg, int flags)
+int rcvMessage(clientADT client, message *msg, int flags)
 {
 	int ret;
 
-	if((ret = recvfrom(comm->sockfd,msg->message,msg->size,MSG_WAITALL,NULL,NULL)) == -1){
+	if((ret = recvfrom(client->sockfd,msg->message,msg->size,MSG_WAITALL,NULL,NULL)) == -1){
 		perror("server: receiving");
 		return -1;	
 	}
@@ -187,10 +187,10 @@ int rcvMessage(clientADT comm, message *msg, int flags)
 }
 
 /* Disconnects a client from the server */
-int disconnectFromServer(clientADT comm, serverADT server)
+int disconnectFromServer(clientADT client, serverADT server)
 {
-	unlink(comm->data.sun_path);
-	free(comm);
+	unlink(client->data.sun_path);
+	free(client);
 	return 0;
 
 }

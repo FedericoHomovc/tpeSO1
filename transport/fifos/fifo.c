@@ -163,7 +163,7 @@ static void * listeningThread(void *serverInfo)
 	int fileDes_r, fileDes_w;
 	serverADT server;
 	connectionMsg currentConnection;
-	clientADT comm;
+	clientADT client;
 	infoClient * currentClient;
 	message msg;
 
@@ -180,7 +180,7 @@ static void * listeningThread(void *serverInfo)
 				return NULL;
 			}
 
-			if( (comm = malloc(sizeof(struct clientCDT))) == NULL )
+			if( (client = malloc(sizeof(struct clientCDT))) == NULL )
 			{
 				fprintf(stderr, "Not enough memory.\n");
 				return NULL;
@@ -190,27 +190,27 @@ static void * listeningThread(void *serverInfo)
 			{
 				fprintf(stderr, "Errno = %d, strerror = %s\n", errno, strerror(errno));
 				fprintf(stderr,	"Client FIFO_w couldn't be opened at listening.\n");
-				free(comm);
+				free(client);
 				return NULL;
 			}
 
-			comm->clientFifo_read = fileDes_r;
+			client->clientFifo_read = fileDes_r;
 
 			if((fileDes_w = open(currentConnection.clientName_read, O_RDWR)) == -1)
 
 			{
 				fprintf(stderr, "Errno = %d, strerror = %s\n", errno, strerror(errno));
 				fprintf(stderr,	"Client FIFO_r couldn't be opened at listening.\n");
-				free(comm);
+				free(client);
 				return NULL;
 			}
 
-			comm->clientFifo_write = fileDes_w;
+			client->clientFifo_write = fileDes_w;
 
-			strcpy(comm->clientName_read, currentConnection.clientName_read);
-			strcpy(comm->clientName_write, currentConnection.clientName_write);
+			strcpy(client->clientName_read, currentConnection.clientName_read);
+			strcpy(client->clientName_write, currentConnection.clientName_write);
 
-			currentClient->client = comm;
+			currentClient->client = client;
 			currentClient->id = currentConnection.id;
 
 			server->clients[server->clientsUsed] = currentClient;
@@ -218,7 +218,7 @@ static void * listeningThread(void *serverInfo)
 
 			msg.message = "OK"; 
 			msg.size = 3;
-			sendMessage(comm, &msg, 0); /*A message is sent to ensure that the client was created*/
+			sendMessage(client, &msg, 0); /*A message is sent to ensure that the client was created*/
 		}
 	}
 
@@ -336,40 +336,40 @@ clientADT getClient(serverADT serv, pid_t id)
 }
 
 
-int sendMessage(clientADT comm, message *msg, int flags)
+int sendMessage(clientADT client, message *msg, int flags)
 {
-	if(comm == NULL || msg == NULL)
+	if( client == NULL || msg == NULL)
 	{
 		fprintf(stderr, "NULL parameters.\n");
 		return -1;
 	}
-	return write(comm->clientFifo_write, msg->message, msg->size);
+	return write(client->clientFifo_write, msg->message, msg->size);
 }
 
 
 
-int rcvMessage(clientADT comm, message *msg, int flags)
+int rcvMessage(clientADT client, message *msg, int flags)
 {
-	if(comm == NULL || msg == NULL)
+	if(client == NULL || msg == NULL)
 	{
 		fprintf(stderr, "NULL parameters.\n");
 		return -1;
 	}
-	return read(comm->clientFifo_read, msg->message, msg->size);
+	return read(client->clientFifo_read, msg->message, msg->size);
 }
 
 
-int disconnectFromServer(clientADT comm, serverADT server)
+int disconnectFromServer(clientADT client, serverADT server)
 {
-	if(comm == NULL)
+	if(client == NULL)
 		return -1;
 
-	if(close(comm->clientFifo_read) == -1 || close(comm->clientFifo_write) == -1)
+	if(close(client->clientFifo_read) == -1 || close(client->clientFifo_write) == -1)
 	{
 		fprintf(stderr, "Client couldn't be closed.\n");
 		return -1;
 	}
-	free(comm);
+	free(client);
 
 	return 0;
 }
@@ -378,7 +378,7 @@ int disconnectFromServer(clientADT comm, serverADT server)
 int terminateServer(serverADT server)
 {
 	int i;
-	clientADT currentComm;
+	clientADT currentclient;
 
 	if(server == NULL)
 		return -1;
@@ -395,17 +395,17 @@ int terminateServer(serverADT server)
 
 	for(i = 0; i < server->clientsUsed; i++)
 	{
-		currentComm = server->clients[i]->client;
-		close(currentComm->clientFifo_read);
-		close(currentComm->clientFifo_write);
+		currentclient = server->clients[i]->client;
+		close(currentclient->clientFifo_read);
+		close(currentclient->clientFifo_write);
 
-		if(unlink(currentComm->clientName_read) == -1 || unlink(currentComm->clientName_write) == -1)
+		if(unlink(currentclient->clientName_read) == -1 || unlink(currentclient->clientName_write) == -1)
 		{
 			fprintf(stderr, "Client FIFO couldn't be removed.\n");
 			return -1;
 		}
 
-		free(currentComm);
+		free(currentclient);
 		free(server->clients[i]);
 	}
 
