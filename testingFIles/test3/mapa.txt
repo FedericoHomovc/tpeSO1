@@ -1,646 +1,639 @@
 30
 
-Lahore
-Cardyl 400
-Viscofresh 560
-Paracetamol 650
-Sintrom 270
-Gelocatil 220
-
-MexicoCity
-Cardyl 890
-
-HoChiMinhCity
-Gelocatil 720
-Efferalgan 740
-Paracetamol 980
-VoltarenEmulgel 730
-Cardyl 230
-Ventoln 640
-Viscofresh 30
-
-Shenzhen
-Nolotil 380
-Adiro100 270
-Sintrom 920
-
-Yokohama
-Adiro100 420
-Nolotil 560
-
-Bangalore
-Ventoln 730
-Adiro100 750
-
-Guangzhou
-Nolotil 950
-
-Moscow
-VoltarenEmulgel 560
-Gelocatil 180
-Cardyl 420
-Ventoln 940
-Efferalgan 340
-Paracetamol 550
-
-Delhi
-Cardyl 600
-VoltarenEmulgel 340
-Sintrom 160
-Paracetamol 560
-Adiro100 780
-Viscofresh 680
-
-Hanoi
-Ventoln 960
-
-SaintPetersburg
-Cardyl 600
-Gelocatil 670
-Adiro100 290
-Efferalgan 840
-
-Riyadh
-Ventoln 390
-Viscofresh 990
-Nolotil 50
-Cardyl 510
+Madrid
+Lexatn 710
+VoltarenEmulgel 10
+Sintrom 80
 
 Yangon
-Viscofresh 330
-Adiro100 680
-Cardyl 940
-Gelocatil 300
-Sintrom 760
-Nolotil 950
-Efferalgan 660
+Sintrom 470
+VoltarenEmulgel 390
+Paracetamol 710
+Lexatn 710
 
-HongKong
-Efferalgan 540
-Gelocatil 230
-Paracetamol 740
-Viscofresh 240
-Nolotil 10
-Sintrom 880
-Adiro100 430
-
-Santiago
-Cardyl 480
-Nolotil 340
-Gelocatil 260
-Viscofresh 490
-Ventoln 960
-VoltarenEmulgel 570
-Sintrom 310
-Paracetamol 620
-Efferalgan 50
+Wuhan
+Lexatn 230
+Flumil 70
+Paracetamol 600
+Augmentine 810
+Enantyum 610
 
 Seoul
-Ventoln 740
-Paracetamol 80
-
-Pyongyang
-VoltarenEmulgel 440
-
-Kolkata
-Cardyl 310
-
-Karachi
-Cardyl 530
-VoltarenEmulgel 320
-Gelocatil 790
-
-Shenyang
-Nolotil 160
-Cardyl 810
-Efferalgan 880
-Adiro100 470
-Gelocatil 500
-Viscofresh 520
-Paracetamol 700
-
-Lagos
+Enantyum 700
+Sintrom 720
+Flumil 240
 Efferalgan 640
-Viscofresh 270
-Adiro100 940
-VoltarenEmulgel 200
-Gelocatil 170
-Paracetamol 80
-Nolotil 840
+Cardyl 40
+Lexatn 930
+Nolotil 920
+Augmentine 70
+
+Istanbul
+Augmentine 220
+VoltarenEmulgel 240
+Enantyum 900
+Nolotil 140
+Lexatn 520
+Flumil 810
+Efferalgan 50
+Sintrom 740
+
+Bogota
+Augmentine 730
+VoltarenEmulgel 630
+Nolotil 590
+
+LosAngeles
+Cardyl 220
+VoltarenEmulgel 10
+Augmentine 200
+Paracetamol 270
+Sintrom 620
+Lexatn 10
+Enantyum 710
+
+Chongqing
+VoltarenEmulgel 130
+Augmentine 100
+Paracetamol 390
 
 Jaipur
-Nolotil 140
-Sintrom 300
-Efferalgan 600
+Flumil 830
+Augmentine 240
 
-Chennai
-Cardyl 580
-Sintrom 400
-Ventoln 740
-Paracetamol 990
-Viscofresh 190
-Gelocatil 900
-Nolotil 120
-VoltarenEmulgel 660
+BuenosAires
+Nolotil 30
+Cardyl 550
+Paracetamol 550
+Lexatn 720
+Efferalgan 210
+Enantyum 520
+Augmentine 160
+Sintrom 540
 
 Jeddah
-Gelocatil 170
-VoltarenEmulgel 420
-Ventoln 400
-Efferalgan 170
-Cardyl 720
-Sintrom 370
+Paracetamol 980
+Augmentine 630
+Cardyl 20
+Lexatn 300
 
-Mumbai
-Sintrom 650
-Paracetamol 350
-Gelocatil 230
-Adiro100 250
-Nolotil 920
-Ventoln 60
-VoltarenEmulgel 10
-Viscofresh 990
-Efferalgan 510
+Santiago
+Sintrom 560
 
-CapeTown
-Viscofresh 560
-VoltarenEmulgel 260
-Paracetamol 720
-Ventoln 460
-Adiro100 560
+Kolkata
+Paracetamol 640
+VoltarenEmulgel 430
+Cardyl 880
 
-RioDeJaneiro
-Adiro100 660
+Kanpur
+Cardyl 930
+Nolotil 130
 
-Lima
-Gelocatil 730
-Cardyl 990
-Sintrom 90
-Adiro100 190
-Paracetamol 800
-Efferalgan 20
+Ahmedabad
+VoltarenEmulgel 740
+Enantyum 130
+
+Singapore
+Lexatn 160
+Sintrom 610
+
+Moscow
+Augmentine 720
+Cardyl 470
+Enantyum 70
 
 Baghdad
-Efferalgan 880
-Nolotil 270
+Augmentine 160
+Nolotil 510
+Flumil 210
+Sintrom 120
+Lexatn 100
+Paracetamol 890
+Enantyum 930
+VoltarenEmulgel 310
+
+Hanoi
+Sintrom 400
+Cardyl 660
+Paracetamol 100
+VoltarenEmulgel 640
+
+Dhaka
+Lexatn 90
+
+Bangkok
+Lexatn 800
+
+Delhi
+Paracetamol 860
+Sintrom 530
+Nolotil 590
+Efferalgan 590
+Flumil 890
+Enantyum 640
+Lexatn 890
+Cardyl 890
+
+Hyderabad
+Sintrom 750
+Efferalgan 270
+
+Tokyo
+Paracetamol 610
+Augmentine 830
+Lexatn 910
+Cardyl 50
+Efferalgan 370
+Nolotil 690
+
+HoChiMinhCity
+Efferalgan 100
+Cardyl 610
+Flumil 600
 Paracetamol 880
-Ventoln 170
-Adiro100 890
+Sintrom 650
 
-Busan
-Paracetamol 220
-Sintrom 90
-Nolotil 750
-Ventoln 50
-Viscofresh 330
-Adiro100 670
+MexicoCity
+Lexatn 840
+Augmentine 620
+Enantyum 680
 
-Lahore MexicoCity 230
-Lahore HoChiMinhCity 25
-Lahore Shenzhen 95
-Lahore Yokohama 245
-Lahore Bangalore 225
-Lahore Guangzhou 95
-Lahore Moscow 275
-Lahore Delhi 130
-Lahore Hanoi 95
-Lahore SaintPetersburg 210
-Lahore Riyadh 170
-Lahore Yangon 145
-Lahore HongKong 285
-Lahore Santiago 70
-Lahore Seoul 40
-Lahore Pyongyang 200
-Lahore Kolkata 180
-Lahore Karachi 290
-Lahore Shenyang 120
-Lahore Lagos 50
-Lahore Jaipur 210
-Lahore Chennai 130
-Lahore Jeddah 125
-Lahore Mumbai 125
-Lahore CapeTown 45
-Lahore RioDeJaneiro 50
-Lahore Lima 200
-Lahore Baghdad 215
-Lahore Busan 15
+CapeTown
+Flumil 50
 
-MexicoCity Shenzhen 20
-MexicoCity Yokohama 90
-MexicoCity Bangalore 230
-MexicoCity Guangzhou 280
-MexicoCity Moscow 85
-MexicoCity Delhi 60
-MexicoCity Hanoi 110
-MexicoCity SaintPetersburg 130
-MexicoCity Riyadh 265
-MexicoCity Yangon 280
-MexicoCity HongKong 280
-MexicoCity Santiago 60
-MexicoCity Seoul 245
-MexicoCity Pyongyang 135
-MexicoCity Kolkata 90
-MexicoCity Karachi 90
-MexicoCity Lagos 125
-MexicoCity Chennai 285
-MexicoCity Jeddah 245
-MexicoCity Mumbai 270
-MexicoCity CapeTown 95
-MexicoCity RioDeJaneiro 230
-MexicoCity Lima 30
-MexicoCity Baghdad 280
-MexicoCity Busan 170
+Cairo
+Efferalgan 800
+Lexatn 400
+Paracetamol 510
+Sintrom 620
+Flumil 130
 
-HoChiMinhCity MexicoCity 245
-HoChiMinhCity Shenzhen 290
-HoChiMinhCity Yokohama 185
-HoChiMinhCity Guangzhou 75
-HoChiMinhCity Moscow 260
-HoChiMinhCity Delhi 120
-HoChiMinhCity Hanoi 105
-HoChiMinhCity SaintPetersburg 50
-HoChiMinhCity Riyadh 110
-HoChiMinhCity Yangon 115
-HoChiMinhCity Santiago 30
-HoChiMinhCity Seoul 140
-HoChiMinhCity Pyongyang 70
-HoChiMinhCity Lagos 25
-HoChiMinhCity Jaipur 65
-HoChiMinhCity Jeddah 170
-HoChiMinhCity Mumbai 230
-HoChiMinhCity CapeTown 35
-HoChiMinhCity RioDeJaneiro 135
-HoChiMinhCity Lima 25
-HoChiMinhCity Baghdad 110
-HoChiMinhCity Busan 280
+Shanghai
+Efferalgan 610
+Flumil 900
+Cardyl 350
 
-Shenzhen Yokohama 235
-Shenzhen Guangzhou 275
-Shenzhen Hanoi 90
-Shenzhen SaintPetersburg 215
-Shenzhen Riyadh 280
-Shenzhen Yangon 190
-Shenzhen HongKong 65
-Shenzhen Santiago 215
-Shenzhen Seoul 50
-Shenzhen Pyongyang 30
-Shenzhen Kolkata 245
-Shenzhen Karachi 45
-Shenzhen Shenyang 160
-Shenzhen Lagos 210
-Shenzhen Jaipur 180
-Shenzhen Jeddah 10
-Shenzhen Mumbai 110
-Shenzhen CapeTown 210
-Shenzhen RioDeJaneiro 90
-Shenzhen Baghdad 110
-Shenzhen Busan 145
+Pune
+Enantyum 140
+VoltarenEmulgel 550
+Lexatn 450
+Efferalgan 930
+Sintrom 740
+Paracetamol 660
 
-Yokohama Bangalore 80
-Yokohama Guangzhou 75
-Yokohama Moscow 220
-Yokohama Delhi 280
-Yokohama Hanoi 155
-Yokohama SaintPetersburg 30
-Yokohama HongKong 185
-Yokohama Santiago 255
-Yokohama Pyongyang 65
-Yokohama Kolkata 105
-Yokohama Karachi 290
-Yokohama Shenyang 195
-Yokohama Lagos 135
-Yokohama Jaipur 200
-Yokohama Chennai 110
-Yokohama Jeddah 55
-Yokohama RioDeJaneiro 65
-Yokohama Lima 250
-Yokohama Baghdad 125
-Yokohama Busan 170
+Madrid Yangon 20
+Madrid Wuhan 45
+Madrid Seoul 265
+Madrid Istanbul 60
+Madrid Bogota 270
+Madrid LosAngeles 70
+Madrid Chongqing 110
+Madrid Jaipur 100
+Madrid BuenosAires 250
+Madrid Jeddah 35
+Madrid Santiago 110
+Madrid Kolkata 295
+Madrid Kanpur 65
+Madrid Ahmedabad 10
+Madrid Singapore 105
+Madrid Moscow 240
+Madrid Baghdad 15
+Madrid Hanoi 125
+Madrid Dhaka 200
+Madrid Bangkok 250
+Madrid Delhi 290
+Madrid Hyderabad 235
+Madrid Tokyo 145
+Madrid HoChiMinhCity 25
+Madrid MexicoCity 70
+Madrid CapeTown 60
+Madrid Cairo 120
+Madrid Shanghai 230
+Madrid Pune 200
 
-Bangalore HoChiMinhCity 85
-Bangalore Shenzhen 235
-Bangalore Delhi 50
-Bangalore Hanoi 40
-Bangalore SaintPetersburg 55
-Bangalore Yangon 140
-Bangalore HongKong 115
-Bangalore Santiago 15
-Bangalore Pyongyang 30
-Bangalore Kolkata 90
-Bangalore Karachi 70
-Bangalore Shenyang 220
-Bangalore Lagos 275
-Bangalore Jaipur 90
-Bangalore Chennai 160
-Bangalore Jeddah 220
-Bangalore Mumbai 135
-Bangalore CapeTown 250
-Bangalore RioDeJaneiro 140
-Bangalore Baghdad 210
-Bangalore Busan 230
+Yangon Wuhan 70
+Yangon Seoul 85
+Yangon Istanbul 155
+Yangon Bogota 30
+Yangon LosAngeles 85
+Yangon Chongqing 70
+Yangon Jaipur 55
+Yangon BuenosAires 125
+Yangon Jeddah 100
+Yangon Kolkata 250
+Yangon Kanpur 115
+Yangon Ahmedabad 235
+Yangon Singapore 215
+Yangon Moscow 130
+Yangon Baghdad 115
+Yangon Hanoi 165
+Yangon Dhaka 125
+Yangon Bangkok 240
+Yangon Delhi 130
+Yangon Hyderabad 95
+Yangon Tokyo 40
+Yangon HoChiMinhCity 90
+Yangon MexicoCity 130
+Yangon CapeTown 80
+Yangon Shanghai 235
+Yangon Pune 155
 
-Guangzhou Bangalore 35
-Guangzhou Moscow 250
-Guangzhou Hanoi 195
-Guangzhou SaintPetersburg 80
-Guangzhou Riyadh 200
-Guangzhou Yangon 125
-Guangzhou HongKong 65
-Guangzhou Seoul 60
-Guangzhou Pyongyang 245
-Guangzhou Kolkata 265
-Guangzhou Karachi 25
-Guangzhou Shenyang 45
-Guangzhou Lagos 275
-Guangzhou Jaipur 275
-Guangzhou Chennai 35
-Guangzhou Jeddah 215
-Guangzhou CapeTown 50
-Guangzhou RioDeJaneiro 275
-Guangzhou Baghdad 140
+Wuhan Seoul 255
+Wuhan Istanbul 10
+Wuhan Bogota 250
+Wuhan LosAngeles 35
+Wuhan Chongqing 220
+Wuhan Jaipur 95
+Wuhan BuenosAires 150
+Wuhan Jeddah 35
+Wuhan Santiago 290
+Wuhan Kolkata 225
+Wuhan Kanpur 100
+Wuhan Singapore 245
+Wuhan Moscow 105
+Wuhan Baghdad 130
+Wuhan Hanoi 175
+Wuhan Dhaka 55
+Wuhan Bangkok 135
+Wuhan Delhi 205
+Wuhan Hyderabad 200
+Wuhan Tokyo 230
+Wuhan HoChiMinhCity 50
+Wuhan MexicoCity 10
+Wuhan CapeTown 265
+Wuhan Cairo 40
+Wuhan Shanghai 280
+Wuhan Pune 115
 
-Moscow Shenzhen 205
-Moscow Bangalore 175
-Moscow Hanoi 240
-Moscow Riyadh 170
-Moscow HongKong 295
-Moscow Santiago 10
-Moscow Pyongyang 145
-Moscow Kolkata 145
-Moscow Lagos 80
-Moscow Chennai 225
-Moscow CapeTown 270
-Moscow Lima 190
-Moscow Baghdad 240
-Moscow Busan 105
+Seoul Istanbul 160
+Seoul Bogota 245
+Seoul LosAngeles 170
+Seoul Chongqing 30
+Seoul Jaipur 30
+Seoul BuenosAires 240
+Seoul Jeddah 125
+Seoul Santiago 70
+Seoul Kolkata 170
+Seoul Kanpur 210
+Seoul Ahmedabad 65
+Seoul Singapore 285
+Seoul Moscow 105
+Seoul Baghdad 75
+Seoul Hanoi 110
+Seoul Dhaka 165
+Seoul Delhi 50
+Seoul Hyderabad 210
+Seoul Tokyo 250
+Seoul MexicoCity 140
+Seoul CapeTown 115
+Seoul Cairo 245
+Seoul Shanghai 100
+Seoul Pune 20
 
-Delhi Shenzhen 165
-Delhi Guangzhou 235
-Delhi Hanoi 295
-Delhi SaintPetersburg 90
-Delhi Yangon 130
-Delhi Santiago 55
-Delhi Pyongyang 210
-Delhi Kolkata 100
-Delhi Karachi 290
-Delhi Shenyang 105
-Delhi Lagos 60
-Delhi Jaipur 45
-Delhi Chennai 65
-Delhi Jeddah 50
-Delhi CapeTown 175
-Delhi RioDeJaneiro 105
-Delhi Lima 255
-Delhi Busan 160
+Istanbul LosAngeles 10
+Istanbul Chongqing 90
+Istanbul Jaipur 265
+Istanbul BuenosAires 10
+Istanbul Jeddah 150
+Istanbul Santiago 120
+Istanbul Kolkata 20
+Istanbul Kanpur 15
+Istanbul Ahmedabad 95
+Istanbul Singapore 290
+Istanbul Moscow 220
+Istanbul Baghdad 220
+Istanbul Bangkok 205
+Istanbul Delhi 295
+Istanbul Hyderabad 170
+Istanbul Tokyo 130
+Istanbul CapeTown 115
+Istanbul Cairo 15
+Istanbul Shanghai 225
+Istanbul Pune 235
 
-Hanoi SaintPetersburg 290
-Hanoi Riyadh 70
-Hanoi HongKong 40
-Hanoi Santiago 135
-Hanoi Pyongyang 20
-Hanoi Kolkata 105
-Hanoi Karachi 20
-Hanoi Shenyang 25
-Hanoi Lagos 10
-Hanoi Chennai 180
-Hanoi Mumbai 250
-Hanoi CapeTown 100
-Hanoi RioDeJaneiro 20
-Hanoi Lima 215
-Hanoi Baghdad 165
+Bogota Chongqing 215
+Bogota Jaipur 25
+Bogota BuenosAires 85
+Bogota Jeddah 210
+Bogota Santiago 60
+Bogota Kolkata 45
+Bogota Kanpur 155
+Bogota Singapore 260
+Bogota Moscow 135
+Bogota Baghdad 130
+Bogota Dhaka 90
+Bogota Bangkok 165
+Bogota Tokyo 175
+Bogota MexicoCity 295
+Bogota CapeTown 175
+Bogota Cairo 45
+Bogota Shanghai 45
+Bogota Pune 290
 
-SaintPetersburg Moscow 165
-SaintPetersburg Riyadh 295
-SaintPetersburg Yangon 250
-SaintPetersburg HongKong 265
-SaintPetersburg Seoul 55
-SaintPetersburg Pyongyang 15
-SaintPetersburg Kolkata 120
-SaintPetersburg Karachi 165
-SaintPetersburg Shenyang 135
-SaintPetersburg Lagos 235
-SaintPetersburg Jaipur 25
-SaintPetersburg Chennai 75
-SaintPetersburg Jeddah 95
-SaintPetersburg Mumbai 20
-SaintPetersburg CapeTown 135
-SaintPetersburg RioDeJaneiro 120
-SaintPetersburg Lima 290
-SaintPetersburg Baghdad 10
-SaintPetersburg Busan 40
+LosAngeles Bogota 35
+LosAngeles Chongqing 95
+LosAngeles Jaipur 140
+LosAngeles BuenosAires 210
+LosAngeles Jeddah 20
+LosAngeles Santiago 225
+LosAngeles Kanpur 260
+LosAngeles Ahmedabad 140
+LosAngeles Singapore 205
+LosAngeles Moscow 110
+LosAngeles Baghdad 245
+LosAngeles Hanoi 100
+LosAngeles Dhaka 225
+LosAngeles Bangkok 215
+LosAngeles Delhi 80
+LosAngeles Tokyo 75
+LosAngeles HoChiMinhCity 290
+LosAngeles MexicoCity 140
+LosAngeles CapeTown 110
+LosAngeles Shanghai 275
+LosAngeles Pune 140
 
-Riyadh Bangalore 215
-Riyadh Delhi 265
-Riyadh Yangon 165
-Riyadh HongKong 10
-Riyadh Santiago 35
-Riyadh Seoul 95
-Riyadh Kolkata 70
-Riyadh Karachi 50
-Riyadh Shenyang 45
-Riyadh Jaipur 55
-Riyadh Chennai 210
-Riyadh Jeddah 125
-Riyadh Mumbai 285
-Riyadh CapeTown 55
-Riyadh RioDeJaneiro 90
-Riyadh Lima 190
-Riyadh Baghdad 140
-Riyadh Busan 80
+Chongqing Jaipur 200
+Chongqing BuenosAires 255
+Chongqing Jeddah 225
+Chongqing Santiago 40
+Chongqing Kolkata 110
+Chongqing Ahmedabad 255
+Chongqing Singapore 110
+Chongqing Moscow 160
+Chongqing Baghdad 180
+Chongqing Hanoi 45
+Chongqing Dhaka 240
+Chongqing Bangkok 285
+Chongqing Delhi 165
+Chongqing Hyderabad 235
+Chongqing Tokyo 175
+Chongqing MexicoCity 20
+Chongqing CapeTown 290
+Chongqing Cairo 40
+Chongqing Shanghai 240
+Chongqing Pune 55
 
-Yangon Yokohama 40
-Yangon Moscow 90
-Yangon HongKong 280
-Yangon Santiago 135
-Yangon Seoul 205
-Yangon Pyongyang 100
-Yangon Kolkata 115
-Yangon Karachi 175
-Yangon Shenyang 95
-Yangon Lagos 70
-Yangon Jaipur 90
-Yangon Jeddah 45
-Yangon Mumbai 190
-Yangon CapeTown 75
-Yangon RioDeJaneiro 100
-Yangon Lima 85
-Yangon Baghdad 105
-Yangon Busan 180
+Jaipur BuenosAires 145
+Jaipur Jeddah 245
+Jaipur Kanpur 75
+Jaipur Ahmedabad 50
+Jaipur Singapore 60
+Jaipur Dhaka 65
+Jaipur Bangkok 30
+Jaipur Delhi 155
+Jaipur HoChiMinhCity 255
+Jaipur CapeTown 285
+Jaipur Shanghai 145
+Jaipur Pune 160
 
-HongKong HoChiMinhCity 10
-HongKong Delhi 225
-HongKong Santiago 145
-HongKong Seoul 130
-HongKong Pyongyang 235
-HongKong Karachi 255
-HongKong Shenyang 200
-HongKong Lagos 195
-HongKong Chennai 40
-HongKong Jeddah 155
-HongKong Mumbai 270
-HongKong CapeTown 20
-HongKong RioDeJaneiro 20
-HongKong Busan 90
+BuenosAires Jeddah 240
+BuenosAires Santiago 195
+BuenosAires Kolkata 30
+BuenosAires Ahmedabad 220
+BuenosAires Singapore 190
+BuenosAires Moscow 140
+BuenosAires Baghdad 80
+BuenosAires Hanoi 160
+BuenosAires Dhaka 55
+BuenosAires Bangkok 140
+BuenosAires Hyderabad 265
+BuenosAires HoChiMinhCity 70
+BuenosAires MexicoCity 75
+BuenosAires CapeTown 50
+BuenosAires Cairo 85
+BuenosAires Shanghai 95
+BuenosAires Pune 90
 
-Santiago Guangzhou 70
-Santiago SaintPetersburg 190
-Santiago Seoul 295
-Santiago Kolkata 150
-Santiago Shenyang 150
-Santiago Jaipur 210
-Santiago Chennai 195
-Santiago Jeddah 265
-Santiago Mumbai 40
-Santiago RioDeJaneiro 210
-Santiago Lima 125
-Santiago Baghdad 155
-Santiago Busan 30
+Jeddah Santiago 115
+Jeddah Kanpur 270
+Jeddah Ahmedabad 285
+Jeddah Moscow 280
+Jeddah Baghdad 175
+Jeddah Hanoi 285
+Jeddah Dhaka 290
+Jeddah Bangkok 255
+Jeddah Delhi 110
+Jeddah Hyderabad 160
+Jeddah Tokyo 290
+Jeddah HoChiMinhCity 10
+Jeddah MexicoCity 145
+Jeddah CapeTown 190
+Jeddah Cairo 125
+Jeddah Shanghai 270
+Jeddah Pune 275
 
-Seoul Bangalore 110
-Seoul Moscow 285
-Seoul Delhi 285
-Seoul Hanoi 30
-Seoul Pyongyang 165
-Seoul Kolkata 200
-Seoul Karachi 20
-Seoul Lagos 250
-Seoul Jaipur 230
-Seoul Jeddah 160
-Seoul CapeTown 265
-Seoul RioDeJaneiro 205
-Seoul Lima 220
-Seoul Baghdad 60
-Seoul Busan 295
+Santiago Yangon 60
+Santiago Jaipur 10
+Santiago Kolkata 270
+Santiago Ahmedabad 50
+Santiago Singapore 85
+Santiago Moscow 260
+Santiago Baghdad 30
+Santiago Hanoi 45
+Santiago Dhaka 285
+Santiago Bangkok 60
+Santiago Delhi 105
+Santiago Hyderabad 15
+Santiago Tokyo 35
+Santiago HoChiMinhCity 235
+Santiago MexicoCity 85
+Santiago CapeTown 90
+Santiago Shanghai 170
+Santiago Pune 70
 
-Pyongyang Riyadh 185
-Pyongyang Santiago 175
-Pyongyang Kolkata 25
-Pyongyang Karachi 40
-Pyongyang Shenyang 95
-Pyongyang Lagos 290
-Pyongyang Chennai 285
-Pyongyang Jeddah 205
-Pyongyang Mumbai 200
-Pyongyang CapeTown 160
-Pyongyang RioDeJaneiro 245
-Pyongyang Lima 65
-Pyongyang Baghdad 35
-Pyongyang Busan 15
+Kolkata LosAngeles 140
+Kolkata Jaipur 50
+Kolkata Jeddah 110
+Kolkata Kanpur 10
+Kolkata Ahmedabad 95
+Kolkata Singapore 270
+Kolkata Baghdad 260
+Kolkata Hanoi 170
+Kolkata Dhaka 150
+Kolkata Bangkok 285
+Kolkata Delhi 270
+Kolkata Hyderabad 190
+Kolkata Tokyo 150
+Kolkata HoChiMinhCity 50
+Kolkata MexicoCity 110
+Kolkata CapeTown 230
+Kolkata Cairo 200
+Kolkata Shanghai 260
+Kolkata Pune 185
 
-Kolkata HoChiMinhCity 210
-Kolkata HongKong 90
-Kolkata Karachi 285
-Kolkata Shenyang 295
-Kolkata Lagos 85
-Kolkata Chennai 155
-Kolkata Jeddah 165
-Kolkata Mumbai 170
-Kolkata CapeTown 175
-Kolkata RioDeJaneiro 90
-Kolkata Baghdad 190
-Kolkata Busan 290
+Kanpur Chongqing 220
+Kanpur BuenosAires 45
+Kanpur Santiago 40
+Kanpur Singapore 230
+Kanpur Moscow 70
+Kanpur Baghdad 150
+Kanpur Hanoi 175
+Kanpur Dhaka 280
+Kanpur Delhi 155
+Kanpur Hyderabad 80
+Kanpur Tokyo 270
+Kanpur HoChiMinhCity 70
+Kanpur MexicoCity 30
+Kanpur CapeTown 205
+Kanpur Cairo 25
+Kanpur Pune 140
 
-Karachi HoChiMinhCity 255
-Karachi Moscow 270
-Karachi Santiago 95
-Karachi Shenyang 190
-Karachi Lagos 40
-Karachi Jaipur 260
-Karachi Chennai 235
-Karachi Jeddah 145
-Karachi CapeTown 70
-Karachi RioDeJaneiro 110
-Karachi Lima 40
+Ahmedabad Wuhan 225
+Ahmedabad Kanpur 160
+Ahmedabad Singapore 225
+Ahmedabad Moscow 250
+Ahmedabad Baghdad 130
+Ahmedabad Hanoi 60
+Ahmedabad Dhaka 185
+Ahmedabad Bangkok 110
+Ahmedabad Delhi 200
+Ahmedabad Hyderabad 290
+Ahmedabad MexicoCity 30
+Ahmedabad CapeTown 285
+Ahmedabad Cairo 255
+Ahmedabad Shanghai 20
+Ahmedabad Pune 45
 
-Shenyang MexicoCity 240
-Shenyang Moscow 145
-Shenyang Seoul 120
-Shenyang Lagos 120
-Shenyang Jaipur 95
-Shenyang Chennai 190
-Shenyang Jeddah 155
-Shenyang Mumbai 280
-Shenyang CapeTown 155
-Shenyang RioDeJaneiro 235
-Shenyang Lima 95
-Shenyang Baghdad 45
-Shenyang Busan 115
+Singapore Jeddah 265
+Singapore Baghdad 265
+Singapore Hanoi 125
+Singapore Dhaka 70
+Singapore Bangkok 50
+Singapore Delhi 25
+Singapore Hyderabad 230
+Singapore Tokyo 205
+Singapore HoChiMinhCity 55
+Singapore MexicoCity 60
+Singapore CapeTown 215
+Singapore Cairo 25
+Singapore Shanghai 80
+Singapore Pune 175
 
-Lagos Riyadh 130
-Lagos Santiago 270
-Lagos Jaipur 290
-Lagos Chennai 190
-Lagos Jeddah 75
-Lagos Mumbai 285
-Lagos CapeTown 270
-Lagos Lima 230
-Lagos Baghdad 275
-Lagos Busan 15
+Moscow Jaipur 80
+Moscow Kolkata 280
+Moscow Baghdad 75
+Moscow Hanoi 290
+Moscow Dhaka 80
+Moscow Bangkok 180
+Moscow Delhi 215
+Moscow Hyderabad 235
+Moscow Tokyo 15
+Moscow HoChiMinhCity 35
+Moscow MexicoCity 140
+Moscow Cairo 175
+Moscow Shanghai 195
+Moscow Pune 245
 
-Jaipur MexicoCity 250
-Jaipur Moscow 255
-Jaipur Hanoi 170
-Jaipur Pyongyang 210
-Jaipur Kolkata 155
-Jaipur Chennai 95
-Jaipur Jeddah 85
-Jaipur Mumbai 275
-Jaipur CapeTown 130
-Jaipur RioDeJaneiro 30
-Jaipur Lima 10
+Baghdad Jaipur 140
+Baghdad Hanoi 185
+Baghdad Bangkok 65
+Baghdad Delhi 10
+Baghdad Hyderabad 100
+Baghdad Tokyo 80
+Baghdad HoChiMinhCity 245
+Baghdad MexicoCity 290
+Baghdad Cairo 205
+Baghdad Shanghai 255
+Baghdad Pune 25
 
-Chennai HoChiMinhCity 205
-Chennai Shenzhen 130
-Chennai Yangon 145
-Chennai Seoul 280
-Chennai Jeddah 65
-Chennai Mumbai 155
-Chennai CapeTown 155
-Chennai RioDeJaneiro 275
-Chennai Lima 125
-Chennai Busan 250
+Hanoi Istanbul 245
+Hanoi Bogota 85
+Hanoi Jaipur 145
+Hanoi Dhaka 210
+Hanoi Bangkok 180
+Hanoi Delhi 265
+Hanoi Hyderabad 235
+Hanoi HoChiMinhCity 110
+Hanoi MexicoCity 270
+Hanoi CapeTown 10
+Hanoi Cairo 120
+Hanoi Pune 150
 
-Jeddah Mumbai 205
-Jeddah CapeTown 285
-Jeddah RioDeJaneiro 230
-Jeddah Lima 50
-Jeddah Baghdad 160
-Jeddah Busan 230
+Dhaka Istanbul 165
+Dhaka Baghdad 115
+Dhaka Bangkok 215
+Dhaka Delhi 245
+Dhaka Hyderabad 30
+Dhaka Tokyo 70
+Dhaka HoChiMinhCity 30
+Dhaka MexicoCity 260
+Dhaka CapeTown 195
+Dhaka Cairo 115
+Dhaka Shanghai 35
+Dhaka Pune 130
 
-Mumbai Moscow 235
-Mumbai Delhi 40
-Mumbai Seoul 40
-Mumbai Karachi 25
-Mumbai CapeTown 45
-Mumbai RioDeJaneiro 200
-Mumbai Baghdad 110
-Mumbai Busan 280
+Bangkok Seoul 100
+Bangkok Kanpur 210
+Bangkok Delhi 115
+Bangkok Hyderabad 20
+Bangkok Tokyo 130
+Bangkok HoChiMinhCity 145
+Bangkok MexicoCity 255
+Bangkok CapeTown 260
+Bangkok Cairo 100
+Bangkok Shanghai 130
+Bangkok Pune 155
 
-CapeTown Yokohama 260
-CapeTown RioDeJaneiro 225
-CapeTown Lima 210
-CapeTown Baghdad 240
-CapeTown Busan 10
+Delhi BuenosAires 245
+Delhi Tokyo 180
+Delhi HoChiMinhCity 125
+Delhi MexicoCity 85
+Delhi CapeTown 130
+Delhi Cairo 250
+Delhi Shanghai 270
+Delhi Pune 230
 
-RioDeJaneiro Moscow 35
-RioDeJaneiro Lagos 70
-RioDeJaneiro Lima 215
-RioDeJaneiro Baghdad 295
-RioDeJaneiro Busan 285
+Hyderabad Bogota 220
+Hyderabad LosAngeles 285
+Hyderabad Jaipur 275
+Hyderabad Delhi 135
+Hyderabad Tokyo 260
+Hyderabad MexicoCity 30
+Hyderabad CapeTown 135
+Hyderabad Cairo 255
+Hyderabad Pune 295
 
-Lima Shenzhen 250
-Lima Guangzhou 240
-Lima HongKong 240
-Lima Mumbai 230
-Lima Baghdad 220
-Lima Busan 255
+Tokyo Jaipur 205
+Tokyo BuenosAires 185
+Tokyo Ahmedabad 280
+Tokyo Hanoi 255
+Tokyo Cairo 190
+Tokyo Shanghai 200
+Tokyo Pune 275
 
-Baghdad Delhi 130
-Baghdad HongKong 85
-Baghdad Karachi 175
-Baghdad Chennai 225
-Baghdad Busan 220
+HoChiMinhCity Seoul 245
+HoChiMinhCity Istanbul 205
+HoChiMinhCity Bogota 120
+HoChiMinhCity Chongqing 75
+HoChiMinhCity Ahmedabad 215
+HoChiMinhCity Hyderabad 240
+HoChiMinhCity Tokyo 15
+HoChiMinhCity MexicoCity 225
+HoChiMinhCity CapeTown 155
+HoChiMinhCity Cairo 295
+HoChiMinhCity Shanghai 250
+HoChiMinhCity Pune 215
 
-Busan Guangzhou 285
-Busan Hanoi 175
-Busan Jaipur 290
+MexicoCity Istanbul 235
+MexicoCity Tokyo 25
+MexicoCity CapeTown 190
+MexicoCity Cairo 125
+MexicoCity Shanghai 40
+
+CapeTown Tokyo 265
+CapeTown Cairo 190
+CapeTown Shanghai 155
+CapeTown Pune 145
+
+Cairo Yangon 170
+Cairo LosAngeles 40
+Cairo Jaipur 275
+Cairo Santiago 75
+Cairo Shanghai 255
+Cairo Pune 50
+
+Shanghai Hanoi 150
+Shanghai Hyderabad 235
+Shanghai Pune 10
+
+Pune MexicoCity 250

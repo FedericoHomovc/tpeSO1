@@ -1,441 +1,121 @@
-20
+10
 
-Jakarta
-Neobrufen 970
-Nolotil 280
-Orfidal 530
-Viscofresh 910
-Lexatn 810
-Dianben 940
-Termalgin 340
-Flumil 360
-Almax 160
-Augmentine 770
- 450
- 430
- 900
- 650
- 510
- 450
- 630
- 50
- 330
- 760
-
-Lagos
-Dianben 80
-Almax 310
-Augmentine 140
-Flumil 920
-Neobrufen 690
-Viscofresh 650
-Lexatn 90
-Termalgin 540
-Nolotil 10
-Orfidal 270
- 170
- 150
- 290
- 580
- 780
- 580
- 140
- 350
- 820
- 80
-
-BuenosAires
-Flumil 930
-Lexatn 870
-Nolotil 960
-Dianben 150
-Almax 180
-Augmentine 600
-Termalgin 330
-Orfidal 720
-Viscofresh 170
-Neobrufen 460
- 580
- 250
- 600
- 720
- 120
- 420
- 580
- 140
- 340
- 480
-
-Baghdad
-Neobrufen 950
-Orfidal 910
-Termalgin 490
-Flumil 790
-Viscofresh 100
-Nolotil 890
-Lexatn 370
-Augmentine 530
-Dianben 820
-Almax 740
- 190
- 860
- 120
- 190
- 690
- 950
- 110
- 840
- 60
- 890
-
-Delhi
-Dianben 680
-Lexatn 650
-Augmentine 420
-Termalgin 440
-Neobrufen 20
-Nolotil 160
-Viscofresh 370
-Almax 960
-Flumil 550
-Orfidal 370
- 670
- 390
- 990
- 590
- 310
- 860
- 680
- 850
- 440
- 890
-
-NewYorkCity
-Neobrufen 910
-Almax 720
-Viscofresh 100
-Flumil 540
-Dianben 410
-Augmentine 980
-Nolotil 530
-Orfidal 580
-Lexatn 760
-Termalgin 30
- 940
- 400
- 380
- 420
- 460
- 170
- 270
- 230
- 60
- 720
-
-LosAngeles
-Termalgin 290
-Neobrufen 770
-Lexatn 800
-Dianben 900
-Orfidal 180
-Nolotil 310
-Flumil 700
-Augmentine 190
-Almax 310
-Viscofresh 150
- 800
- 800
- 350
- 850
- 380
- 430
- 740
- 710
- 470
- 150
-
-Chennai
-Flumil 790
-Orfidal 480
-Viscofresh 940
-Lexatn 950
-Augmentine 250
-Neobrufen 30
-Dianben 430
-Almax 650
-Nolotil 810
-Termalgin 830
- 220
- 950
- 350
- 690
- 740
- 800
- 360
- 240
- 760
- 560
-
-Lima
-Flumil 20
-Orfidal 400
-Augmentine 860
-Almax 90
-Lexatn 520
-Termalgin 380
-Viscofresh 450
-Nolotil 800
-Dianben 500
-Neobrufen 120
- 570
- 90
- 680
- 100
- 170
- 290
- 890
- 160
- 920
- 590
-
-Busan
-Nolotil 330
-Orfidal 860
-Flumil 560
-Neobrufen 440
-Dianben 760
-Lexatn 520
-Termalgin 320
-Viscofresh 710
-Augmentine 260
-Almax 690
- 40
- 700
- 80
- 190
- 960
- 540
- 90
- 560
- 340
- 780
-
-Tianjin
-Almax 230
-Orfidal 170
-Augmentine 380
-Dianben 220
-Lexatn 770
-Termalgin 10
-Nolotil 250
-Viscofresh 230
-Neobrufen 530
-Flumil 320
- 420
- 670
- 500
- 290
- 390
- 780
- 600
- 390
- 350
- 620
-
-London
-Nolotil 340
-Orfidal 30
-Dianben 480
-Termalgin 340
-Neobrufen 100
-Viscofresh 900
-Lexatn 180
-Almax 540
-Flumil 190
-Augmentine 960
- 340
- 400
- 830
- 200
- 890
- 810
- 390
- 630
- 670
- 30
-
-Dhaka
-Termalgin 760
-Orfidal 960
-Augmentine 990
-Dianben 220
-Viscofresh 20
-Almax 960
-Neobrufen 100
-Nolotil 150
-Flumil 250
-Lexatn 530
- 410
- 740
- 450
- 220
- 470
- 510
- 110
- 730
- 460
- 740
-
-HoChiMinhCity
-Augmentine 290
-Termalgin 430
-Viscofresh 640
+MexicoCity
+Enantyum 530
+Efferalgan 840
+Augmentine 720
+Nolotil 180
 Lexatn 250
-Dianben 250
-Almax 760
-Flumil 710
-Orfidal 500
-Nolotil 800
-Neobrufen 490
- 940
- 80
- 80
- 670
- 340
- 100
- 880
- 700
- 660
- 520
+Sintrom 490
+Paracetamol 170
+VoltarenEmulgel 340
+Cardyl 480
+Flumil 60
 
-RioDeJaneiro
-Neobrufen 470
-Dianben 600
-Orfidal 430
-Augmentine 790
-Flumil 360
-Viscofresh 850
-Termalgin 840
-Nolotil 20
-Almax 610
-Lexatn 260
- 200
- 620
- 290
- 660
- 100
- 820
- 920
- 690
- 320
- 490
+Chongqing
+VoltarenEmulgel 350
+Sintrom 190
+Enantyum 340
+Augmentine 690
+Cardyl 260
+Paracetamol 190
+Nolotil 890
+Efferalgan 930
+Lexatn 180
+Flumil 500
+
+Tokyo
+Lexatn 40
+Efferalgan 780
+Augmentine 730
+Enantyum 550
+VoltarenEmulgel 350
+Nolotil 740
+Paracetamol 600
+Flumil 490
+Sintrom 610
+Cardyl 650
+
+Shanghai
+Enantyum 760
+Lexatn 590
+Efferalgan 390
+Flumil 620
+Nolotil 850
+VoltarenEmulgel 280
+Sintrom 240
+Paracetamol 240
+Augmentine 670
+Cardyl 970
 
 Kolkata
-Dianben 950
-Flumil 470
-Almax 20
-Lexatn 940
-Viscofresh 840
-Neobrufen 930
-Termalgin 430
-Augmentine 760
-Nolotil 240
-Orfidal 650
- 660
- 170
- 340
- 880
- 710
- 900
- 270
- 840
- 40
- 880
+Augmentine 740
+VoltarenEmulgel 730
+Flumil 690
+Lexatn 620
+Cardyl 460
+Enantyum 710
+Nolotil 370
+Paracetamol 360
+Sintrom 880
+Efferalgan 470
 
-Bangkok
-Augmentine 130
-Dianben 710
-Viscofresh 30
-Nolotil 920
-Termalgin 370
-Neobrufen 140
-Flumil 950
-Orfidal 170
-Almax 340
-Lexatn 90
- 40
- 250
- 270
- 180
- 200
- 230
- 70
- 510
- 80
- 150
+Ahmedabad
+Flumil 910
+Paracetamol 150
+Enantyum 870
+Efferalgan 120
+Sintrom 390
+Lexatn 210
+Augmentine 700
+VoltarenEmulgel 650
+Cardyl 460
+Nolotil 770
 
-Berlin
-Dianben 470
-Termalgin 410
-Neobrufen 230
-Orfidal 130
-Almax 440
-Lexatn 770
-Viscofresh 970
-Flumil 630
-Augmentine 610
-Nolotil 930
- 390
- 560
- 990
- 440
- 540
- 10
- 590
- 920
- 70
- 560
+BuenosAires
+VoltarenEmulgel 930
+Sintrom 560
+Augmentine 210
+Nolotil 630
+Cardyl 340
+Enantyum 980
+Lexatn 120
+Efferalgan 90
+Flumil 980
+Paracetamol 170
 
-HongKong
-Viscofresh 840
-Orfidal 160
-Augmentine 90
+Dhaka
+Efferalgan 570
+Enantyum 420
+Flumil 940
+VoltarenEmulgel 130
+Paracetamol 460
+Augmentine 460
+Nolotil 570
+Cardyl 190
+Lexatn 30
+Sintrom 570
+
+Yangon
+Enantyum 260
+VoltarenEmulgel 530
+Cardyl 330
+Nolotil 520
+Paracetamol 600
+Augmentine 140
+Sintrom 340
+Efferalgan 360
+Flumil 740
 Lexatn 790
-Termalgin 720
-Nolotil 360
-Dianben 200
-Neobrufen 440
-Flumil 370
-Almax 470
- 300
- 540
- 140
- 20
- 820
- 250
- 940
- 900
- 40
- 590
 
-Tehran
-Augmentine 970
-Nolotil 870
-Dianben 850
-Flumil 520
-Lexatn 850
-Neobrufen 920
-Almax 450
-Orfidal 90
-Termalgin 750
-Viscofresh 20
- 970
- 850
- 410
- 280
- 820
- 920
- 740
- 430
- 40
- 160
+Delhi
+VoltarenEmulgel 670
+Paracetamol 110
+Enantyum 510
+Augmentine 100
+Lexatn 360
+Efferalgan 100
+Nolotil 40
+Cardyl 450
+Flumil 680
+Sintrom 800

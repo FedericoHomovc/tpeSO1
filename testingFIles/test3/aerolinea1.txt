@@ -1,36 +1,38 @@
-5
+3
 
-Karachi
-Efferalgan 660
-Paracetamol 210
-VoltarenEmulgel 510
-Gelocatil 290
-Cardyl 560
+Chongqing
+Paracetamol 830
+Augmentine 1220
+Sintrom 990
+Nolotil 780
+Flumil 380
+Efferalgan 380
+VoltarenEmulgel 380
+Enantyum 240
+Lexatn 90
+Cardyl 980
 
-Jeddah
-Adiro100 50
-Paracetamol 340
-Cardyl 600
-Gelocatil 90
-Ventoln 350
+HoChiMinhCity
+Sintrom 630
+Cardyl 760
+Augmentine 900
+Nolotil 530
+Lexatn 960
+Enantyum 40
+Paracetamol 690
+VoltarenEmulgel 150
+Flumil 470
+Efferalgan 350
 
-SaintPetersburg
-Viscofresh 800
-Paracetamol 850
-Ventoln 780
-Efferalgan 970
-Adiro100 350
+Wuhan
+Paracetamol 230
+Flumil 620
+Cardyl 110
+Sintrom 440
+VoltarenEmulgel 260
+Nolotil 160
+Efferalgan 1800
+Augmentine 780
+Lexatn 690
+Enantyum 870
 
-Riyadh
-Sintrom 760
-Adiro100 810
-Gelocatil 650
-Nolotil 240
-VoltarenEmulgel 300
-
-Busan
-VoltarenEmulgel 650
-Cardyl 70
-Efferalgan 460
-Ventoln 490
-Gelocatil 400
