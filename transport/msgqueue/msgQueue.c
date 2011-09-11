@@ -1,10 +1,10 @@
 /***
  ***
  ***		msgQueue.c
- ***				Jose Ignacio Galindo
- ***				Federico Homovc
- ***				Nicolas Loreti
- ***			 	     ITBA 2011
+ ***		Jose Ignacio Galindo
+ ***		Federico Homovc
+ ***		Nicolas Loreti
+ ***		ITBA 2011
  ***
  ***/
 

@@ -1,10 +1,10 @@
 /***
  ***
- ***				sockets.c
- ***				Jose Ignacio Galindo
- ***				Federico Homovc
- ***				Nicolas Loreti
- ***			 	     ITBA 2011
+ ***		sockets.c
+ ***		Jose Ignacio Galindo
+ ***		Federico Homovc
+ ***		Nicolas Loreti
+ ***   	    ITBA 2011
  ***
  ***/
 

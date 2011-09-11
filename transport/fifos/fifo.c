@@ -1,10 +1,10 @@
 /***
 ***
-***		fifo.c
+***			fifo.c
 ***			Jose Ignacio Galindo
 ***			Federico Homovc
 ***			Nicolas Loreti
-***		 	     ITBA 2011
+***		 	ITBA 2011
 ***
 ***/
 
