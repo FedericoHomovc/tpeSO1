@@ -187,7 +187,7 @@ int rcvMessage(clientADT client, message *msg, int flags)
 }
 
 /* Disconnects a client from the server */
-int disconnectFromServer(clientADT client, serverADT server)
+int disconnectFromServer(clientADT client)
 {
 	unlink(client->data.sun_path);
 	free(client);

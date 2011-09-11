@@ -359,7 +359,7 @@ int rcvMessage(clientADT client, message *msg, int flags)
 }
 
 
-int disconnectFromServer(clientADT client, serverADT server)
+int disconnectFromServer(clientADT client)
 {
 	if(client == NULL)
 		return -1;

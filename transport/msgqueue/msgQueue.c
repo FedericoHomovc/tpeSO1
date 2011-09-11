@@ -95,7 +95,7 @@ int rcvMessage(clientADT client, message * msg, int flags) {
 	return ret;
 }
 
-int disconnectFromServer(clientADT client, serverADT server)
+int disconnectFromServer(clientADT client)
 {
 	free(client);
 	return 0;

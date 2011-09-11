@@ -408,7 +408,7 @@ int rcvMessage(clientADT client, message * msg, int flags) {
 	return amtRcv;
 }
 
-int disconnectFromServer(clientADT client, serverADT server) {
+int disconnectFromServer(clientADT client) {
 	shmdt(client->memory);
 	free(client);
 	return 0;

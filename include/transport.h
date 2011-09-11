@@ -48,7 +48,7 @@ int sendMessage(clientADT client, message * msg, int flags);
 
 int rcvMessage(clientADT client, message * msg, int flags);
 
-int disconnectFromServer(clientADT client, serverADT server);
+int disconnectFromServer(clientADT client);
 
 int terminateServer(serverADT server);
 
