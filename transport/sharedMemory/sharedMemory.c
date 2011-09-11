@@ -213,6 +213,7 @@ clientADT connectToServer(serverADT serv) {
 		return NULL;
 	}
 
+
 	down(serv->semid, SEM_CLI_TABLE);
 
 	/* initializing the return client info */
