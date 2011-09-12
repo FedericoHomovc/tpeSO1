@@ -24,6 +24,16 @@
 #include "../../include/structs.h"
 
 /***		Structs 		***/
+
+/*
+ * name: msgQueue
+ * description: is the implementation of the message used in the
+ * message queue
+ * @mtype: it hold the number of the "slot" of the message queue.
+ * In the case the pid of the receiving process
+ * @queueID: it holds the identification of the unique message queue.
+ *
+ */
 typedef struct {
 	long mtype;
 	char mtext[MSG_SIZE];
@@ -33,7 +43,7 @@ typedef struct {
  * name: serverCDT
  * description: is the implementation of serverADT. It stores the necessary
  * information to connect to a server.
- * @queueID:
+ * @queueID: it holds the identification of the unique message queue.
  *
  */
 struct serverCDT {
@@ -64,8 +74,10 @@ serverADT createServer() {
 		return NULL;
 	}
 
-	if ((serv = malloc(sizeof(struct serverCDT))) == NULL)
+	if ((serv = malloc(sizeof(struct serverCDT))) == NULL){
+		fprintf(stderr, "createServer(): Not enough space for sever.\n");
 		return NULL;
+	}
 	serv->queueID = queueid;
 	return serv;
 }
@@ -73,7 +85,7 @@ serverADT createServer() {
 clientADT connectToServer(serverADT serv) {
 	clientADT client;
 	if ((client = malloc(sizeof(struct clientCDT))) == NULL) {
-		fprintf(stderr, "createServer(): Error creating msgget\n");
+		fprintf(stderr, "createServer(): Not enough space for client.\n");
 		return NULL;
 	}
 	client->queueID = serv->queueID;
@@ -84,9 +96,10 @@ clientADT connectToServer(serverADT serv) {
 
 clientADT getClient(serverADT serv, pid_t id) {
 	clientADT client = malloc(sizeof(clientADT));
-	if ((client = malloc(sizeof(struct clientCDT))) == NULL
-		)
+	if ((client = malloc(sizeof(struct clientCDT))) == NULL){
+		fprintf(stderr, "getClient(): Not enough space for client.\n");
 		return NULL;
+	}
 	client->queueID = serv->queueID;
 	client->pid = id;
 	return client;

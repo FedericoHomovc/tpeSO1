@@ -6,10 +6,15 @@
  *
  */
 
-#include "../include/semaphore.h"
 #include <string.h>
+#include "../include/semaphore.h"
 
-/* Initializes a semaphore array. */
+/*
+ * name: initSem
+ * description: initializes a semaphore array of length 2.
+ * @value:it represents the initial value of both semaphores.
+ *
+ */
 int initSem(int value)
 {
     int semid, status = 0, status2 = 0;
@@ -27,14 +32,20 @@ int initSem(int value)
     
     if( status == -1 || status2 == -1 || semid == -1)
     {
-        fprintf(stderr, "Semaphore initialization failed\n");
+        fprintf(stderr, "initSem(): Semaphore initialization failed\n");
         return -1;
     }
     return semid;
     
 }
 
-/* Semaphore wait operation */
+/*
+ * name:up (AKA p)
+ * description: Semaphore wait operation
+ * @semid: unique identification of the semaphore.
+ * @semnum: number of the semaphore wished to be used
+ * @wait: whether the semaphore has to wait or not
+ */
 int up(int semid, int semnum, int wait)
 {
     struct sembuf buffer;
@@ -49,20 +60,20 @@ int up(int semid, int semnum, int wait)
     if( semop(semid, &buffer, (size_t) 1) == -1)
     {
         if( errno == EAGAIN )
-        {
-            fprintf(stderr, "The semaphore is red. Must wait\n");
-        }
+            fprintf(stderr, "up(): The semaphore is red. Must wait\n");
         else
-        {
-            fprintf(stderr, "Semaphore P operation failed. Semid: %d\n", semid);
-            fprintf(stderr, "Errno is %d: %s\n", errno, strerror(errno));
-        }
+            fprintf(stderr, "up(): Semaphore up operation failed. Semid: %d\n", semid);
         return -1;
     }
     return 0;
 }
 
-/* Semaphore signal operation */
+/*
+ * name:down (AKA v)
+ * description: Semaphore signal operation.
+ * @semid: unique identification of the semaphore.
+ * @semnum: number of the semaphore wished to be used
+ */
 int down(int semid, int semnum)
 {
     struct sembuf buffer;
@@ -72,20 +83,23 @@ int down(int semid, int semnum)
     
     if( semop(semid, &buffer, (size_t) 1) == -1)
     {
-        fprintf(stderr, "Semaphore V operation failed. Semid: %d\n", semid);
-        fprintf(stderr, "Errno is %d: %s\n", errno, strerror(errno));
+        fprintf(stderr, "down(): Semaphore down operation failed. Semid: %d\n", semid);
         return -1;
     }
     return 0;
 }
 
-/* Destroy the array of semaphores */
+/*
+ * name:destroySem
+ * description: Destroy the semaphore array.
+ * @semid: unique identification of the semaphore.
+ */
 int destroySem(int semid)
 {
-    int result = semctl(semid, 0, IPC_RMID, NULL);
-    if( result == -1)
+    int ans = semctl(semid, 0, IPC_RMID, NULL);
+    if( ans == -1)
     {
-        fprintf(stderr, "The semaphore %d couldn't be destroyed\n", semid);
+        fprintf(stderr, "destroySem(): The semaphore %d couldn't be destroyed\n", semid);
     }
-    return result;
+    return ans;
 }
