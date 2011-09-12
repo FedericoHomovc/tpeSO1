@@ -1,0 +1,37 @@
+3
+
+Dhaka
+Efferalgan 1570
+Enantyum 1420
+Flumil 1940
+VoltarenEmulgel 1130
+Paracetamol 1460
+Augmentine 1460
+Nolotil 1570
+Cardyl 1190
+Lexatn 2130
+Sintrom 1570
+
+Yangon
+Enantyum 1260
+VoltarenEmulgel 1530
+Cardyl 1330
+Nolotil 1520
+Paracetamol 1600
+Augmentine 1140
+Sintrom 1540
+Efferalgan 1360
+Flumil 1740
+Lexatn 1790
+
+Delhi
+VoltarenEmulgel 1670
+Paracetamol 1110
+Enantyum 1510
+Augmentine 1100
+Lexatn 1360
+Efferalgan 1100
+Nolotil 140
+Cardyl 1450
+Flumil 1680
+Sintrom 1800
