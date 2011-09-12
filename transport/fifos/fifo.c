@@ -28,8 +28,7 @@
 #include "../../include/backEnd.h"
 
 /***		Module Defines		***/
-#define CLI_FIFO_R_S	"/tmp/clientFifo_read"
-#define CLI_FIFO_W_S	"/tmp/clientFifo_write"
+#define CLI_FIFO	"/tmp/clientFifo"
 #define SER_FIFO_S	"/tmp/serverFIFO"
 
 #define	CLIENTS_SIZE	15
@@ -43,18 +42,13 @@
  * struct clientCDT
  * This struct is the implementation of clientADT for IPC in FIFOs.
  * 
- * @clientFifo_read: File descriptor for the FIFO used by a client to read.
- * @clientName:	Name of clientFifo_read in the file system.
- * @clientFifo_read: File descriptor for the FIFO used by a client to write.
- * @clientName:	Name of clientFifo_write in the file system.
+ * @clientFifo: File descriptor for the FIFO used by a client to read and write.
+ * @clientName:	Name of client Fifo in the file system.
  */
 struct clientCDT
 {
-	int clientFifo_read;
-	char clientName_read[FIFO_NAMES];
-
-	int clientFifo_write;
-	char clientName_write[FIFO_NAMES];
+	int clientFifo;
+	char clientName[FIFO_NAMES];
 };
 
 /*
@@ -82,21 +76,16 @@ struct serverCDT
  * Message sent by clients to server when establishing a connection.
  *
  * @id: PID of the client establishing the connection.
- * @clientFifo_read: File descriptor for the FIFO used by a client to read.
- * @clientName: Name of clientFifo_read in the file system.
- * @clientFifo_read: File descriptor for the FIFO used by a client to write.
- * @clientName: Name of clientFifo_write in the file system.
+ * @clientFifo: File descriptor for the FIFO used by a client to read and write.
+ * @clientName: Name of client Fifo in the file system.
 */
 
 typedef struct
 {
 	pid_t id;
 
-	int clientFifo_read;
-	char clientName_read[FIFO_NAMES];
-
-	int clientFifo_write;
-	char clientName_write[FIFO_NAMES];
+	int clientFifo;
+	char clientName[FIFO_NAMES];
 
 } connectionMsg;
 
@@ -109,7 +98,7 @@ typedef struct
 * and opening are given as parameters.
 *
 * @expecName: Constant, first part of fifo file name. Depends if fifo is server, 
-* reading or writing.
+* or client.
 * @resulName: Final name of the fifo file. Includes the first part and a number that 
 * differentiates each file.
 * @modeCr: Mode for creating fifo.
@@ -140,7 +129,6 @@ static int mkopFifo(const char *expecName, char *resultName, mode_t modeCr, mode
 		if(errno != EEXIST)
 		{
 			fprintf(stderr, "FIFO couldn't be created.\n");
-			printf("Errno = %d.\n", errno);
 			return ERR_FIFO;
 		}
 
@@ -160,7 +148,7 @@ static int mkopFifo(const char *expecName, char *resultName, mode_t modeCr, mode
 
 static void * listeningThread(void *serverInfo)
 {
-	int fileDes_r, fileDes_w;
+	int fileDes;
 	serverADT server;
 	connectionMsg currentConnection;
 	clientADT client;
@@ -186,30 +174,16 @@ static void * listeningThread(void *serverInfo)
 				return NULL;
 			}
 
-			if((fileDes_r = open(currentConnection.clientName_write, O_RDWR)) == -1)
+			if((fileDes = open(currentConnection.clientName, O_RDWR)) == -1)
 			{
 				fprintf(stderr, "Errno = %d, strerror = %s\n", errno, strerror(errno));
-				fprintf(stderr,	"Client FIFO_w couldn't be opened at listening.\n");
+				fprintf(stderr,	"Client FIFO couldn't be opened.\n");
 				free(client);
 				return NULL;
 			}
+			client->clientFifo = fileDes;
 
-			client->clientFifo_read = fileDes_r;
-
-			if((fileDes_w = open(currentConnection.clientName_read, O_RDWR)) == -1)
-
-			{
-				fprintf(stderr, "Errno = %d, strerror = %s\n", errno, strerror(errno));
-				fprintf(stderr,	"Client FIFO_r couldn't be opened at listening.\n");
-				free(client);
-				return NULL;
-			}
-
-			client->clientFifo_write = fileDes_w;
-
-			strcpy(client->clientName_read, currentConnection.clientName_read);
-			strcpy(client->clientName_write, currentConnection.clientName_write);
-
+			strcpy(client->clientName, currentConnection.clientName);
 			currentClient->client = client;
 			currentClient->id = currentConnection.id;
 
@@ -262,7 +236,7 @@ serverADT createServer(void)
 
 clientADT connectToServer(serverADT serv)
 {
-	int fileDes_r, fileDes_w, serverFileDes;
+	int fileDes, serverFileDes;
 	connectionMsg mesg;
 	clientADT ret;
 	message msg;
@@ -276,19 +250,12 @@ clientADT connectToServer(serverADT serv)
 	if( (ret = malloc(sizeof(struct clientCDT))) == NULL)
 		return NULL;
 
-	if((fileDes_r = mkopFifo(CLI_FIFO_R_S, ret->clientName_read, 0666, O_RDWR)) == ERR_FIFO)
+	if((fileDes = mkopFifo(CLI_FIFO, ret->clientName, 0666, O_RDWR)) == ERR_FIFO)
 	{
 		free(ret);
 		return NULL;
 	}
-	ret->clientFifo_read = fileDes_r;
-	
-	if((fileDes_w = mkopFifo(CLI_FIFO_W_S, ret->clientName_write, 0666, O_RDWR)) == ERR_FIFO)
-	{
-		free(ret);
-		return NULL;
-	}
-	ret->clientFifo_write = fileDes_w;
+	ret->clientFifo = fileDes;
 
 	if((serverFileDes = open(serv->serverName, O_WRONLY)) == -1)
 	{
@@ -298,10 +265,8 @@ clientADT connectToServer(serverADT serv)
 	}
 
 	mesg.id = getpid();
-	mesg.clientFifo_read = ret->clientFifo_read;
-	mesg.clientFifo_write = ret->clientFifo_write;
-	strcpy(mesg.clientName_read, ret->clientName_read);
-	strcpy(mesg.clientName_write, ret->clientName_write);
+	mesg.clientFifo = ret->clientFifo;
+	strcpy(mesg.clientName, ret->clientName);
 
 	if(write(serverFileDes, &mesg, sizeof(connectionMsg)) == -1)
 	{
@@ -343,7 +308,7 @@ int sendMessage(clientADT client, message *msg, int flags)
 		fprintf(stderr, "NULL parameters.\n");
 		return -1;
 	}
-	return write(client->clientFifo_write, msg->message, msg->size);
+	return write(client->clientFifo, msg->message, msg->size);
 }
 
 
@@ -355,7 +320,7 @@ int rcvMessage(clientADT client, message *msg, int flags)
 		fprintf(stderr, "NULL parameters.\n");
 		return -1;
 	}
-	return read(client->clientFifo_read, msg->message, msg->size);
+	return read(client->clientFifo, msg->message, msg->size);
 }
 
 
@@ -364,11 +329,6 @@ int disconnectFromServer(clientADT client)
 	if(client == NULL)
 		return -1;
 
-	if(close(client->clientFifo_read) == -1 || close(client->clientFifo_write) == -1)
-	{
-		fprintf(stderr, "Client couldn't be closed.\n");
-		return -1;
-	}
 	free(client);
 
 	return 0;
@@ -396,10 +356,9 @@ int terminateServer(serverADT server)
 	for(i = 0; i < server->clientsUsed; i++)
 	{
 		currentclient = server->clients[i]->client;
-		close(currentclient->clientFifo_read);
-		close(currentclient->clientFifo_write);
+		close(currentclient->clientFifo);
 
-		if(unlink(currentclient->clientName_read) == -1 || unlink(currentclient->clientName_write) == -1)
+		if(unlink(currentclient->clientName) == -1)
 		{
 			fprintf(stderr, "Client FIFO couldn't be removed.\n");
 			return -1;

@@ -1,0 +1,34 @@
+*************** tpeSO readme ***************
+Authors:
+Jose Ignacio Galindo
+Federico Homovc
+Nicolas Loreti
+
+Date:
+September 12, 2011.
+
+Sistemas Operativos - ITBA
+
+
+Makefile rules
+--------------
+
+To compile with each IPC type 'make IPC_name'
+FIFO: make fifo
+MESSAGE QUEUE: make msgqueue
+SOCKETS: make sockets
+SHARED MEMORY: make shmem
+
+Type 'make clear' to permanently erase all compiled files and executable file.
+
+
+Execution rules
+---------------
+
+To execute type: ./tpeSO cities_file_name company0_file_name company1_file_name ...
+
+This program can work with up to ten companies, having at most ten planes each. Maximum quantity of medicines for each 
+plane and each city is not specified, but shouldn't be over ten due to implementation of IPCs. Medicines name length 
+can be 20 at most, otherwise constant MED_NAME_LENGT in file /marshalling/marshalling.c must be modified and program
+recompiled. Due to differences between Unix and DOS text files, this program only works with DOS text files (carriage 
+return and line break). In case of Unix cities or companies files, they can be changed to DOS by typing 'unix2dos file_names'.

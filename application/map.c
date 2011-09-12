@@ -19,10 +19,10 @@
 #include <error.h>
 
 /***		Project Includes		***/
-#include "../include/transport.h"
-#include "../include/structs.h"
-#include "../include/backEnd.h"
-#include "../include/marshalling.h"
+#include "./include/api.h"
+#include "./include/structs.h"
+#include "./include/backEnd.h"
+#include "./include/marshalling.h"
 
 /***		Functions		***/
 
@@ -124,7 +124,7 @@ int main(int argc, char * argv[]) {
 	}
 	mapSt->companiesCount = argc - 2;
 
-	if ((server = createServer()) == NULL )
+	if ((server = startServer()) == NULL )
 		return 1;
 
 	if ((pids = malloc(sizeof(pid_t) * (argc))) == NULL )
@@ -205,22 +205,22 @@ int main(int argc, char * argv[]) {
 			if (count > 0) {
 				for (i = 0; i < count; i++)
 					unloaded += unloadPlane(&p[i], &mapSt);
-
 				sendPlanes(companyID, count, p, clients[companyID + 2]);
 			}
-			if (unloaded) {
+			if (unloaded)
 				sendPlanes(companyID, count, p, clients[1]);
-				for (i = 0; i < count; i++) {
-					for (j = 0; j < p[i]->medCount; j++) {
-						free(p[i]->medicines[j]->name);
-						free(p[i]->medicines[j]);
-					}
-					free(p[i]->medicines);
-					free(p[i]);
-				}
-				free(p);
-			} else
+			else
 				sendPlanes(companyID, 0, NULL, clients[1]);
+			for (i = 0; i < count; i++) {
+				for (j = 0; j < p[i]->medCount; j++) {
+					free(p[i]->medicines[j]->name);
+					free(p[i]->medicines[j]);
+				}
+				free(p[i]->medicines);
+				free(p[i]);
+			}
+			if(count > 0)
+				free(p);
 			k++;
 		}
 
@@ -238,8 +238,8 @@ int main(int argc, char * argv[]) {
 
 	for (k = 1; k < argc; k++)
 		kill(pids[k], SIGINT);
-	disconnectFromServer(clients[0]);
-	terminateServer(server);
+	disconnectFromServer(clients[0], server);
+	endServer(server);
 
 	freeResources();
 	printf("\nSimulation ended\n");
@@ -308,8 +308,8 @@ static void sigintServHandler(int signo) {
 
 	for (k = 1; k < mapSt->companiesCount + 2; k++)
 		kill(pids[k], SIGINT);
-	disconnectFromServer(clients[0]);
-	terminateServer(server);
+	disconnectFromServer(clients[0], server);
+	endServer(server);
 	freeResources();
 
 	exit(0);
