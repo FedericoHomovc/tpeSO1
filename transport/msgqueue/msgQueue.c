@@ -46,14 +46,12 @@ struct serverCDT {
  * information for a client to connect to the server and to other clients.
  * @queueID: it holds the identification of the unique message queue.
  * @pid: unique identification of a client. It holds the pid of the process.
-*/
+ */
 
 struct clientCDT {
 	int queueID;
 	int pid;
 };
-
-
 
 static key_t queueKey = 0xBEEF0;
 int queueid;
@@ -61,13 +59,12 @@ int queueid;
 serverADT createServer() {
 	serverADT serv;
 
-	if ((queueid = msgget(queueKey, 0666 | IPC_CREAT)) == -1)
-	{
-		printf("Error msgget\n");
+	if ((queueid = msgget(queueKey, 0666 | IPC_CREAT)) == -1) {
+		fprintf(stderr, "createServer(): Error creating msgget\n");
 		return NULL;
 	}
 
-	if( (serv = malloc(sizeof(struct serverCDT))) == NULL )
+	if ((serv = malloc(sizeof(struct serverCDT))) == NULL)
 		return NULL;
 	serv->queueID = queueid;
 	return serv;
@@ -75,8 +72,10 @@ serverADT createServer() {
 
 clientADT connectToServer(serverADT serv) {
 	clientADT client;
-	if( (client = malloc( sizeof(struct clientCDT))) == NULL)
+	if ((client = malloc(sizeof(struct clientCDT))) == NULL) {
+		fprintf(stderr, "createServer(): Error creating msgget\n");
 		return NULL;
+	}
 	client->queueID = serv->queueID;
 	client->pid = getpid();
 
@@ -84,8 +83,9 @@ clientADT connectToServer(serverADT serv) {
 }
 
 clientADT getClient(serverADT serv, pid_t id) {
-	clientADT client = malloc( sizeof(clientADT) );
-	if( (client = malloc( sizeof(struct clientCDT))) == NULL)
+	clientADT client = malloc(sizeof(clientADT));
+	if ((client = malloc(sizeof(struct clientCDT))) == NULL
+		)
 		return NULL;
 	client->queueID = serv->queueID;
 	client->pid = id;
@@ -96,8 +96,8 @@ int sendMessage(clientADT client, message * msg, int flags) {
 	msgQueue aux;
 	aux.mtype = client->pid;
 	strcpy(aux.mtext, msg->message);
-	
-	return msgsnd(client->queueID, &aux,sizeof aux.mtext, flags);
+
+	return msgsnd(client->queueID, &aux, sizeof aux.mtext, flags);
 }
 
 int rcvMessage(clientADT client, message * msg, int flags) {
@@ -109,14 +109,12 @@ int rcvMessage(clientADT client, message * msg, int flags) {
 	return ret;
 }
 
-int disconnectFromServer(clientADT client)
-{
+int disconnectFromServer(clientADT client) {
 	free(client);
 	return 0;
 }
 
-int terminateServer(serverADT server)
-{
+int terminateServer(serverADT server) {
 	msgctl(queueid, IPC_RMID, NULL);
 	free(server);
 	return 0;

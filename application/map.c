@@ -19,10 +19,10 @@
 #include <error.h>
 
 /***		Project Includes		***/
-#include "./include/api.h"
-#include "./include/structs.h"
-#include "./include/backEnd.h"
-#include "./include/marshalling.h"
+#include "../include/transport.h"
+#include "../include/structs.h"
+#include "../include/backEnd.h"
+#include "../include/marshalling.h"
 
 /***		Functions		***/
 
@@ -124,7 +124,7 @@ int main(int argc, char * argv[]) {
 	}
 	mapSt->companiesCount = argc - 2;
 
-	if ((server = startServer()) == NULL )
+	if ((server = createServer()) == NULL )
 		return 1;
 
 	if ((pids = malloc(sizeof(pid_t) * (argc))) == NULL )
@@ -238,8 +238,8 @@ int main(int argc, char * argv[]) {
 
 	for (k = 1; k < argc; k++)
 		kill(pids[k], SIGINT);
-	disconnectFromServer(clients[0], server);
-	endServer(server);
+	disconnectFromServer(clients[0]);
+	terminateServer(server);
 
 	freeResources();
 	printf("\nSimulation ended\n");
@@ -308,8 +308,8 @@ static void sigintServHandler(int signo) {
 
 	for (k = 1; k < mapSt->companiesCount + 2; k++)
 		kill(pids[k], SIGINT);
-	disconnectFromServer(clients[0], server);
-	endServer(server);
+	disconnectFromServer(clients[0]);
+	terminateServer(server);
 	freeResources();
 
 	exit(0);
