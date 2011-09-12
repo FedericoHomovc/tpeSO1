@@ -29,10 +29,24 @@ typedef struct {
 	char mtext[MSG_SIZE];
 } msgQueue;
 
-
+/*
+ * name: serverCDT
+ * description: is the implementation of serverADT. It stores the necessary
+ * information to connect to a server.
+ * @queueID:
+ *
+ */
 struct serverCDT {
 	int queueID;
 };
+
+/*
+ * name: clientCDT
+ * description: is the implementation of serverADT. It stores the necessary.
+ * information for a client to connect to the server and to other clients.
+ * @queueID: it holds the identification of the unique message queue.
+ * @pid: unique identification of a client. It holds the pid of the process.
+*/
 
 struct clientCDT {
 	int queueID;
