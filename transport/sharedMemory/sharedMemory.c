@@ -24,7 +24,7 @@
 #include "../../include/semaphore.h"
 
 /*
- * Symbolic constants
+ * Constants
  */
 #define KEY_1 (key_t)0x1000
 #define KEY_2 (key_t)0x10000
@@ -40,6 +40,9 @@
 
 #define PERMS 0666 | IPC_CREAT | IPC_EXCL
 
+/*
+ * Structures
+ */
 
 /*
  * name: clientCDT
@@ -98,6 +101,12 @@ typedef struct shmMessage {
 
 /***		Functions		***/
 
+/*
+ * name: cleanUP
+ * description: puts the shared memory in cero.
+ * @mem: pointer to the memory to put in cero..
+ * @bytes: number of bytes to put in cero.
+ */
 static void cleanUP(void * mem, int bytes) {
 	int i;
 	char * m = (char *) mem;

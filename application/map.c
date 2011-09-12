@@ -1,6 +1,6 @@
 /***
  ***
- ***		frontEnd.c
+ ***			frontEnd.c
  ***			Jose Ignacio Galindo
  ***			Federico Homovc
  ***			Nicolas Loreti
