@@ -1,10 +1,12 @@
-/*
- * semaphore.c
- * Implements a semaphore for shm.c needs.
- * Authors:
- *
- *
- */
+/***
+ ***
+ ***		semaphore.c
+ ***		Jose Ignacio Galindo
+ ***		Federico Homovc
+ ***		Nicolas Loreti
+ ***		ITBA 2011
+ ***
+ ***/
 
 #include <string.h>
 #include "../include/semaphore.h"
