@@ -24,6 +24,9 @@
 #include "../include/transport.h"
 #include "../include/structs.h"
 
+/***		Module Defines		***/
+#define MED_NAME_LENGT 20		/*max medicine name length = 20. may be increased if necessary*/
+
 /***		Functions		***/
 char * wrappMedicine(medicine ** med, int ID, int medCount);
 int unwrappMedicine(medicine *** meds, char * array, int * ID);
@@ -265,10 +268,10 @@ int
 unwrappMedicine(medicine *** meds, char * array, int * ID)
 {
 	int i = 0, k, pos = 0, size;
-	char * aux;				/*max medicine name length = 20. may be increased if necessary*/
+	char * aux;
 	medicine ** m;
 	
-	if( (aux = calloc(20, sizeof(char))) == NULL)
+	if( (aux = calloc(MED_NAME_LENGT, sizeof(char))) == NULL)
 		return -1;
 
 	while(array[i] != ';')
