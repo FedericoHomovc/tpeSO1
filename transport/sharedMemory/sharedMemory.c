@@ -99,7 +99,12 @@ typedef struct shmMessage {
 	char message[MESG_SIZE];
 } shmMessage;
 
-/***		Functions		***/
+
+
+
+/*
+ * 		Functions
+ */
 
 /*
  * name: cleanUP

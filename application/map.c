@@ -1,6 +1,6 @@
 /***
  ***
- ***			frontEnd.c
+ ***			map.c
  ***			Jose Ignacio Galindo
  ***			Federico Homovc
  ***			Nicolas Loreti
@@ -93,11 +93,6 @@ int main(int argc, char * argv[]) {
 	int k, companyID, count, i, j, c, unloaded;
 	FILE * file = NULL;
 	plane ** p;
-	struct timeval t1, t2;
-	double elapsedTime;
-
-	/* start timer */
-	gettimeofday(&t1, NULL);
 
 	struct sigaction signalAction;
 	signalAction.sa_flags = 0;
@@ -243,13 +238,7 @@ int main(int argc, char * argv[]) {
 
 	freeResources();
 	printf("\nSimulation ended\n");
-	/* stop timer */
-	gettimeofday(&t2, NULL);
 
-	/* compute and print the elapsed time in millisec */
-	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0; /* sec to ms */
-	elapsedTime += (t2.tv_usec - t1.tv_usec) / 1000.0; /* us to ms */
-	printf("Elapsed time: %f miliseconds\n", elapsedTime);
 	return 0;
 }
 
